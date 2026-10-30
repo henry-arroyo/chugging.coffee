@@ -25,7 +25,9 @@
     "infra:status": "tsx infra/scripts/infra.ts status",
     "infra:destroy": "tsx infra/scripts/infra.ts destroy",
     "access:setup": "tsx infra/access/setup-access.ts",
-    "access:verify": "tsx infra/access/verify-access.ts"
+    "access:verify": "tsx infra/access/verify-access.ts",
+    "test:e2e": "playwright test",
+    "visual:capture": "CAPTURE=1 playwright test tests/e2e/visual-capture.spec.ts"
   },
   "dependencies": {
     "ajv": "8.20.0",

@@ -1,0 +1,139 @@
+/* The page around the simulation: modern, quiet, and outside the 1995 fiction. */
+:root {
+  --host-bg: #1d1f21;
+  --host-bar: #2a2d30;
+  --host-text: #e8e6e3;
+  --host-muted: #a8a49e;
+  --host-accent: #f0b35a;
+  --host-control: #3a3e42;
+  --host-border: #4a4f54;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --host-bg: #e9e6e1;
+    --host-bar: #f7f5f2;
+    --host-text: #222;
+    --host-muted: #5f5a54;
+    --host-accent: #8a4b00;
+    --host-control: #ffffff;
+    --host-border: #c9c3bb;
+    color-scheme: light;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+body {
+  background: var(--host-bg);
+  color: var(--host-text);
+  font: 14px/1.4 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+.host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.host-bar {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 6px 16px;
+  background: var(--host-bar);
+  border-bottom: 1px solid var(--host-border);
+}
+.host-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.host-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.host-controls button,
+.host-controls select,
+.host-apps button {
+  min-height: 30px;
+  padding: 4px 10px;
+  font: inherit;
+  color: var(--host-text);
+  background: var(--host-control);
+  border: 1px solid var(--host-border);
+  border-radius: 6px;
+}
+.host-controls button[aria-pressed='true'] {
+  border-color: var(--host-accent);
+  box-shadow: inset 0 0 0 1px var(--host-accent);
+}
+.host-controls output {
+  min-width: 46px;
+  text-align: center;
+  color: var(--host-muted);
+  font-variant-numeric: tabular-nums;
+}
+.host-controls :focus-visible,
+.host-apps :focus-visible {
+  outline: 2px solid var(--host-accent);
+  outline-offset: 2px;
+}
+.host-apps {
+  flex: none;
+  padding: 8px 16px;
+  background: var(--host-bar);
+  border-bottom: 1px solid var(--host-border);
+}
+.host-apps ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.host-viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+/* Centers the desktop when it is smaller than the viewport, and grows with it when zoomed in, so
+   the scroll area always starts at the desktop's top-left corner (no unreachable overflow). */
+.host-center {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  min-height: 100%;
+}
+.host-stage {
+  flex: none;
+  margin: auto;
+  overflow: hidden;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.45);
+}
+.host-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .host-bar {
+    padding: 6px 16px;
+  }
+  .host-title {
+    font-size: 14px;
+  }
+}

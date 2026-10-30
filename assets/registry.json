@@ -1,4 +1,632 @@
 {
   "schemaVersion": 1,
-  "assets": []
+  "assets": [
+    {
+      "assetId": "icon.aol",
+      "file": "icons/aol.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.app-generic",
+      "file": "icons/app-generic.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.clock",
+      "file": "icons/clock.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.connection-offline",
+      "file": "icons/connection-offline.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.connection-online",
+      "file": "icons/connection-online.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.control-panel",
+      "file": "icons/control-panel.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.document",
+      "file": "icons/document.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.documents",
+      "file": "icons/documents.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.drive-c",
+      "file": "icons/drive-c.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.explorer",
+      "file": "icons/explorer.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.find",
+      "file": "icons/find.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.folder",
+      "file": "icons/folder.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.folder-open",
+      "file": "icons/folder-open.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.help",
+      "file": "icons/help.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.minesweeper",
+      "file": "icons/minesweeper.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.msg-error",
+      "file": "icons/msg-error.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.msg-info",
+      "file": "icons/msg-info.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.msg-question",
+      "file": "icons/msg-question.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.msg-warning",
+      "file": "icons/msg-warning.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.my-computer",
+      "file": "icons/my-computer.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.netscape",
+      "file": "icons/netscape.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.notepad",
+      "file": "icons/notepad.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.programs",
+      "file": "icons/programs.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.recycle-empty",
+      "file": "icons/recycle-empty.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.recycle-full",
+      "file": "icons/recycle-full.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.run",
+      "file": "icons/run.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.settings",
+      "file": "icons/settings.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.shutdown",
+      "file": "icons/shutdown.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.solitaire",
+      "file": "icons/solitaire.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.speaker",
+      "file": "icons/speaker.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.speaker-muted",
+      "file": "icons/speaker-muted.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.start",
+      "file": "icons/start.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.taskbar",
+      "file": "icons/taskbar.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    }
+  ]
 }

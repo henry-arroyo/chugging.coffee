@@ -113,3 +113,33 @@ directly as the deploy role (change set with `--role-arn` and `--resource-types`
 execute/delete). The template is still synthesized and validated by CDK, and sent inline (it's
 well under the 51,200-byte limit; larger templates would need the staging-bucket upload added).
 Termination protection for prod stacks is set by `infra:deploy` after a successful create.
+
+## D16. Outline dragging, committed on release (2026-10-30)
+
+Windows 95 moved and sized windows with a dithered outline by default ("show window contents
+while dragging" came with Plus!). This is authentic and keeps dragging cheap. Pointer capture is
+used; losing it commits the last outline, while Escape, a pointer cancel, or the browser window
+losing focus abandons the drag.
+
+## D17. Alternatives for shortcuts the host computer owns (2026-10-30)
+
+Alt+Tab, Alt+F4 and the Windows key are usually taken by the real operating system or
+browser. The shell handles Alt+F4 when it does arrive, and adds Ctrl+F6 / Ctrl+Shift+F6 to cycle
+windows, Alt+Hyphen (besides Alt+Space) for the window menu, Ctrl+Esc for Start, and F1 for
+Help. Help documents all of them.
+
+## D18. Minimized windows stay mounted (2026-10-30)
+
+Minimizing hides a window without unmounting it, so an application keeps its state (an unsaved
+document, a game in progress). Owned windows hide with their owner.
+
+## D19. Owner-blocking via `inert` plus a click-catcher (2026-10-30)
+
+A window blocked by its modal dialog gets `inert` on its title bar and body, which blocks
+keyboard, pointer and assistive technology for that window only, plus a transparent overlay
+whose click focuses the dialog. Other windows stay usable, as the handoff requires.
+
+## D20. Validators stay out of the initial shell bundle (2026-10-30)
+
+The shell imports no schema validators; they load with the first content fetch or import
+(M2/M3), keeping the initial bundle at about 87 KB gzipped.

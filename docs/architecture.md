@@ -1,7 +1,7 @@
 # Architecture
 
-Status: **M0 design**. Directories other than `src/core/contracts`, `src/core/identity`,
-`schemas/`, `scripts/` and `infra/` are planned and still empty.
+Status: **M1 built** (shell and window manager). Persistence, the virtual file system, the
+games, AOL, Netscape and the world content are planned (M2-M4).
 
 ## Shape of the system
 
@@ -17,6 +17,10 @@ Browser tab  https://<host>/time-machine/
 ├── Core services (src/core)      no React, unit-tested in Node
 │   ├── contracts/   schemas → precompiled validators + TypeScript types
 │   ├── identity/    screen-name rules
+│   ├── windows/     window manager reducer, geometry, outline drag/resize math   [M1]
+│   ├── menu.ts      menu keyboard navigation and access keys                     [M1]
+│   ├── run.ts       Start > Run parsing (aliases and C:\ paths only)              [M1]
+│   ├── events.ts    typed host event bus                                         [M1]
 │   ├── connection/  AOL handshake state machine (generation IDs)        [M3]
 │   ├── transfer/    shared FIFO byte scheduler on an injectable clock   [M3]
 │   ├── urls/        virtual address parsing and resolution              [M3]

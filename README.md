@@ -4,7 +4,7 @@ A Windows 95 desktop in the browser, connected to a shared, persistent, fictiona
 internet: an AOL-style online service, a Netscape-era browser, and seven interlinked `.test` sites.
 Served at `/time-machine/`. Static hosting on AWS (CDK v2), no backend in v1.
 
-**Status:** milestone M0 (contracts, rights process, architecture and security design). See
+**Status:** milestone M1: the Windows 95 desktop and window manager. See
 [docs/milestones.md](docs/milestones.md).
 
 ## Commands
@@ -13,6 +13,8 @@ Served at `/time-machine/`. Static hosting on AWS (CDK v2), no backend in v1.
 npm ci
 npm run dev                 # local dev server: http://localhost:5173/time-machine/
 npm test                    # unit, contract, policy and stack tests
+npm run test:e2e            # Playwright journeys (see docs/testing.md for browser setup)
+npm run visual:capture      # screenshots for human review in tests/visual/pending/
 npm run typecheck
 npm run build               # contracts check, public asset gate, typecheck, Vite build
 
@@ -52,4 +54,4 @@ docs/               architecture, decisions, security, rights, runbooks, costs
 
 - [Architecture](docs/architecture.md) · [Decisions](docs/decisions.md) · [Open questions](docs/open-questions.md)
 - [Security design](docs/security-design.md) · [AWS profiles](docs/aws-profiles.md) · [Runbooks](docs/runbooks.md) · [Cost worksheet](docs/cost-worksheet.md)
-- [Historical references](docs/historical-references.md) · [Asset rights](docs/asset-rights.md)
+- [Historical references](docs/historical-references.md) · [Asset rights](docs/asset-rights.md) · [Testing](docs/testing.md)
