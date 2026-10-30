@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30" width="150" height="30">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <rect width="150" height="30" fill="#e4e4e0"/>
+  <g stroke="#c8c8c0" stroke-width="0.8"><path d="M4 6h60M4 10h56M4 22h60M4 26h48"/></g>
+  <rect x="78" width="72" height="30" fill="#e01010"/>
+  <text x="42" y="20" font-family="'Times New Roman', Times, serif" font-weight="bold" font-size="14" letter-spacing="1" text-anchor="middle" fill="#901010">NEWS</text>
+  <text x="114" y="20" font-family="'Times New Roman', Times, serif" font-weight="bold" font-size="14" text-anchor="middle" fill="#fff">STAND</text>
+</svg>

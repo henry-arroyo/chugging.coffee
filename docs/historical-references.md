@@ -21,9 +21,8 @@ Reference-only material (screenshots, manuals, installers) stays out of the repo
 
 ## Notes and open questions
 
-1. **AOL 2.5 is a Windows 3.1 program.** Running it on Windows 95 in December 1995 is plausible,
-   but its windows would use Windows 3.1-style controls inside the Windows 95 shell. Default, in
-   keeping with the authentic target: reproduce that mix faithfully (open question 9).
+1. **AOL 2.5 is a Windows 3.1 program,** but the owner's screenshot shows Windows 95 drawing its
+   frames and standard controls in the Windows 95 style. Only AOL's own artwork differs (D37).
 2. **AOL's own web browser.** AOL 2.5 shipped a built-in browser, not Netscape. The AOL Directory
    opening Netscape is the creative simplification the handoff acknowledges.
 3. **Windows 95 extras.** Microsoft Plus! (desktop themes) and Internet Explorer 1.0 were separate
@@ -40,4 +39,6 @@ Reference-only material (screenshots, manuals, installers) stays out of the repo
 
 | Item | Where it came from | Used for | Stored at (local) | Logged by / date |
 |---|---|---|---|---|
-| *(none yet)* | | | | |
+| AOL 2.5 Welcome (sign-on) window under Windows 3.1, 640x480 screenshot | Owner-supplied, 2026-10-30 | Layout, wordmark tracing | `assets/reference-only/aol25/welcome-signon-win31.png` | Owner / 2026-10-30 |
+| AOL 2.5 connection progress at step 4, frame from a video | Owner-supplied, 2026-10-30 | Connecting screen layout and step pictures (redrawn) | `assets/reference-only/aol25/connecting-step4-video.png` | Owner / 2026-10-30 |
+| AOL 2.5 Main Menu and Flashbar under Windows 95, 640x480 screenshot | Owner-supplied, 2026-10-30 | Main Menu, Flashbar, Windows 95 control style (D37) | `assets/reference-only/aol25/main-menu-win95.png` | Owner / 2026-10-30 |

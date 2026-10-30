@@ -278,3 +278,34 @@ AOL 2.5's multiple-document windows become one area at a time inside the AOL win
 Unknown hosts get Netscape's DNS alert, and other failures get alerts too. A missing path on a
 known site shows the classic "Not Found" page, built in code from safe blocks, and it can be
 reached with Back.
+
+## D37. AOL looks like AOL 2.5 on Windows 95 (2026-10-30)
+
+The owner asked for the AOL client to look authentic and supplied three screenshots: the Windows
+3.1 sign-on window, the connection progress, and the Main Menu on Windows 95.
+- **Windows 95 controls, not Windows 3.1.** The Main Menu screenshot shows that Windows 95 drew
+  AOL 2.5's frames and standard buttons in its own style, so the M3 Windows 3.1 styling is gone.
+  This answers open question 9.
+- **A frame window, as in the original.** AOL has its own menu bar (File, Edit, Go To, Mail,
+  Members, Window, Help) and a Flashbar of 19 icons, washed out while offline. Its child windows
+  sit on a gray workspace and can be moved, maximized and closed.
+- **Screens.**
+  - **Welcome:** the logo, version, location, screen name, the fixed password mask, and Sign On,
+    Setup and Help.
+  - **Setup:** connection sounds and fast mode now live here.
+  - **Connecting:** the marbled panel with three pictures that appear step by step, the step text
+    (steps 1-6) and Cancel.
+  - **Online:** the Main Menu opens in front of the Welcome screen, with 14 department buttons
+    and the Spotlight, Post Office, Discover AOL and Member Services corner.
+- **Greeting.** "Welcome! You've got mail." is spoken with the browser's speech synthesis when
+  sound is on. It is not the original recording.
+- **Art.**
+  - **Wordmark:** traced from the owner's screenshot under D29, like the triangle.
+  - **Drawn art:** the Flashbar icons, department buttons, corner pictures, step pictures and
+    textures were drawn for the project from simple SVG shapes after the screenshots. No AOL
+    pixels are copied. They are registered as `historical` under the same owner-reported
+    permission.
+- **Guesses.** Flashbar tooltips and the text of steps other than step 4 are best guesses.
+  Departments that have no content yet open a short fictional department window.
+- **References.** The screenshots stay local in `assets/reference-only/aol25/` and are logged in
+  historical-references.md.

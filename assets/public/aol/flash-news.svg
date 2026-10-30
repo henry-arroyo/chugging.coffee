@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <path d="M1 3h18v18H1z" fill="#fff" stroke="#404040"/>
+  <text x="10" y="9" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="6.2" text-anchor="middle" fill="#e00000">EXTRA</text>
+  <path d="M3 11h8M3 13h8M3 15h8M3 17h6" stroke="#808080" stroke-width="0.8"/>
+  <circle cx="16.5" cy="16.5" r="6.5" fill="#2050e0" stroke="#002080" stroke-width="0.7"/>
+  <path d="M13 13c2 0 3 1 2.5 2.5S13 17 13.5 19M18 11c1 1.5 0 3 1.5 3.5s2.5 2 2 4" fill="none" stroke="#20b040" stroke-width="2"/>
+</svg>

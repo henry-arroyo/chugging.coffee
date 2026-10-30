@@ -116,16 +116,18 @@ test('capture online screens', async ({ page }) => {
   const win = (appId: string) => desk.locator(`.w95-window[data-app="${appId}"]`);
   await desk.locator('[data-desktop-icon="aol"]').dblclick();
   const aol = win('aol');
-  await aol.getByLabel('Connection sounds').uncheck();
   await desk.screenshot({ path: `${OUT}/15-aol-sign-on.png` });
-  await aol.getByRole('button', { name: 'SIGN ON' }).click();
-  await expect(aol.locator('.aol-step-active')).toContainText('Connecting', { timeout: 10_000 });
+  await aol.getByRole('button', { name: 'Setup', exact: true }).click();
+  await aol.getByLabel('Connection sounds').uncheck();
+  await aol.getByRole('region', { name: 'Setup' }).getByRole('button', { name: 'OK' }).click();
+  await aol.getByRole('button', { name: 'Sign On', exact: true }).click();
+  await expect(aol.locator('.aol-step')).toContainText('Step 4', { timeout: 15_000 });
   await desk.screenshot({ path: `${OUT}/16-aol-connecting.png` });
-  await expect(aol.getByRole('heading', { name: /^Welcome,/ })).toBeVisible({ timeout: 20_000 });
-  await desk.screenshot({ path: `${OUT}/17-aol-welcome.png` });
+  await expect(aol.getByRole('region', { name: 'Main Menu' })).toBeVisible({ timeout: 20_000 });
+  await desk.screenshot({ path: `${OUT}/17-aol-main-menu.png` });
 
-  await aol.getByRole('button', { name: 'Keyword' }).click();
-  await aol.getByLabel('Type a keyword:').fill('coffee');
+  await aol.locator('.aol-flashbar').getByRole('button', { name: 'Keyword', exact: true }).click();
+  await aol.getByLabel('Type the keyword for the area you want to go to:').fill('coffee');
   await aol.getByRole('button', { name: 'Go', exact: true }).click();
   const ns = win('netscape');
   await expect(ns.locator('.ns-status-text')).toContainText('Received', { timeout: 10_000 });
@@ -144,7 +146,7 @@ test('capture online screens', async ({ page }) => {
   await ns.getByRole('button', { name: 'Restore' }).click();
 
   await desk.locator(`[data-task-for="${await aol.getAttribute('data-window-id')}"]`).click();
-  await aol.getByRole('button', { name: 'People' }).click();
+  await aol.locator('.aol-flashbar').getByRole('button', { name: 'People Connection', exact: true }).click();
   await expect(aol.getByRole('log')).toContainText('ModemMike', { timeout: 10_000 });
   await desk.screenshot({ path: `${OUT}/22-aol-chat.png` });
 });

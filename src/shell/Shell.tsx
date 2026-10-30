@@ -420,6 +420,21 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
             },
           }
         : {}),
+      ...(caps.has('audio')
+        ? {
+            audio: {
+              speak: (text: string) => {
+                const sound = s.preferences().sound;
+                const synth = typeof window !== 'undefined' ? window.speechSynthesis : undefined;
+                if (!sound.enabled || !synth || typeof SpeechSynthesisUtterance === 'undefined') return;
+                const u = new SpeechSynthesisUtterance(text.slice(0, 120));
+                u.volume = Math.max(0, Math.min(1, sound.volume));
+                synth.cancel();
+                synth.speak(u);
+              },
+            },
+          }
+        : {}),
       ...(caps.has('navigation')
         ? {
             navigation: {

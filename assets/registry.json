@@ -890,6 +890,861 @@
       "standIn": true,
       "expires": null,
       "notes": "Original stand-in wallpaper (D12)."
+    },
+    {
+      "assetId": "aol.dept-clubs",
+      "file": "aol/dept-clubs.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-computing",
+      "file": "aol/dept-computing.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-education",
+      "file": "aol/dept-education.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-entertainment",
+      "file": "aol/dept-entertainment.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-finance",
+      "file": "aol/dept-finance.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-internet",
+      "file": "aol/dept-internet.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-kids",
+      "file": "aol/dept-kids.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-marketplace",
+      "file": "aol/dept-marketplace.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-news",
+      "file": "aol/dept-news.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-newsstand",
+      "file": "aol/dept-newsstand.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-people",
+      "file": "aol/dept-people.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-reference",
+      "file": "aol/dept-reference.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-sports",
+      "file": "aol/dept-sports.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.dept-travel",
+      "file": "aol/dept-travel.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu department button, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-clock",
+      "file": "aol/flash-clock.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-compose",
+      "file": "aol/flash-compose.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-discover",
+      "file": "aol/flash-discover.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-download",
+      "file": "aol/flash-download.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-entertainment",
+      "file": "aol/flash-entertainment.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-favorites",
+      "file": "aol/flash-favorites.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-finance",
+      "file": "aol/flash-finance.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-find",
+      "file": "aol/flash-find.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-help",
+      "file": "aol/flash-help.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-internet",
+      "file": "aol/flash-internet.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-keyword",
+      "file": "aol/flash-keyword.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-mail",
+      "file": "aol/flash-mail.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-mainmenu",
+      "file": "aol/flash-mainmenu.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-new",
+      "file": "aol/flash-new.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-news",
+      "file": "aol/flash-news.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-people",
+      "file": "aol/flash-people.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-print",
+      "file": "aol/flash-print.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-save",
+      "file": "aol/flash-save.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.flash-stopwatch",
+      "file": "aol/flash-stopwatch.svg",
+      "kind": "icon",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Flashbar toolbar icon, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.marble",
+      "file": "aol/marble.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 background texture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.menu-discover",
+      "file": "aol/menu-discover.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu button picture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.menu-postoffice",
+      "file": "aol/menu-postoffice.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu button picture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.menu-spotlight",
+      "file": "aol/menu-spotlight.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 Main Menu button picture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.paper",
+      "file": "aol/paper.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 background texture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.step-key",
+      "file": "aol/step-key.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 sign-on progress picture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.step-lightning",
+      "file": "aol/step-lightning.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 sign-on progress picture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.step-star",
+      "file": "aol/step-star.svg",
+      "kind": "image",
+      "origin": "historical",
+      "source": "AOL for Windows 2.5 sign-on progress picture, re-drawn for this project from simple SVG shapes after owner-supplied screenshots (look only; no AOL pixels copied).",
+      "creator": "Look: America Online. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online interface design by America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.wordmark-navy",
+      "file": "aol/wordmark-navy.svg",
+      "kind": "image",
+      "origin": "third-party",
+      "source": "America Online wordmark as shown in the AOL for Windows 2.5 sign-on window (1995); traced as SVG for this project from an owner-supplied screenshot (screenshot not committed). Colour variants follow the sign-on, connecting and Main Menu screens.",
+      "creator": "Mark: America Online (now AOL; current owner per asset-rights.md). Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online is a trademark of America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D29, D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.wordmark-red",
+      "file": "aol/wordmark-red.svg",
+      "kind": "image",
+      "origin": "third-party",
+      "source": "America Online wordmark as shown in the AOL for Windows 2.5 sign-on window (1995); traced as SVG for this project from an owner-supplied screenshot (screenshot not committed). Colour variants follow the sign-on, connecting and Main Menu screens.",
+      "creator": "Mark: America Online (now AOL; current owner per asset-rights.md). Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online is a trademark of America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D29, D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.wordmark",
+      "file": "aol/wordmark.svg",
+      "kind": "image",
+      "origin": "third-party",
+      "source": "America Online wordmark as shown in the AOL for Windows 2.5 sign-on window (1995); traced as SVG for this project from an owner-supplied screenshot (screenshot not committed). Colour variants follow the sign-on, connecting and Main Menu screens.",
+      "creator": "Mark: America Online (now AOL; current owner per asset-rights.md). Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online is a trademark of America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. On 2026-10-30 the owner asked for the AOL interface to look authentic under the same permission. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D29, D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "aol.title-icon",
+      "file": "aol/title-icon.svg",
+      "kind": "icon",
+      "origin": "third-party",
+      "source": "America Online triangle in the green used on AOL 2.5 window title bars under Windows 95; same tracing as icon.aol (owner-supplied disk photo), recoloured after an owner-supplied screenshot.",
+      "creator": "Mark: America Online (now AOL; current owner per asset-rights.md). Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online triangle is a trademark of America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. Condition: the service must not charge money.",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null,
+      "notes": "D29, D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
     }
   ]
 }

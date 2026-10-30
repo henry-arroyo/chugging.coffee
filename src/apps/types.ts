@@ -93,6 +93,12 @@ export interface Bookmark {
   addedAt: string;
 }
 
+/** capability: audio. Silent when the guest has sound turned off. */
+export interface AudioApi {
+  /** Speaks a short phrase with the browser's speech synthesis, if available. */
+  speak(text: string): void;
+}
+
 /** capability: navigation */
 export interface NavigationApi {
   load(raw: string, base: WebAddress | undefined, callbacks: PageLoadCallbacks): LoadResult;
@@ -136,6 +142,7 @@ export interface AppHost {
   settings?: SettingsApi;
   network?: NetworkApi;
   navigation?: NavigationApi;
+  audio?: AudioApi;
 }
 
 export interface AppProps {

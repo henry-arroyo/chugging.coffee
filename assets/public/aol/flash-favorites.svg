@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <path d="M1 5h8l2 2h12v15H1z" fill="#d0b030" stroke="#504000" stroke-width="0.7"/>
+  <path d="M1 9h22v13H1z" fill="#f0d850" stroke="#504000" stroke-width="0.7"/>
+  <path d="M12 20c-5-3.5-7-6-5-8.5 1.5-1.8 4-1 5 0.8 1-1.8 3.5-2.6 5-0.8 2 2.5 0 5-5 8.5z" fill="#e00030" stroke="#600010" stroke-width="0.7"/>
+</svg>

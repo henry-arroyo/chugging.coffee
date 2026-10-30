@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30" width="150" height="30">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a2048"/><stop offset="0.45" stop-color="#c84a3a"/><stop offset="0.7" stop-color="#f0a040"/><stop offset="0.72" stop-color="#5a2a40"/><stop offset="1" stop-color="#2a1028"/></linearGradient></defs>
+  <rect width="150" height="30" fill="url(#g)"/>
+  <path d="M70 17l40-4 12-6 4 1-6 6 18-1 4 2-20 3-10 6-5 0 5-5-34 2-6 3h-3l3-4z" fill="#201018"/>
+  <text x="8" y="25" font-family="Impact, 'Arial Narrow', 'Arial Black', sans-serif" font-size="21" fill="#fff" transform="scale(0.85 1)" letter-spacing="0.5">TRAVEL</text>
+</svg>

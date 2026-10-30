@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30" width="150" height="30">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <rect width="150" height="30" fill="#fff8b8"/>
+  <g stroke="#8cb0e8" stroke-width="0.8"><path d="M0 7h150M0 14h150M0 21h150M0 28h150"/></g>
+  <path d="M10 0v30" stroke="#e06060" stroke-width="0.8"/>
+  <text x="80" y="22" font-family="'Brush Script MT', 'Segoe Script', 'Times New Roman', Times, serif" font-style="italic" font-size="18" text-anchor="middle" fill="#181818">Education</text>
+</svg>

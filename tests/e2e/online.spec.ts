@@ -30,17 +30,30 @@ async function menu(w: Locator, top: string, name: string) {
   await w.page().locator('.w95').getByRole('menu').last().getByRole('menuitem', { name, exact: true }).click();
 }
 
+/** Sets the connection options in AOL's Setup window. */
+async function setup(aol: Locator, { sound, fast }: { sound: boolean; fast?: boolean }) {
+  await aol.getByRole('button', { name: 'Setup', exact: true }).click();
+  const box = aol.getByRole('region', { name: 'Setup' });
+  await box.getByLabel('Connection sounds').setChecked(sound);
+  if (fast !== undefined) await box.getByLabel('Fast connection (shorter waits)').setChecked(fast);
+  await box.getByRole('button', { name: 'OK' }).click();
+  await expect(box).toHaveCount(0);
+}
+
+const flashbar = (aol: Locator, name: string) => aol.locator('.aol-flashbar').getByRole('button', { name, exact: true });
+
 /** Opens AOL from the desktop, turns on fast mode (sound off) and signs on. */
 async function aolOnline(desk: Locator) {
   const aol = win(desk, 'aol');
   if ((await aol.count()) === 0) await desk.locator('[data-desktop-icon="aol"]').dblclick();
   await expect(aol.getByRole('combobox', { name: 'Screen Name' })).toHaveValue('Night Owl');
-  await expect(aol.getByLabel('Password (not used yet)')).toHaveValue('************');
-  await aol.getByLabel('Connection sounds').uncheck();
-  await aol.getByLabel('Fast connection (shorter waits)').check();
-  await aol.getByRole('button', { name: 'SIGN ON' }).click();
+  await expect(aol.getByLabel('Enter Password:')).toHaveValue('************');
+  await expect(flashbar(aol, 'Read New Mail')).toBeDisabled();
+  await setup(aol, { sound: false, fast: true });
+  await aol.getByRole('button', { name: 'Sign On', exact: true }).click();
   await expect(aol.getByText('Step 1')).toBeVisible();
-  await expect(aol.getByRole('heading', { name: 'Welcome, Night Owl!' })).toBeVisible({ timeout: 10_000 });
+  await expect(aol.getByRole('region', { name: 'Main Menu' })).toBeVisible({ timeout: 10_000 });
+  await expect(aol.getByRole('heading', { name: 'Welcome, Night Owl!' })).toBeAttached();
   await expect(desk.locator('[data-connection]')).toHaveAttribute('data-connection', 'online');
   return aol;
 }
@@ -52,8 +65,8 @@ test('AOL signs on, a keyword opens Netscape, pages load progressively and links
   await expect(aol.getByRole('button', { name: 'You have mail!' })).toBeVisible();
   await expect(aol.getByText('Chugging Coffee House puts its menu on the World Wide Web')).toBeVisible();
 
-  await aol.getByRole('button', { name: 'Keyword' }).click();
-  await aol.getByLabel('Type a keyword:').fill('Coffee');
+  await flashbar(aol, 'Keyword').click();
+  await aol.getByLabel('Type the keyword for the area you want to go to:').fill('Coffee');
   await aol.getByRole('button', { name: 'Go', exact: true }).click();
   const ns = win(desk, 'netscape');
   await expect(ns.getByRole('heading', { name: 'Chugging Coffee House' })).toBeVisible({ timeout: 10_000 });
@@ -112,18 +125,18 @@ test('Netscape reports fictional errors and never reaches the real Internet', as
 test('signing off keeps the page on screen, and Netscape needs a connection to load', async ({ page }) => {
   const desk = await boot(page);
   const aol = await aolOnline(desk);
-  await aol.getByRole('button', { name: 'Internet' }).click();
-  await aol.getByRole('button', { name: 'World Wide Web' }).click();
+  await flashbar(aol, 'Internet Connection').click();
+  await aol.getByRole('button', { name: 'World Wide Web', exact: true }).click();
   const ns = win(desk, 'netscape');
   await expect(ns.locator('.ns-status-text')).toHaveText('Document: Done.', { timeout: 10_000 });
   const title = await ns.locator('.w95-title').textContent();
 
   // Signing off asks first.
   await front(aol);
-  await aol.getByRole('button', { name: 'Sign Off' }).click();
+  await menu(aol, 'Go To', 'Sign Off');
   await answer(desk, 'No', /sign off/);
   await expect(desk.locator('[data-connection]')).toHaveAttribute('data-connection', 'online');
-  await aol.getByRole('button', { name: 'Sign Off' }).click();
+  await menu(aol, 'Go To', 'Sign Off');
   await answer(desk, 'Yes');
   await expect(aol.getByText('Goodbye from America Online!')).toBeVisible({ timeout: 5_000 });
   await expect(desk.locator('[data-connection]')).toHaveAttribute('data-connection', 'offline');
@@ -138,18 +151,18 @@ test('mail, the scripted chat room and cancelling a sign-on', async ({ page }) =
   const desk = await boot(page);
   await desk.locator('[data-desktop-icon="aol"]').dblclick();
   const aol = win(desk, 'aol');
-  await aol.getByLabel('Connection sounds').uncheck();
-  await aol.getByRole('button', { name: 'SIGN ON' }).click();
+  await setup(aol, { sound: false });
+  await aol.getByRole('button', { name: 'Sign On', exact: true }).click();
   await expect(aol.getByText('Step 1')).toBeVisible();
   await aol.getByRole('button', { name: 'Cancel' }).click();
-  await expect(aol.getByRole('button', { name: 'SIGN ON' })).toBeVisible();
+  await expect(aol.getByRole('button', { name: 'Sign On', exact: true })).toBeVisible();
   await expect(desk.locator('[data-connection]')).toHaveAttribute('data-connection', 'offline');
 
   await aolOnline(desk);
-  await aol.getByRole('button', { name: /Read Mail/ }).click();
-  await aol.getByRole('button', { name: 'our menu is on the Web!!' }).click();
+  await flashbar(aol, 'Read New Mail').click();
+  await aol.getByText('our menu is on the Web!!').click();
   await expect(aol.locator('.aol-letter-body')).toContainText('Hi Night Owl!');
-  await aol.getByRole('button', { name: 'People' }).click();
+  await flashbar(aol, 'People Connection').click();
   await expect(aol.getByText('Scripted room: the other members are fictional')).toBeVisible();
   await aol.getByLabel('Message').fill('hello lobby');
   await aol.getByRole('button', { name: 'Send' }).click();
@@ -179,10 +192,22 @@ test('the synthesized modem sound plays during sign-on without errors', async ({
   const desk = await boot(page);
   await desk.locator('[data-desktop-icon="aol"]').dblclick();
   const aol = win(desk, 'aol');
-  await expect(aol.getByLabel('Connection sounds')).toBeChecked();
-  await aol.getByLabel('Fast connection (shorter waits)').check();
-  await aol.getByRole('button', { name: 'SIGN ON' }).click();
-  await expect(aol.getByRole('heading', { name: 'Welcome, Night Owl!' })).toBeVisible({ timeout: 10_000 });
+  await setup(aol, { sound: true, fast: true });
+  await aol.getByRole('button', { name: 'Sign On', exact: true }).click();
+  await expect(aol.getByRole('region', { name: 'Main Menu' })).toBeVisible({ timeout: 10_000 });
   expect(await page.evaluate(() => (window as unknown as { ctmAudioContexts: number }).ctmAudioContexts)).toBe(1);
   expect(errors).toEqual([]);
+});
+
+test('the Main Menu departments open AOL areas, Netscape and department windows', async ({ page }) => {
+  const desk = await boot(page);
+  const aol = await aolOnline(desk);
+  const mainMenu = aol.getByRole('region', { name: 'Main Menu' });
+  await expect(mainMenu.locator('.aol-department')).toHaveCount(14);
+  await mainMenu.getByRole('button', { name: "Today's News" }).click();
+  await expect(aol.getByRole('region', { name: "Today's News" })).toContainText('Switchboard directory passes 1,000 listings');
+  await mainMenu.getByRole('button', { name: 'Sports' }).click();
+  await expect(aol.getByRole('region', { name: 'Sports' })).toContainText('Scores and standings');
+  await mainMenu.getByRole('button', { name: 'Reference Desk' }).click();
+  await expect(win(desk, 'netscape').locator('.ns-status-text')).toHaveText('Document: Done.', { timeout: 10_000 });
 });

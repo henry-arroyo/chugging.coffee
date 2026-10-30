@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 60" width="80" height="60">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <defs><radialGradient id="bg" cx="0.5" cy="0.45" r="0.8"><stop offset="0" stop-color="#2a2048"/><stop offset="1" stop-color="#0c0a1a"/></radialGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4"/></filter></defs>
+  <rect width="80" height="60" fill="url(#bg)"/>
+  <circle cx="40" cy="30" r="9" fill="#8080ff" opacity="0.35" filter="url(#glow)"/>
+  <path d="M22 30h36M40 16v28" stroke="#b0b0ff" stroke-width="1.6" opacity="0.7" filter="url(#glow)"/>
+  <path d="M26 30h28M40 19v22" stroke="#e8e8ff" stroke-width="0.6"/>
+  <circle cx="40" cy="30" r="2.6" fill="#fff"/>
+  <circle cx="18" cy="12" r="0.6" fill="#fff"/><circle cx="64" cy="46" r="0.6" fill="#c0c0ff"/><circle cx="58" cy="10" r="0.5" fill="#fff"/>
+</svg>

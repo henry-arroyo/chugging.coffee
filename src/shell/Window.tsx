@@ -19,7 +19,7 @@ interface WindowProps {
 const DRAG_THRESHOLD = 3;
 const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-function Glyph({ kind }: { kind: 'min' | 'max' | 'restore' | 'close' }) {
+export function Glyph({ kind }: { kind: 'min' | 'max' | 'restore' | 'close' }) {
   const paths: Record<typeof kind, ReactNode> = {
     min: <rect x="1" y="6" width="6" height="2" />,
     max: <path d="M0 0h9v9h-9zM1 2v6h7v-6z" fillRule="evenodd" />,

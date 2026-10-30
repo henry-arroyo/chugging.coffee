@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30" width="150" height="30">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <rect width="150" height="30" fill="#24206a"/>
+  <path d="M0 22C30 8 60 30 90 14s50 0 60-6v8c-20 8-40 0-60 10S30 18 0 30z" fill="#1aa0a8" opacity="0.8"/>
+  <path d="M0 4h150" stroke="#000" stroke-width="3"/>
+  <text x="5" y="13" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="11" letter-spacing="0.5" fill="#38f040">INTERNET</text>
+  <text x="62" y="26" font-family="'Courier New', Courier, monospace" font-weight="bold" font-size="11" letter-spacing="0.5" fill="#38f040">CONNECTION</text>
+</svg>

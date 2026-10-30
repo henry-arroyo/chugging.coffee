@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30" width="150" height="30">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#5a5aa8"/><stop offset="0.65" stop-color="#7a7ac0"/><stop offset="1" stop-color="#8a6a50"/></linearGradient></defs>
+  <rect width="150" height="30" fill="url(#g)"/>
+  <g opacity="0.9"><ellipse cx="128" cy="15" rx="18" ry="13" fill="#e8e0c0"/><circle cx="122" cy="12" r="4" fill="#d04020"/><circle cx="132" cy="18" r="4" fill="#40a040"/><circle cx="130" cy="9" r="3" fill="#f0c020"/></g>
+  <text x="3" y="17" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="11" fill="#f8f080">Clubs</text>
+  <text x="36" y="26" font-family="'Times New Roman', Times, serif" font-style="italic" font-size="27" fill="#f8f080">&amp;</text>
+  <text x="60" y="25" font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="11" fill="#f8f080">Interests</text>
+</svg>

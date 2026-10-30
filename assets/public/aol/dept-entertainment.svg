@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30" width="150" height="30">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <rect width="150" height="30" fill="#3a2458"/>
+  <g fill="#8a7aa8" opacity="0.6"><path d="M20 0l20 30h12L36 0zM100 0l10 30h12L112 0z"/><path d="M60 0h14l-8 30h-6z" opacity="0.6"/></g>
+  <text x="75" y="21" font-family="'Brush Script MT', 'Segoe Script', cursive" font-style="italic" font-size="17" text-anchor="middle" fill="#f0f0a0" stroke="#5a4a20" stroke-width="0.3">Entertainment</text>
+</svg>

@@ -402,3 +402,27 @@ scheduler, and Netscape.
 
 **Next step:** M4: the remaining four sites, the clue chain, discoveries and the release
 update flow.
+
+## M3 follow-up: authentic AOL (2026-10-30)
+
+- **Owner request:** the AOL screens now follow the owner's three screenshots (D37). AOL is a
+  frame window with its own menus and Flashbar, and its child windows sit on a gray workspace:
+  - **Welcome:** the sign-on window.
+  - **Connecting:** the marbled progress panel with three pictures and steps 1-6.
+  - **Main Menu:** 14 department buttons plus the Spotlight, Post Office and Discover AOL corner.
+- **Corrected:** open question 9. AOL on Windows 95 used Windows 95 controls, so the Windows 3.1
+  styling was removed.
+- **Art:**
+  - **Traced:** the AOL wordmark, from the owner's screenshot (D29), plus a green title-bar
+    triangle.
+  - **Drawn:** 44 pieces drawn as SVG for the project (Flashbar icons, department buttons, step
+    pictures, textures).
+  - **Checks:** 92 registered assets; the public gate passes.
+- **Fixed:** a click on a child window behind another could be lost, because bringing it to the
+  front re-ordered the DOM between pointer-down and click. Stacking now uses z-order only.
+- **Tests:** 564 unit; 38/38 journeys, including a new one that walks the Main Menu departments.
+  Screenshots 15-17 (sign-on, connecting, Main Menu) were regenerated for review.
+- **Not done:**
+  - The outer AOL window's title-bar icon is still the navy triangle, because the shell uses one
+    icon per program. The child windows use the green one.
+  - Flashbar tooltips and most step texts are educated guesses.

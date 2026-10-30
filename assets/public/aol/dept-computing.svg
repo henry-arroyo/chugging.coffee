@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30" width="150" height="30">
+  <!-- Drawn for this project after the look of AOL for Windows 2.5 (1995) under the owner-reported permission (D37); not copied from AOL artwork -->
+  <rect width="150" height="30" fill="#dcdcdc"/>
+  <g fill="#c4c4c4" transform="skewX(-25)"><rect x="20" y="4" width="14" height="10"/><rect x="38" y="16" width="14" height="10"/><rect x="70" y="2" width="14" height="10"/><rect x="100" y="16" width="14" height="10"/><rect x="128" y="4" width="14" height="10"/><rect x="158" y="17" width="14" height="10"/></g>
+  <path d="M0 0h150v30H0z" fill="none" stroke="#a0a0a0"/>
+  <text x="75" y="20" font-family="'Arial Black', 'Arial Bold', Arial, sans-serif" font-weight="900" font-size="10.5" letter-spacing="3" text-anchor="middle" fill="#e01010">COMPUTING</text>
+</svg>
