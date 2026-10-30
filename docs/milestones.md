@@ -5,7 +5,7 @@
 | **M0** | References, rights, schemas, architecture and security design | **Complete (pending owner review)**: see below |
 | M1 | Windows 95 desktop and window management | **Complete (pending owner review)** |
 | M2 | Local applications and persistence | **Complete (pending owner review)** |
-| M3 | AOL, connection scheduler, Netscape | Not started |
+| M3 | AOL, connection scheduler, Netscape | **Complete (pending owner review)** |
 | M4 | Seven-site world and clue chain | Not started |
 | M5 | Accessibility, security, performance, browser QA, deployment-ready package | Not started |
 
@@ -263,3 +263,142 @@ scheduler, and Netscape.
   95-style splash (sky, logo, wordmark, color bar; the bar stays still with reduced motion).
 - **Checks:** 480 unit; 32/32 journeys; the public asset gate passes, with 41 stand-ins remaining
   (system icons, wallpapers).
+
+## M3 report (2026-10-30)
+
+**Works**
+
+- **World content pipeline** (`content/`, `scripts/world/`, `src/content/`):
+  - **Seed release:** `rel-0001` ("First of December", story date 1995-12-01) has three of the
+    seven sites (Switchboard, Chugging Coffee House, The Packet) and six pages. It also has a
+    redirect (`menu.htm` → `menu.html`), ten AOL keywords and three news updates. M4 completes
+    the seven sites.
+  - **Build-time checks** (`npm run content:check`, also part of `npm run build`):
+    - Every release, manifest and page is validated against its contract.
+    - Each page must match its manifest entry.
+    - Every link must resolve inside the release, using the same resolver the browser uses, and
+      every same-page anchor must exist.
+    - Every keyword target must exist, and every image must be a registered, usable asset.
+    - Manifests are hashed (SHA-256) into the release.
+  - **Serving:** a Vite plugin serves `/time-machine/world/` in development and emits it into
+    the build (`dist/time-machine/world/`).
+  - **`StaticWorldRepository`** is the only reader of world content:
+    - It reads `current.json` once and pins that release for the tab.
+    - It checks each manifest against the release checksum and validates every document before
+      rendering. Validators still load lazily.
+    - It caches pages, can retry after a failed first load, and reports a newer release without
+      swapping the pinned one.
+    - `SharedWorldGateway` is declared only.
+- **One shared network** (`src/content/network.ts`, built on the M3 core modules in
+  `src/core/net/`):
+  - **Connection:** the dial-up state machine with generation IDs. Normal timing is
+    1 / 3 / 8 / 2 s; fast mode is a quarter of that.
+  - **Transfers:** one FIFO scheduler shared by AOL and Netscape, at 2,880 or 11,520 B/s with
+    600 or 150 ms setup.
+    - A chunk is revealed only when its virtual bytes have arrived and its image has actually
+      loaded.
+    - Signing off cancels every transfer in flight; a hidden tab freezes everything.
+  - **Tray:** the connection icon lights while dialing or online and names the state. Clicking it
+    opens AOL.
+  - **Modem sound:** synthesized with Web Audio, with no recordings. It has a dial tone, touch-tone
+    digits for a fictional 555 number, ringing, and the answer tone and handshake noise.
+    - It starts only from the SIGN ON click, only when sound is on, and at the saved volume.
+    - It follows the phases and stops on cancel, failure or connect.
+- **Safe page renderer** (`src/content/render/`):
+  - **Blocks:** the eight layouts, the validated colour and font palette, and visited-link
+    colours.
+  - **Images:** sized placeholders while an image is on its way, as Netscape drew them.
+  - **Widgets:** hit counter, brew calculator, download-time calculator, directory search,
+    guestbook archive and clue logbook.
+  - **Links** never carry a real `href`. There is no HTML, no script and no frame anywhere.
+- **Netscape Navigator 2.0b3** (the English beta current on the 1 December story date; D31):
+  - **Controls:** menus (File, View, Go, Bookmarks, Options, Directory, Help); a text toolbar
+    (Back, Forward, Home, Reload, Open, Print, Stop); Location / "Go to:"; directory buttons.
+  - **Throbber:** the N logo with meteors while loading (still with reduced motion).
+  - **Status bar:** "Looking up host", "Contacting host", "Received 3.0K of 8.1K", "Done", and
+    link targets on hover, plus a progress bar.
+  - **Pages:** Back/Forward history and the Go menu; same-page anchors scroll without a transfer;
+    a bare `chugging.test` gets `http://` added.
+  - **Bookmarks:** saved in the profile and included in exports.
+  - **Errors:**
+    - **Not connected:** a 1995-style alert.
+    - **Unknown host:** "unable to locate the server ... does not have a DNS entry".
+    - **Missing page:** the server's 404 page.
+    - **Real Internet:** "only visit the 1995 Web".
+    - **AOL keyword in Netscape:** points back to AOL.
+  - **Connection:** nothing loads offline. A page already on screen stays after sign-off, and
+    closing Netscape does not disconnect. There are no tabs.
+- **America Online 2.5** with Windows 3.1-style controls (open question 9's default):
+  - **Sign-on:** the screen name is the logon user. The password is the fixed mask. There are
+    SETUP, SIGN ON and HELP, plus toggles for connection sounds and fast connection (shared with
+    Control Panel). Four connection steps show with Cancel. Errors return to sign-on, and signing
+    off shows "Goodbye from America Online!".
+  - **Online:**
+    - **Navigation:** a Flashbar (Read Mail, Main Menu, News, People, Internet, Keyword, Sign
+      Off).
+    - **Welcome:** "You have mail!", the story date and the release's headlines, which open in
+      Netscape.
+    - **Main Menu:** departments.
+    - **Keywords:** go to an AOL area or open Netscape. Unknown keywords get a 1995-style notice.
+    - **News:** the release's updates.
+    - **Mail:** seeded, fictional and per-name; read state lasts for the window. Compose explains
+      that it is not available.
+    - **People Connection:** a scripted Lobby, labeled as scripted on screen.
+    - **Games:** launches Solitaire and Minesweeper.
+    - **Internet Connection:** the Web plus a directory of the release's sites.
+  - **Sign Off and close:** both ask first, then disconnect. Minimizing keeps the connection.
+    Logging off or shutting down Windows drops the line.
+
+**Tests actually run**
+
+- `npm test`: 564 passed (84 new for M3), including:
+  - **Addresses:** the resolver's hostile inputs (real hosts, ports, credentials, schemes,
+    traversal, queries, `%`, `localhost`).
+  - **Timing:** the connection and scheduler on a fake clock (generations, cancel, freeze,
+    speed changes, exact byte timing).
+  - **Content:** the chunk planner, and the world build.
+  - **Repository:** pinning, a tampered manifest (integrity error), a page with an injected
+    `html` block (rejected), update detection without swapping, and retry.
+  - **Network:** offline refusal, progressive reveal, fictional errors, cancel on sign-off,
+    freeze while hidden.
+  - **Stability:** three consecutive full runs were green.
+- `npm run test:e2e`: 37/37 journeys in Chrome 156, plus 108/108 for the earlier 36 over three
+  repeats. The six new journeys:
+  - **Sign-on to browsing:** AOL sign-on and keyword to Netscape; progressive load, widget,
+    links, Back, visited colour, the redirect and bookmarks.
+  - **Errors:** fictional errors, plus a check that **no request leaves `localhost`**.
+  - **Signing off:** the confirmation, the page staying on screen, and Reload refused offline.
+  - **AOL areas:** cancelling a sign-on, mail, the scripted chat, and close-asks-then-signs-off.
+  - **Sound:** the modem sound starts exactly one audio context with no errors.
+- **Build:** typecheck clean, with the content check and public asset gate passing (41 stand-ins
+  remain).
+  - The initial bundle is 133 KB gzipped JS plus 7 KB CSS. Validators stay a separate lazy chunk.
+  - The world adds 12 small JSON files.
+- **Screenshots:** 15-22 in `tests/visual/pending/` (AOL sign-on, connecting, welcome, chat;
+  Netscape loading, page, DNS error, newspaper page) await human review.
+
+**Bugs found and fixed while testing**
+
+- After a link was clicked, the status bar kept showing its address, because the link
+  disappeared without a mouse-leave. It now clears when navigation starts.
+- The progress text showed fractional bytes.
+- The Vite config pulled source files in through a static import, which drew a config-loader
+  warning. The world builder now loads through Vite's module runner (D30).
+- A Connection test expected an extra "offline" event on connect, and a scheduler test had the
+  wrong expected timing. The code was right; the tests were fixed.
+
+**Not done / not verified**
+
+- **Audio:** the modem sound was verified to start without errors, but it has not been listened
+  to by a person. Please try it with sound on.
+- **AOL title-bar icon:** the navy AOL logo is nearly invisible on the navy title bar. This is
+  carried over from M2 and is a candidate for the icon follow-up.
+- **Content:** only three of the seven sites. Clue chains, discoveries and the clue logbook's
+  progress come in M4.
+- **Cache headers:** `world/current.json` needs a short cache when publishing (M5
+  `infra:publish`). The client already revalidates it on every load.
+- **Coverage:** only Chromium. Cross-browser, mobile, screen reader and the 45-minute session are
+  M5.
+
+**Next step:** M4: the remaining four sites, the clue chain, discoveries and the release
+update flow.

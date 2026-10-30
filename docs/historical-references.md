@@ -16,7 +16,7 @@ Reference-only material (screenshots, manuals, installers) stays out of the repo
 | Windows 95 (excluded) | OSR1 / 4.00.950a | Feb 14, 1996: after the setting | [EDM2](https://www.edm2.com/index.php/Windows_95) | Excluded |
 | AOL for Windows | **America Online for Windows 2.5** | 1995 (exact month not yet sourced) | [Smithsonian NMAH catalog](https://si.edu/object/software-america-online-windows-version-25:nmah_1395720), [WinWorld AOL 2.x](https://winworldpc.com/product/aol/20) | **Chosen by owner 2026-10-30**; exact build still to source |
 | AOL (excluded) | America Online 3.0 | 1996 | [WinWorld AOL 3.0](https://winworldpc.com/product/aol/30) | Excluded |
-| Netscape | **Netscape Navigator 2.0 public beta** (latest beta public by Dec 31, 1995) | First beta Oct 1995; Dec 1995 beta added JavaScript; final Mar 1996 | [Blooberry Netscape history](https://hepwww.pp.rl.ac.uk/users/adye/blooberry/indexdot/history/netscape.htm) | **Chosen by owner 2026-10-30**; exact beta number still to source |
+| Netscape | **Netscape Navigator 2.0b3** (2.0 public beta 3) | 2.0b1 Oct 1995; English 2.0b3 by Nov 26-27, 1995; 2.0b4 Dec 22, 1995; final Feb-Mar 1996 | [TidBITS: 2.0b3 sneaks out (1995-11-27)](https://tidbits.com/1995/11/27/netscape-2-0b3-sneaks-out/), [MIT software announcement (1995-11-26)](https://diswww.mit.edu/charon/sofa/91), [Impress Watch: 2.0b4 (1995-12-22)](https://internet.watch.impress.co.jp/www/search/article/9512/2504.htm), [Blooberry Netscape history](https://hepwww.pp.rl.ac.uk/users/adye/blooberry/indexdot/history/netscape.htm) | 2.0 beta **chosen by owner 2026-10-30**; b3 picked in M3 for the 1 Dec story date (D31), needs owner sign-off |
 | Netscape (not chosen) | Netscape Navigator 1.22 for Windows | 1.2 final July 1995 | [Netscape 1.22 patch notes](https://ftp.uv.es/pub/windows/network/wsock/Netscape/patch122/patch.txt) | Not chosen |
 
 ## Notes and open questions
@@ -33,7 +33,7 @@ Reference-only material (screenshots, manuals, installers) stays out of the repo
 5. **Netscape 2.0 beta and JavaScript:** the simulated browser never runs page scripts (content is
    safe blocks), so the beta's JavaScript support appears only as period detail, such as an About box
    or an "unsupported" notice.
-6. **Still to source:** exact AOL 2.5 build number and date; which 2.0 beta was current in late December 1995; the AOL
+6. **Still to source:** exact AOL 2.5 build number and date; the AOL
    2.5 sign-on screen sequence and sounds (for behavior only, not for copying assets).
 
 ## Reference material log (local only, not committed)

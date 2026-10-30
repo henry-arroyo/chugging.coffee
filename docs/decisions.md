@@ -223,3 +223,58 @@ Registry entries are `approved`, `origin: third-party`, with the verbal approval
 no-charge condition as evidence. Written confirmation is still recommended (asset-rights.md).
 Other Microsoft, AOL and Netscape artwork (system icons, sounds, fonts, the startup cloud
 artwork) stays stand-in or original unless the owner asks for it under the same permission.
+
+## D30. World content is built and checked from `content/` (2026-10-30)
+
+Authors edit `content/world/releases/*.json` (sites listed by id) and `content/sites/<id>/`.
+`scripts/world/build.ts` turns that into the served release:
+- validates everything against its contract;
+- checks links with the browser's own resolver;
+- checks assets against the registry;
+- fills each site's host and manifest SHA-256.
+
+A Vite plugin serves the result in development and emits it into the build. The plugin loads the
+builder through Vite's module runner, so `vite.config.ts` has no static imports from `src/`.
+Release files are never edited after publishing; a change means a new release.
+
+## D31. Netscape Navigator 2.0b3 (2026-10-30)
+
+English beta 3 was public by 26-27 November 1995, and beta 4 followed on 22 December. On the 1
+December story date, 2.0b3 is the current beta, so the About box and tooltips say 2.0b3. Sources
+are in historical-references.md. This resolves open question 8, pending owner sign-off.
+
+## D32. Netscape's toolbar shows text only (2026-10-30)
+
+Netscape offered "Show Toolbar as: Text". Using it avoids drawing or copying Netscape's toolbar
+icons, which D29's permission does not cover. The throbber uses the approved N logo.
+
+## D33. One network service; apps get `network` and `navigation` capabilities (2026-10-30)
+
+The shell owns one `NetworkService` (connection, scheduler, repository).
+
+| Capability | What it allows |
+|---|---|
+| `network` | Read the connection state and connect, cancel or disconnect |
+| `navigation` | Load addresses, read the pinned release, open Netscape, manage bookmarks |
+| `audio` | Required for the modem sound |
+
+Every app host also gets a read-only `screenName()`.
+
+## D34. The modem sound is synthesized (2026-10-30)
+
+There are no recordings. Web Audio plays tones and filtered noise timed to the connection phases,
+starting only from the SIGN ON click when sound is enabled.
+
+## D35. AOL's online areas are simplified and clearly fictional (2026-10-30)
+
+AOL 2.5's multiple-document windows become one area at a time inside the AOL window.
+- **Mail:** seeded and fictional; compose is unavailable.
+- **Chat:** the Lobby is scripted, and says so on screen. Nothing typed leaves the browser.
+- **Internet Connection** opens Netscape, the creative simplification already noted in
+  historical-references.md (AOL 2.5 really shipped its own browser).
+
+## D36. A missing page is the server's 404 page (2026-10-30)
+
+Unknown hosts get Netscape's DNS alert, and other failures get alerts too. A missing path on a
+known site shows the classic "Not Found" page, built in code from safe blocks, and it can be
+reached with Back.

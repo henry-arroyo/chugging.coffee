@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "rel-0001",
+  "sequence": 1,
+  "storyDate": "1995-12-01",
+  "title": "First of December",
+  "publishedAt": "2026-10-30T12:00:00Z",
+  "previousReleaseId": null,
+  "compatibility": { "minClientVersion": "0.3.0", "rollbackSafeTo": [] },
+  "sites": ["switchboard", "chugging", "packet"],
+  "redirects": [
+    { "from": "http://chugging.test/menu.htm", "to": "http://chugging.test/menu.html", "sinceReleaseId": "rel-0001" }
+  ],
+  "retiredClues": [],
+  "clueChains": [],
+  "aolKeywords": [
+    { "keyword": "news", "target": "aol-area:news" },
+    { "keyword": "mail", "target": "aol-area:mail" },
+    { "keyword": "chat", "target": "aol-area:chat" },
+    { "keyword": "people", "target": "aol-area:chat" },
+    { "keyword": "games", "target": "aol-area:games" },
+    { "keyword": "internet", "target": "aol-area:internet" },
+    { "keyword": "web", "target": "aol-area:internet" },
+    { "keyword": "coffee", "target": "http://chugging.test/" },
+    { "keyword": "switchboard", "target": "http://switchboard.test/" },
+    { "keyword": "packet", "target": "http://packet.test/" }
+  ],
+  "updates": [
+    { "storyDate": "1995-12-01", "headline": "Chugging Coffee House puts its menu on the World Wide Web", "address": "http://packet.test/coffee-online.html" },
+    { "storyDate": "1995-11-30", "headline": "Switchboard directory passes 1,000 listings", "address": "http://switchboard.test/whats-new.html" },
+    { "storyDate": "1995-11-28", "headline": "City council votes on library modem lines", "address": "http://packet.test/" }
+  ],
+  "notes": "Starter release for M3. M4 completes the seven sites."
+}

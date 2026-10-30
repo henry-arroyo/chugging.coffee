@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore, type KeyboardEvent, type MutableRefObject } from 'react';
 import { APPS } from '../apps/registry';
-import type { AppDefinition, AppHost, ButtonChoice, FileDialogOptions, MessageBoxOptions } from '../apps/types';
+import type { AppDefinition, AppHost, ButtonChoice, FileDialogOptions, LaunchArgs, MessageBoxOptions } from '../apps/types';
+import { NetworkService } from '../content/network';
+import { StaticWorldRepository } from '../content/repository';
 import { EventBus } from '../core/events';
+import { realClock } from '../core/net/clock';
 import { extensionOf } from '../core/vfs/paths';
 import * as vfs from '../core/vfs/vfs';
 import type { Rect, Size } from '../core/windows/geometry';
@@ -18,6 +21,8 @@ import { AppErrorBoundary } from './ErrorBoundary';
 import { useDismiss } from './Menu';
 import { BootScreen, OffScreen, ShuttingDownScreen } from './Screens';
 import { StartMenu } from './StartMenu';
+import { DialupSound } from './dialup';
+import { assetUrl } from './icons';
 import { desktopStyle } from './theme';
 import { Taskbar } from './Taskbar';
 import { Window } from './Window';
@@ -41,6 +46,17 @@ type Phase = 'boot' | 'logon' | 'desktop' | 'shutting-down' | 'off';
 const DIALOG_APPS = new Set(['taskbar-properties', 'display-properties', 'sound-properties', 'modem-properties', 'datetime-properties', 'accessibility-properties', 'user-properties', 'storage-properties']);
 
 const noopSubscribe = () => () => {};
+
+/** Image chunks are revealed only once the picture has really loaded. */
+function loadImage(assetId: string): Promise<void> {
+  const url = assetUrl(assetId);
+  if (!url || typeof Image === 'undefined') return Promise.resolve();
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = img.onerror = () => resolve();
+    img.src = url;
+  });
+}
 
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
@@ -69,11 +85,31 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
   const nextId = useRef(1);
   const messageBoxes = useRef(new Map<string, { options: MessageBoxOptions; resolve: (c: ButtonChoice) => void }>());
   const fileDialogs = useRef(new Map<string, { options: FileDialogOptions; resolve: (p: string | null) => void }>());
-  const windowArgs = useRef(new Map<string, { path?: string }>());
+  const windowArgs = useRef(new Map<string, LaunchArgs>());
   const closeGuards = useRef(new Map<string, () => Promise<boolean>>());
   const hosts = useRef(new Map<string, AppHost>());
   const events = useMemo(() => new EventBus(), []);
+  const network = useMemo(() => new NetworkService(realClock, new StaticWorldRepository(`${import.meta.env.BASE_URL}world/`), { events, loadImage }), [events]);
+  const dialup = useMemo(() => new DialupSound(), []);
   const preferences = session ? session.preferences() : null;
+  const speed = preferences?.connection.speed ?? 'normal';
+  useEffect(() => network.setSpeed(speed), [network, speed]);
+
+  // Nothing advances while the page is hidden; the line drops when the tab closes.
+  useEffect(() => {
+    const onVisibility = () => {
+      const hidden = document.visibilityState === 'hidden';
+      network.setHidden(hidden);
+      dialup.setHidden(hidden);
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    onVisibility();
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility);
+      network.connection.hangUp();
+      dialup.stop();
+    };
+  }, [network, dialup]);
   const reducedMotion = useMemo(prefersReducedMotion, []) || preferences?.accessibility.reducedMotion === true;
   const sessionRef = useRef(session);
   sessionRef.current = session;
@@ -152,13 +188,13 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
   }, []);
 
   const launch = useCallback(
-    (appId: string, args: { path?: string } = {}) => {
+    (appId: string, args: LaunchArgs = {}) => {
       const def: AppDefinition | undefined = APPS[appId];
       if (!def) {
         void messageBox(null, { title: 'Error', text: `Cannot find the program '${appId}'.`, icon: 'error' });
         return;
       }
-      events.emit({ type: 'app.launch', appId, ...(args.path ? { path: args.path } : {}) });
+      events.emit({ type: 'app.launch', appId, ...(args.path ? { path: args.path } : {}), ...(args.address ? { address: args.address } : {}) });
       if (def.manifest.instancing === 'single') {
         const existing = Object.values(wmRef.current.windows).find((w) => w.appId === appId && w.ownerId === null);
         if (existing) {
@@ -296,6 +332,7 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
       windowId: win.id,
       args: windowArgs.current.get(win.id) ?? {},
       close: () => requestClose(win.id),
+      screenName: () => s.getState().profile?.screenName ?? '',
       subscribe: s.subscribe,
       version: () => sessionVersion.current,
       ...(caps.has('windows')
@@ -303,7 +340,7 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
             setTitle: (title: string) => dispatch({ type: 'setTitle', id: win.id, title: title.slice(0, 120) }),
             setSize: (width: number, height: number) => dispatch({ type: 'setSize', id: win.id, size: { width: Math.round(width), height: Math.round(height) } }),
             messageBox: (options: MessageBoxOptions) => messageBox(win.id, options),
-            launch: (appId: string) => launch(appId),
+            launch: (appId: string, args?: LaunchArgs) => launch(appId, args),
             openFile: (path: string) => openFile(path),
             chooseFile: (options: FileDialogOptions) => chooseFile(win.id, options),
             setCloseGuard: (guard: (() => Promise<boolean>) | null) => {
@@ -362,6 +399,36 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
               importSave: (text: string) => s.importSave(text),
               reset: () => s.reset(),
               shellPrefs: { get: () => shellPrefsOf(s.preferences()), set: (p: ShellPrefs) => s.setPreferences(withShellPrefs(s.preferences(), p)) },
+            },
+          }
+        : {}),
+      ...(caps.has('network')
+        ? {
+            network: {
+              state: () => network.state,
+              subscribe: (l) => network.subscribe(l),
+              connect: (o) => {
+                const started = network.connect(o);
+                const sound = s.preferences().sound;
+                if (started && caps.has('audio') && sound.enabled) dialup.start(network, sound.volume);
+                return started;
+              },
+              cancel: () => network.connection.cancel(),
+              disconnect: () => network.connection.disconnect(),
+              speed: () => s.preferences().connection.speed,
+              setSpeed: (speed) => s.setPreferences({ ...s.preferences(), connection: { speed } }),
+            },
+          }
+        : {}),
+      ...(caps.has('navigation')
+        ? {
+            navigation: {
+              load: (raw, base, callbacks) => network.load(raw, base, callbacks),
+              world: () => network.world(),
+              openInBrowser: (address: string) => launch('netscape', { address }),
+              bookmarks: () => s.getState().bookmarks,
+              addBookmark: (address: string, title: string) => s.addBookmark(address, title),
+              removeBookmark: (address: string) => s.removeBookmark(address),
             },
           }
         : {}),
@@ -439,11 +506,12 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
             clipboard,
             setClipboard,
             events,
+            network,
             reducedMotion,
           }
         : null,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [wm, desktop, launch, openFile, requestClose, messageBox, chooseFile, openRun, toDesktop, preferences, setPrefs, session, sessionState, clipboard, events, reducedMotion],
+    [wm, desktop, launch, openFile, requestClose, messageBox, chooseFile, openRun, toDesktop, preferences, setPrefs, session, sessionState, clipboard, events, network, reducedMotion],
   );
 
   // ------------------------------------------------------------ Start menu
@@ -537,6 +605,8 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
             }}
             onChoose={(choice) => {
               setShutDownOpen(false);
+              network.connection.hangUp();
+              dialup.stop();
               dispatch({ type: 'closeAll' });
               void session?.flush();
               if (choice === 'logoff') {

@@ -12,6 +12,7 @@
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "types": ["node"]
   },
   "include": ["scripts", "tests", "infra/bin", "infra/lib", "infra/scripts", "infra/access", "infra/tests", "vite.config.ts", "playwright.config.ts", "src/core"]

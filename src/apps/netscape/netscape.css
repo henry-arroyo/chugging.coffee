@@ -1,0 +1,148 @@
+.ns {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.ns-chrome {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  padding: 2px 2px 3px;
+  border-top: 1px solid var(--w95-shadow);
+  box-shadow: inset 0 1px var(--w95-highlight);
+}
+.ns-bars {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.ns-toolbar,
+.ns-directory {
+  display: flex;
+  gap: 1px;
+}
+.ns-tool,
+.ns-dirbutton {
+  font: inherit;
+  height: 22px;
+  padding: 0 7px;
+  color: var(--w95-text);
+  background: var(--w95-face);
+  border: 0;
+  box-shadow: var(--w95-raised);
+}
+.ns-tool { min-width: 50px; }
+.ns-tool:active:not(:disabled),
+.ns-dirbutton:active {
+  box-shadow: var(--w95-pressed);
+  padding-top: 1px;
+}
+.ns-tool:disabled {
+  color: var(--w95-gray-text);
+  text-shadow: 1px 1px var(--w95-highlight);
+}
+.ns-dirbutton { height: 18px; flex: 1; }
+.ns-location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ns-location label {
+  min-width: 48px;
+  text-align: right;
+}
+.ns-location-field {
+  flex: 1;
+  min-width: 0;
+}
+.ns-throbber {
+  position: relative;
+  width: 44px;
+  align-self: flex-start;
+  height: 44px;
+  overflow: hidden;
+  background: #000080;
+  box-shadow: var(--w95-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ns-throbber img {
+  width: 34px;
+  height: 34px;
+  position: relative;
+  z-index: 1;
+}
+.ns-meteor {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  box-shadow: -3px 3px 0 #9fd0ff, -6px 6px 0 #4c7fff;
+  opacity: 0;
+  z-index: 2;
+}
+.ns-busy .ns-meteor {
+  animation: ns-meteor 0.9s linear infinite;
+}
+.ns-busy .ns-meteor-2 {
+  animation-delay: 0.45s;
+}
+@keyframes ns-meteor {
+  0% { opacity: 1; transform: translate(42px, -6px); }
+  100% { opacity: 1; transform: translate(-6px, 44px); }
+}
+.w95-reduced-motion .ns-busy .ns-meteor {
+  animation: none;
+  opacity: 1;
+  transform: translate(30px, 8px);
+}
+.ns-content {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: #c0c0c0;
+  box-shadow: var(--w95-sunken);
+  padding: 2px;
+}
+.ns-content:focus { outline: none; }
+.ns-status {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+  padding-top: 2px;
+}
+.ns-key {
+  width: 18px;
+  height: 16px;
+  box-shadow: var(--w95-thin-sunken);
+  background:
+    linear-gradient(135deg, transparent 6px, #808080 6px 8px, transparent 8px) center / 12px 12px no-repeat;
+}
+.ns-status-text {
+  flex: 1;
+  min-width: 0;
+  height: 16px;
+  padding: 1px 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  box-shadow: var(--w95-thin-sunken);
+}
+.ns-progress {
+  width: 120px;
+  height: 16px;
+  padding: 2px;
+  box-sizing: border-box;
+  box-shadow: var(--w95-thin-sunken);
+}
+.ns-progress span {
+  display: block;
+  height: 100%;
+  background: #000080;
+}

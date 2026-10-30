@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run contracts:check && npm run assets:check:public && tsc -p tsconfig.json && vite build",
+    "build": "npm run contracts:check && npm run assets:check:public && npm run content:check && tsc -p tsconfig.json && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.node.json",
     "test": "vitest run",
@@ -27,7 +27,8 @@
     "access:setup": "tsx infra/access/setup-access.ts",
     "access:verify": "tsx infra/access/verify-access.ts",
     "test:e2e": "playwright test",
-    "visual:capture": "CAPTURE=1 playwright test tests/e2e/visual-capture.spec.ts"
+    "visual:capture": "CAPTURE=1 playwright test tests/e2e/visual-capture.spec.ts",
+    "content:check": "tsx scripts/world/build.ts"
   },
   "dependencies": {
     "ajv": "8.20.0",

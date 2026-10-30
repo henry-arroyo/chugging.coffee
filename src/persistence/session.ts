@@ -29,6 +29,9 @@ import { MemoryBackend, StorageError, type Backend, type Changes, type Snapshot,
 
 export const DATA_VERSION = 1;
 export const RECENT_LIMIT = 15;
+export const BOOKMARK_LIMIT = 200;
+/** The same rule as common.schema.json#/$defs/virtualAddress. */
+const BOOKMARK_ADDRESS = /^http:\/\/[a-z0-9](?:[a-z0-9-]{0,30}[a-z0-9])?\.test(?:\/(?:~?[a-z0-9][a-z0-9_-]*(?:\.[a-z0-9]+)?\/)*(?:~?[a-z0-9][a-z0-9_-]*(?:\.[a-z0-9]+)?)?)?(?:#[a-z0-9-]{1,64})?$/;
 
 /** Data migrations: entry i turns version i + 1 data into version i + 2. Pure functions. */
 export type DataMigration = (snapshot: Snapshot) => Snapshot;
@@ -355,6 +358,27 @@ export class Session {
     const recent = [normalized, ...this.state.recent.filter((p) => keyOf(p) !== keyOf(normalized))].slice(0, RECENT_LIMIT);
     this.set({ recent });
     void this.persist({ kv: { recent } });
+  }
+
+  // ------------------------------------------------------------ bookmarks
+
+  /** Adds (or retitles) a bookmark. Addresses must be fictional web addresses. */
+  addBookmark(address: string, title: string): boolean {
+    if (!BOOKMARK_ADDRESS.test(address) || address.length > 256) return false;
+    const clean = title.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, 120) || address.slice(0, 120);
+    const others = this.state.bookmarks.filter((b) => b.address !== address);
+    if (others.length >= BOOKMARK_LIMIT) return false;
+    const bookmarks = [...others, { address, title: clean, addedAt: this.now() }];
+    this.set({ bookmarks });
+    void this.persist({ kv: { bookmarks } });
+    return true;
+  }
+
+  removeBookmark(address: string) {
+    const bookmarks = this.state.bookmarks.filter((b) => b.address !== address);
+    if (bookmarks.length === this.state.bookmarks.length) return;
+    this.set({ bookmarks });
+    void this.persist({ kv: { bookmarks } });
   }
 
   // ------------------------------------------------------------ windows, games, scores

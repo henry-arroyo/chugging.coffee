@@ -1,4 +1,4 @@
-import { type RefObject } from 'react';
+import { useSyncExternalStore, type RefObject } from 'react';
 import { isActiveGroup, taskbarWindows } from '../core/windows/manager';
 import { formatTrayTime, useNow } from './Clock';
 import { useShell } from './context';
@@ -19,8 +19,33 @@ function TrayClock({ format }: { format: '12h' | '24h' }) {
   );
 }
 
+const TRAY_STATUS: Record<string, string> = {
+  offline: 'Not connected',
+  initializing: 'Initializing modem',
+  dialing: 'Dialing',
+  negotiating: 'Connecting',
+  authenticating: 'Checking password',
+  online: 'Connected to America Online',
+  disconnecting: 'Disconnecting',
+};
+
+function ConnectionTray({ onOpen }: { onOpen: () => void }) {
+  const { network } = useShell();
+  const state = useSyncExternalStore(
+    (l) => network.subscribe(l),
+    () => network.state,
+  );
+  const status = TRAY_STATUS[state.phase] ?? 'Not connected';
+  const lit = state.phase !== 'offline';
+  return (
+    <button type="button" className="w95-tray-icon" title={status} aria-label={`Connection status: ${status.toLowerCase()}`} data-connection={state.phase} onClick={onOpen}>
+      <img src={iconUrl(lit ? 'icon.connection-online' : 'icon.connection-offline')} alt="" draggable={false} />
+    </button>
+  );
+}
+
 export function Taskbar({ startOpen, onStart, startRef }: TaskbarProps) {
-  const { wm, dispatch, prefs, setPrefs, preferences } = useShell();
+  const { wm, dispatch, prefs, setPrefs, preferences, launch } = useShell();
   const tasks = taskbarWindows(wm);
   return (
     <div className="w95-taskbar" role="toolbar" aria-label="Taskbar">
@@ -54,9 +79,7 @@ export function Taskbar({ startOpen, onStart, startRef }: TaskbarProps) {
         ))}
       </div>
       <div className="w95-tray" role="group" aria-label="Notification area">
-        <button type="button" className="w95-tray-icon" title="Not connected" aria-label="Connection status: not connected" onClick={() => undefined}>
-          <img src={iconUrl('icon.connection-offline')} alt="" draggable={false} />
-        </button>
+        <ConnectionTray onOpen={() => launch('aol')} />
         <button
           type="button"
           className="w95-tray-icon"

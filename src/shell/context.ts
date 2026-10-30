@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
-import type { ButtonChoice, FileDialogOptions, MessageBoxOptions } from '../apps/types';
+import type { ButtonChoice, FileDialogOptions, LaunchArgs, MessageBoxOptions } from '../apps/types';
+import type { NetworkService } from '../content/network';
 import type { Preferences } from '../core/contracts/types';
 import type { EventBus } from '../core/events';
 import type { Rect, Size } from '../core/windows/geometry';
@@ -24,7 +25,7 @@ export interface ShellApi {
   wm: WMState;
   dispatch: (action: WMAction) => void;
   desktop: Size;
-  launch: (appId: string, args?: { path?: string }) => void;
+  launch: (appId: string, args?: LaunchArgs) => void;
   openFile: (path: string) => void;
   requestClose: (windowId: string) => void;
   messageBox: (ownerId: string | null, options: MessageBoxOptions) => Promise<ButtonChoice>;
@@ -42,6 +43,7 @@ export interface ShellApi {
   clipboard: string | null;
   setClipboard: (path: string | null) => void;
   events: EventBus;
+  network: NetworkService;
   reducedMotion: boolean;
 }
 

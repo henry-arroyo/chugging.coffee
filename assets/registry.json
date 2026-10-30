@@ -781,6 +781,60 @@
       "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
     },
     {
+      "assetId": "site.chugging.mug",
+      "file": "site/chugging-mug.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Steaming coffee mug, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
+    },
+    {
+      "assetId": "site.packet.masthead",
+      "file": "site/packet-masthead.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Newspaper masthead, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
+    },
+    {
+      "assetId": "site.switchboard.logo",
+      "file": "site/switchboard-logo.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Switchboard logo banner, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
+    },
+    {
       "assetId": "wallpaper.coffee-beans",
       "file": "wallpapers/coffee-beans.svg",
       "kind": "image",

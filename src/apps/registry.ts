@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import { AccessibilityProperties, DateTimeProperties, DisplayProperties, ModemProperties, SoundProperties, StorageProperties, UserProperties } from './control/Applets';
+import Aol from './aol/Aol';
 import ControlPanel from './control/ControlPanel';
 import Clock from './clock/Clock';
 import Find from './files/Find';
@@ -10,6 +11,7 @@ import RecycleBin from './files/RecycleBin';
 import Minesweeper from './games/Minesweeper';
 import Solitaire from './games/Solitaire';
 import Help from './help/Help';
+import Netscape from './netscape/Netscape';
 import { MANIFESTS } from './manifests';
 import { notBuilt } from './system/NotBuilt';
 import TaskbarProperties from './system/TaskbarProperties';
@@ -36,9 +38,11 @@ const BUILT: Record<string, ComponentType<AppProps>> = {
   'storage-properties': StorageProperties,
   solitaire: Solitaire,
   minesweeper: Minesweeper,
+  netscape: Netscape,
+  aol: Aol,
 };
 
-const PLANNED: Record<string, 'M2' | 'M3'> = { aol: 'M3', netscape: 'M3' };
+const PLANNED: Record<string, 'M2' | 'M3'> = {};
 
 export const APPS: Record<string, AppDefinition> = Object.fromEntries(
   MANIFESTS.map((manifest) => {

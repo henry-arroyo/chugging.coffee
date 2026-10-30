@@ -1,10 +1,11 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import { worldPlugin } from './scripts/world/vite-plugin.ts';
 
 // The simulation is served under /time-machine/ so it can share a domain with other routes.
 export default defineConfig({
   base: '/time-machine/',
-  plugins: [react()],
+  plugins: [react(), worldPlugin(import.meta.dirname)],
   build: {
     outDir: 'dist/time-machine',
     assetsDir: 'assets',

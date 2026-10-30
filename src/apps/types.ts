@@ -1,8 +1,18 @@
 import { useSyncExternalStore, type ComponentType } from 'react';
 import type { AppManifest, KlondikeSnapshot, MinesweeperLevel, MinesweeperSnapshot, Preferences, SaveExport } from '../core/contracts/types';
+import type { LoadResult, PageLoadCallbacks } from '../content/network';
+import type { PinnedWorld } from '../content/repository';
+import type { WebAddress } from '../core/net/address';
+import type { ConnectionState, Phase, Speed } from '../core/net/connection';
 import type { EntryInfo, VfsResult, VfsState } from '../core/vfs/vfs';
 import type { BestTimes, StorageMode, ModeReason } from '../persistence/session';
 import type { ShellPrefs } from '../shell/context';
+
+export interface LaunchArgs {
+  path?: string;
+  /** A virtual address for Netscape to open. */
+  address?: string;
+}
 
 export type ButtonChoice = 'ok' | 'cancel' | 'yes' | 'no';
 
@@ -62,6 +72,39 @@ export interface SettingsApi {
   shellPrefs: { get(): ShellPrefs; set(prefs: ShellPrefs): void };
 }
 
+/** capability: network. One shared connection for every program. */
+export interface NetworkApi {
+  state(): ConnectionState;
+  subscribe(listener: (state: ConnectionState) => void): () => void;
+  /** Starts dialing. Call it from a click: that also starts the modem sound when sound is on. */
+  connect(options?: { failAt?: Phase }): boolean;
+  /** Cancels an attempt in progress. */
+  cancel(): boolean;
+  /** Signs off: every transfer in flight is cancelled. */
+  disconnect(): boolean;
+  speed(): Speed;
+  /** Saved in preferences; applies to transfers at once and to the next connection. */
+  setSpeed(speed: Speed): void;
+}
+
+export interface Bookmark {
+  address: string;
+  title: string;
+  addedAt: string;
+}
+
+/** capability: navigation */
+export interface NavigationApi {
+  load(raw: string, base: WebAddress | undefined, callbacks: PageLoadCallbacks): LoadResult;
+  /** The release this tab has pinned. */
+  world(): Promise<PinnedWorld>;
+  /** Opens an address in a new Netscape window. */
+  openInBrowser(address: string): void;
+  bookmarks(): Bookmark[];
+  addBookmark(address: string, title: string): boolean;
+  removeBookmark(address: string): void;
+}
+
 /**
  * What the shell hands an application window. Members appear only when the application's
  * manifest declares the matching capability.
@@ -73,14 +116,16 @@ export interface AppHost {
   /** Re-render when personal state changes. */
   subscribe(listener: () => void): () => void;
   version(): number;
+  /** The guest's screen name (also their AOL screen name). */
+  screenName(): string;
   /** Arguments the window was opened with, such as a file to open. */
-  readonly args: { path?: string };
+  readonly args: LaunchArgs;
   /** capability: windows */
   setTitle?(title: string): void;
   /** Sizes the window's outer frame (capability: windows). */
   setSize?(width: number, height: number): void;
   messageBox?(options: MessageBoxOptions): Promise<ButtonChoice>;
-  launch?(appId: string): void;
+  launch?(appId: string, args?: LaunchArgs): void;
   openFile?(path: string): void;
   chooseFile?(options: FileDialogOptions): Promise<string | null>;
   /** Called before the window closes; resolve false to keep it open. */
@@ -89,6 +134,8 @@ export interface AppHost {
   files?: FilesApi;
   storage?: StorageApi;
   settings?: SettingsApi;
+  network?: NetworkApi;
+  navigation?: NavigationApi;
 }
 
 export interface AppProps {

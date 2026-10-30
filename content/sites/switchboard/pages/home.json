@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "pageId": "switchboard-home",
+  "siteId": "switchboard",
+  "path": "/",
+  "title": "Switchboard - Your Guide to the Web",
+  "layout": "centered",
+  "theme": { "background": "#ffffff", "text": "#000000", "link": "#0000ee", "visitedLink": "#551a8b", "font": "serif" },
+  "meta": { "lastModified": "1995-11-30", "author": "The Switchboard Team" },
+  "blocks": [
+    { "type": "image", "id": "logo", "assetId": "site.switchboard.logo", "alt": "Switchboard", "width": 300, "height": 60, "declaredBytes": 4096, "align": "center" },
+    { "type": "paragraph", "id": "tagline", "align": "center", "content": [{ "type": "text", "text": "Plug in. Look around. Over a thousand listings and growing!", "marks": ["italic"] }] },
+    { "type": "rule" },
+    { "type": "heading", "id": "directory", "level": 2, "text": "The Directory" },
+    { "type": "link", "href": "http://chugging.test/", "text": "Chugging Coffee House", "description": "Coffee, pie and the best corner booth in town. Now with a menu online." },
+    { "type": "link", "href": "http://packet.test/", "text": "The Daily Packet", "description": "Local news, updated most days. Read the latest headlines." },
+    { "type": "rule" },
+    { "type": "paragraph", "content": [
+      { "type": "link", "href": "/whats-new.html", "text": "What's New" },
+      { "type": "text", "text": " | Have a site? Send the address to the Switchboard Team and we'll take a look." }
+    ] },
+    { "type": "widget", "id": "counter", "widget": { "name": "hit-counter", "props": { "count": 10482, "digits": 6 } } },
+    { "type": "paragraph", "align": "center", "content": [{ "type": "text", "text": "Best viewed with Netscape Navigator at 640x480 or higher.", "marks": ["italic"] }] }
+  ]
+}

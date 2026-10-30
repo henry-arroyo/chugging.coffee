@@ -1,7 +1,8 @@
 # Architecture
 
-Status: **M2 built** (shell, window manager, persistence, virtual drive, local programs and
-games). AOL, Netscape and the world content are planned (M3-M4).
+Status: **M3 built** (shell, window manager, persistence, virtual drive, local programs and
+games, AOL, Netscape, the shared network and a three-site seed release). The full seven-site
+world and clue chain are M4.
 
 ## Shape of the system
 
@@ -21,14 +22,15 @@ Browser tab  https://<host>/time-machine/
 │   ├── menu.ts      menu keyboard navigation and access keys                     [M1]
 │   ├── run.ts       Start > Run parsing (aliases and C:\ paths only)              [M1]
 │   ├── events.ts    typed host event bus                                         [M1]
-│   ├── connection/  AOL handshake state machine (generation IDs)        [M3]
-│   ├── transfer/    shared FIFO byte scheduler on an injectable clock   [M3]
-│   ├── urls/        virtual address parsing and resolution              [M3]
+│   ├── net/         connection state machine (generation IDs), shared FIFO
+│   │                transfer scheduler, address parsing/resolution, clock     [M3]
 │   ├── vfs/         virtual C: drive, protection, quotas, Recycle Bin   [M2]
 │   └── games/       Klondike and Minesweeper rules, seeded RNG          [M2]
 ├── Persistence (src/persistence) Session, IndexedDB/memory backends, migrations,
 │                                  export/import, Web Locks single writer                [M2]
-└── World content (src/content)   StaticWorldRepository reading released JSON           [M3/M4]
+└── World content (src/content)   StaticWorldRepository (pinned, checksummed, validated),
+                                   NetworkService, chunk planner, safe page renderer      [M3]
+content/ + scripts/world/          release sources, build-time checks, Vite plugin        [M3]
 
 Static hosting: CloudFront → private S3 (OAC). No backend in v1.
 ```

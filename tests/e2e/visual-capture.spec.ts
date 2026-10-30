@@ -108,3 +108,43 @@ test('capture shell screens', async ({ page }) => {
   await desk.locator('.w95-window[data-app="help"]').getByRole('button', { name: 'Maximize' }).click();
   await desk.screenshot({ path: `${OUT}/09-maximized-640x480.png` });
 });
+
+test('capture online screens', async ({ page }) => {
+  test.setTimeout(120_000);
+  const desk = await open(page);
+  await page.addStyleTag({ content: '.w95-tray time { visibility: hidden; }' });
+  const win = (appId: string) => desk.locator(`.w95-window[data-app="${appId}"]`);
+  await desk.locator('[data-desktop-icon="aol"]').dblclick();
+  const aol = win('aol');
+  await aol.getByLabel('Connection sounds').uncheck();
+  await desk.screenshot({ path: `${OUT}/15-aol-sign-on.png` });
+  await aol.getByRole('button', { name: 'SIGN ON' }).click();
+  await expect(aol.locator('.aol-step-active')).toContainText('Connecting', { timeout: 10_000 });
+  await desk.screenshot({ path: `${OUT}/16-aol-connecting.png` });
+  await expect(aol.getByRole('heading', { name: /^Welcome,/ })).toBeVisible({ timeout: 20_000 });
+  await desk.screenshot({ path: `${OUT}/17-aol-welcome.png` });
+
+  await aol.getByRole('button', { name: 'Keyword' }).click();
+  await aol.getByLabel('Type a keyword:').fill('coffee');
+  await aol.getByRole('button', { name: 'Go', exact: true }).click();
+  const ns = win('netscape');
+  await expect(ns.locator('.ns-status-text')).toContainText('Received', { timeout: 10_000 });
+  await desk.screenshot({ path: `${OUT}/18-netscape-loading.png` });
+  await expect(ns.locator('.ns-status-text')).toHaveText('Document: Done.', { timeout: 20_000 });
+  await ns.getByRole('button', { name: 'Maximize' }).click();
+  await desk.screenshot({ path: `${OUT}/19-netscape-chugging-home.png` });
+  await ns.getByLabel('Location:').fill('http://nowhere.test/');
+  await ns.getByLabel('Go to:').press('Enter');
+  await expect(win('msgbox')).toBeVisible();
+  await desk.screenshot({ path: `${OUT}/20-netscape-dns-error.png` });
+  await page.keyboard.press('Enter');
+  await ns.getByRole('link', { name: 'We made the paper!' }).click();
+  await expect(ns.locator('.ns-status-text')).toHaveText('Document: Done.', { timeout: 20_000 });
+  await desk.screenshot({ path: `${OUT}/21-netscape-packet.png` });
+  await ns.getByRole('button', { name: 'Restore' }).click();
+
+  await desk.locator(`[data-task-for="${await aol.getAttribute('data-window-id')}"]`).click();
+  await aol.getByRole('button', { name: 'People' }).click();
+  await expect(aol.getByRole('log')).toContainText('ModemMike', { timeout: 10_000 });
+  await desk.screenshot({ path: `${OUT}/22-aol-chat.png` });
+});
