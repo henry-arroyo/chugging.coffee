@@ -14,11 +14,12 @@ async function open(page: Page, width = 800, height = 600) {
   await page.addInitScript(([w, h]) => localStorage.setItem('ctm.host.v1', JSON.stringify({ zoom: 1, size: { width: w, height: h } })), [width, height] as const);
   await page.goto('?skipboot');
   const desk = page.locator('.w95[data-phase]');
-  await expect(desk.locator('.w95-taskbar')).toBeVisible({ timeout: 10_000 });
-  if (await desk.getByRole('dialog', { name: 'Welcome to the Time Machine' }).count()) {
-    await page.screenshot({ path: `${OUT}/00-sign-on.png` });
-    await signOn(page, 'Reviewer');
+  await expect(desk.getByRole('dialog', { name: 'Welcome to Windows' })).toBeVisible({ timeout: 10_000 });
+  if (!(await desk.getByLabel('User name:').inputValue())) {
+    await desk.getByLabel('User name:').fill('Reviewer');
+    await page.screenshot({ path: `${OUT}/00-logon.png` });
   }
+  await signOn(page);
   return desk;
 }
 

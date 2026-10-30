@@ -344,6 +344,25 @@
       "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
     },
     {
+      "assetId": "icon.logon",
+      "file": "icons/logon.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the logon keys icon slot until rights are cleared (D12)."
+    },
+    {
       "assetId": "icon.minesweeper",
       "file": "icons/minesweeper.svg",
       "kind": "icon",

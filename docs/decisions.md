@@ -180,3 +180,33 @@ modal dialog, so applications never see the drive beyond their own capabilities.
 
 Klondike and Minesweeper follow the traditional rules, but card faces, backs, the minefield face
 and digits are original drawings regardless of the skin decision (D12).
+
+## D27. A Windows 95-style logon at every start (2026-10-30)
+
+Owner request. After the startup screen, an empty desktop shows the "Welcome to Windows" logon,
+as Windows 95 did, before any icons or the taskbar appear.
+- **User name:** it is the guest's screen name everywhere, including as the AOL screen name in
+  M3. The last one used is filled in, and logging on with a different name renames the profile,
+  keeping all progress.
+- **Password:** there is none yet. The Password field shows a fixed `************` and cannot be
+  edited or focused; real passwords may come later.
+- **Cancel:** it logs on as the last user. On a first visit it is disabled.
+- **Shut Down:** the dialog gains "Close all programs and log on as a different user?", which
+  returns to the logon.
+- **Reset:** a Control Panel reset also returns to the logon.
+
+"Welcome to Windows" is plain text naming the simulated system, kept in `branding.ts`; the keys
+icon is an original stand-in (`icon.logon`).
+
+## D28. Screen names stay 3-16 characters; future passwords stay in the browser (2026-10-30)
+
+Owner decisions.
+- **Screen names:** they keep the handoff's 3-16 character rule, on the logon and on AOL, even
+  though AOL in 1995 allowed only 10.
+- **Passwords (not implemented yet):** when they are added, they are stored only in this
+  browser, like all personal data. Planned design:
+  - Store a salted PBKDF2 hash from the browser's Web Crypto, never the password itself.
+  - The password only gates the logon in this browser. Anyone with access to the browser's
+    storage could still read or reset the data, so it is a lock against casual use, not an
+    account.
+  - Whether exports carry the hash is decided when this is built.

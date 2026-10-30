@@ -10,7 +10,7 @@ import type { Session } from '../persistence/session';
 import { ShellContext, shellPrefsOf, withShellPrefs, type ShellApi, type ShellPrefs } from './context';
 import { Desktop } from './Desktop';
 import { FileDialog } from './dialogs/FileDialog';
-import { LogonDialog } from './dialogs/LogonDialog';
+import { LogonScreen } from './dialogs/LogonScreen';
 import { MessageBox } from './dialogs/MessageBox';
 import { RunDialog } from './dialogs/RunDialog';
 import { ShutDownDialog } from './dialogs/ShutDownDialog';
@@ -35,7 +35,7 @@ interface ShellProps {
   skipBoot?: boolean;
 }
 
-type Phase = 'boot' | 'desktop' | 'shutting-down' | 'off';
+type Phase = 'boot' | 'logon' | 'desktop' | 'shutting-down' | 'off';
 
 /** Property-sheet style programs open as dialogs: no minimize or maximize. */
 const DIALOG_APPS = new Set(['taskbar-properties', 'display-properties', 'sound-properties', 'modem-properties', 'datetime-properties', 'accessibility-properties', 'user-properties', 'storage-properties']);
@@ -82,8 +82,16 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
 
   // The desktop appears once the startup screen has run and the saved state has loaded.
   useEffect(() => {
-    if (phase === 'boot' && bootTimerDone && session) setPhase('desktop');
+    if (phase === 'boot' && bootTimerDone && session) setPhase('logon');
   }, [phase, bootTimerDone, session]);
+
+  // Every start goes through the logon. A reset (Control Panel > Time Machine) returns to it too.
+  useEffect(() => {
+    if (phase === 'desktop' && sessionState && !sessionState.profile) {
+      dispatch({ type: 'closeAll' });
+      setPhase('logon');
+    }
+  }, [phase, sessionState]);
 
   const newId = () => `w-${nextId.current++}`;
 
@@ -446,7 +454,7 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
 
   // ------------------------------------------------------------ keyboard shortcuts
 
-  const loggedOn = Boolean(sessionState?.profile);
+  const loggedOn = phase === 'desktop' && Boolean(sessionState?.profile);
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (phase !== 'desktop' || shutDownOpen || !loggedOn) return;
     if (e.key === 'Escape' && e.ctrlKey) {
@@ -495,7 +503,7 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
   return (
     <ShellContext.Provider value={api}>
       <div ref={rootRef} className={`w95 ${theme.className}`} style={{ width: desktop.width, height: desktop.height, ...theme.style }} onKeyDown={onKeyDown} data-phase={phase}>
-        <Desktop selected={selectedIcon} onSelect={setSelectedIcon} />
+        {phase === 'desktop' ? <Desktop selected={selectedIcon} onSelect={setSelectedIcon} /> : null}
         {allWindows.map((win) => (
           <Window
             key={win.id}
@@ -510,7 +518,7 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
           </Window>
         ))}
         {outline ? <div className="w95-drag-outline" style={{ left: outline.x, top: outline.y, width: outline.width, height: outline.height }} aria-hidden="true" /> : null}
-        <Taskbar startOpen={start.open} startRef={startRef} onStart={() => toggleStart(false)} />
+        {phase === 'desktop' ? <Taskbar startOpen={start.open} startRef={startRef} onStart={() => toggleStart(false)} /> : null}
         {start.open ? (
           <StartMenu
             keyboard={start.keyboard}
@@ -520,7 +528,7 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
             }}
           />
         ) : null}
-        {phase === 'desktop' && !loggedOn ? <LogonDialog /> : null}
+        {phase === 'logon' && session ? <LogonScreen session={session} onLoggedOn={() => setPhase('desktop')} /> : null}
         {shutDownOpen ? (
           <ShutDownDialog
             onCancel={() => {
@@ -531,6 +539,10 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
               setShutDownOpen(false);
               dispatch({ type: 'closeAll' });
               void session?.flush();
+              if (choice === 'logoff') {
+                setPhase('logon');
+                return;
+              }
               setAfterShutdown(choice === 'restart' ? 'boot' : 'off');
               setPhase('shutting-down');
             }}

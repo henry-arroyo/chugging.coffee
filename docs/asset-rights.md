@@ -32,6 +32,12 @@ The owner chose **authentic Microsoft, AOL and Netscape** branding and artwork. 
   stand-ins with no code change. Layout, metrics, color values and behavior are built to the
   4.00.950 reference now.
 
+The owner reaffirmed on 2026-10-30 that realistic Windows, AOL and Netscape logos are wanted. No
+milestone schedules drawing them: they are clearance-gated. Lookalike redraws of the marks count
+as the logos themselves, so they are not used either. Each logo slot (Start button and banner,
+the AOL client and keyword artwork, the Netscape "N" and throbber) is ready to take the approved
+file.
+
 ### Clearance requests to make (owner)
 
 | Rights holder | What to ask for |

@@ -633,8 +633,59 @@
   font-size: 22px;
   line-height: 32px;
 }
+/* Screens use large text; their buttons keep the normal dialog font and metrics. */
 .w95-screen .w95-button {
   margin-top: 24px;
+  font: 11px/13px var(--w95-font);
+}
+
+/* ------------------------------------------------------------------ logon */
+
+.w95-logon {
+  position: absolute;
+  inset: 0;
+  z-index: 9800;
+  background: var(--w95-desktop);
+}
+.w95-logon .w95-window {
+  left: calc(50% - 205px);
+  top: calc(50% - 82px);
+  width: 410px;
+}
+.w95-logon-body {
+  display: flex;
+  gap: 14px;
+  padding: 12px 10px 12px 12px;
+}
+.w95-logon-body > img {
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+.w95-logon-fields {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 8px;
+  align-items: center;
+  align-content: start;
+}
+.w95-logon-fields p {
+  grid-column: 1 / -1;
+  margin: 2px 0 6px;
+}
+.w95-logon-fields .w95-field[readonly] {
+  color: var(--w95-text);
+}
+.w95-logon-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.w95-logon-error {
+  grid-column: 2;
+  margin: -2px 0 0;
+  color: #800000;
 }
 
 /* ------------------------------------------------------------------ app bits */

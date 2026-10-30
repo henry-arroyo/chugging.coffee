@@ -239,3 +239,14 @@ Minesweeper.
 
 **Next step:** M3: the AOL client and connection state machine, the shared FIFO transfer
 scheduler, and Netscape.
+
+## M2 follow-up (2026-10-30)
+
+- **Logon (owner request, D27):** a Windows 95-style "Welcome to Windows" logon at every start,
+  on an empty desktop. The user name is the screen name (also the AOL screen name in M3). The
+  password field is a fixed, uneditable mask, and Cancel logs on as the last user. Shut Down
+  gains "log on as a different user".
+- **Fixed:** the "Start again" button on the turn-off screen was cut off, because it inherited
+  the screen's large text.
+- **Tests:** 480 unit; 32/32 journeys, 96/96 over three repeats. The visual captures were
+  regenerated, including `00-logon.png`.

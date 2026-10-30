@@ -38,7 +38,10 @@ const TOPICS: { id: string; title: string; body: string[] }[] = [
   {
     id: 'shutdown',
     title: 'Shutting down',
-    body: ['Click Start, then Shut Down. Shutting down or restarting only affects this simulation; your real computer is not touched.'],
+    body: [
+      'Click Start, then Shut Down. Shutting down or restarting only affects this simulation; your real computer is not touched.',
+      'Choose "Close all programs and log on as a different user" to return to the logon. Logging on with a new user name renames you and keeps your files and scores.',
+    ],
   },
   {
     id: 'about',

@@ -12,9 +12,9 @@ async function open(page: Page, { zoom = 1, width = 800, height = 600 } = {}) {
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
   await page.goto('?skipboot');
-  const desk = page.locator('.w95');
-  await expect(desk.locator('.w95-taskbar')).toBeVisible({ timeout: 10_000 });
+  const desk = page.locator('.w95[data-phase]');
   await signOn(page);
+  await expect(desk.locator('.w95-taskbar')).toBeVisible();
   return { desk, errors };
 }
 
@@ -41,7 +41,7 @@ test('boots to the desktop, showing the startup screen and then the sign-on', as
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('');
-  const desk = page.locator('.w95');
+  const desk = page.locator('.w95[data-phase]');
   await expect(desk.locator('.w95-boot')).toBeVisible();
   await expect(desk.locator('.w95-boot')).toBeHidden({ timeout: 5000 });
   await signOn(page);
@@ -301,8 +301,23 @@ test('shut down and start again affect only the simulation', async ({ page }) =>
   await expect(desk.locator('.w95-off')).toBeVisible({ timeout: 5000 });
   await desk.getByRole('button', { name: 'Start again' }).click();
   await expect(desk.locator('.w95-boot')).toBeHidden({ timeout: 5000 });
-  await expect(desk.locator('.w95-window')).toHaveCount(0);
+  await signOn(page);
+  await expect(desk.locator('.w95-window[data-app]')).toHaveCount(0);
   expect(page.url()).toContain('/time-machine/');
+});
+
+test('Shut Down can log on as a different user, keeping progress under the new name', async ({ page }) => {
+  const { desk } = await open(page);
+  await startProgram(desk, ['Help']);
+  await startProgram(desk, ['Shut Down...']);
+  const dialog = desk.getByRole('dialog', { name: 'Shut Down' });
+  await dialog.getByRole('radio', { name: /log on as a different user/ }).check();
+  await dialog.getByRole('button', { name: 'Yes' }).click();
+  const logon = desk.getByRole('dialog', { name: 'Welcome to Windows' });
+  await expect(logon.getByLabel('User name:')).toHaveValue('Tester');
+  await expect(desk.locator('.w95-window[data-app]')).toHaveCount(0);
+  await signOn(page, 'Lark');
+  await expect(desk.locator('.w95-taskbar')).toBeVisible();
 });
 
 test('the host lists programs for quick access', async ({ page }) => {

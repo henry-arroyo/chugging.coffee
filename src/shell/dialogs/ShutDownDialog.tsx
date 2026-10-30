@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { iconUrl } from '../icons';
 
 /** The system-modal Shut Down dialog over a dimmed screen. Affects only the simulation. */
-export function ShutDownDialog({ onChoose, onCancel }: { onChoose: (choice: 'shutdown' | 'restart') => void; onCancel: () => void }) {
-  const [choice, setChoice] = useState<'shutdown' | 'restart'>('shutdown');
+export type ShutDownChoice = 'shutdown' | 'restart' | 'logoff';
+
+export function ShutDownDialog({ onChoose, onCancel }: { onChoose: (choice: ShutDownChoice) => void; onCancel: () => void }) {
+  const [choice, setChoice] = useState<ShutDownChoice>('shutdown');
   const ref = useRef<HTMLFormElement>(null);
   useEffect(() => {
     ref.current?.querySelector<HTMLInputElement>('input:checked')?.focus();
@@ -11,7 +13,7 @@ export function ShutDownDialog({ onChoose, onCancel }: { onChoose: (choice: 'shu
   return (
     <>
       <div className="w95-dim" aria-hidden="true" />
-      <div className="w95-window" data-active="true" role="dialog" aria-modal="true" aria-labelledby="w95-shutdown-title" style={{ left: 'calc(50% - 160px)', top: 'calc(50% - 90px)', width: 320, zIndex: 8600 }}>
+      <div className="w95-window" data-active="true" role="dialog" aria-modal="true" aria-labelledby="w95-shutdown-title" style={{ left: 'calc(50% - 175px)', top: 'calc(50% - 95px)', width: 350, zIndex: 8600 }}>
         <div className="w95-titlebar">
           <span className="w95-title" id="w95-shutdown-title">
             Shut Down
@@ -55,6 +57,12 @@ export function ShutDownDialog({ onChoose, onCancel }: { onChoose: (choice: 'shu
                 <input type="radio" name="shutdown" checked={choice === 'restart'} onChange={() => setChoice('restart')} />
                 <span>
                   <u className="w95-key">R</u>estart the computer?
+                </span>
+              </label>
+              <label className="w95-radio">
+                <input type="radio" name="shutdown" checked={choice === 'logoff'} onChange={() => setChoice('logoff')} />
+                <span>
+                  <u className="w95-key">C</u>lose all programs and log on as a different user?
                 </span>
               </label>
             </fieldset>

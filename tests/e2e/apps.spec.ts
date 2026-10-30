@@ -6,7 +6,7 @@ async function boot(page: Page, { signIn = true } = {}) {
   await page.addInitScript(() => localStorage.setItem('ctm.host.v1', JSON.stringify({ zoom: 1, size: { width: 800, height: 600 } })));
   await page.goto('?skipboot');
   const desk = page.locator('.w95[data-phase]');
-  await expect(desk.locator('.w95-taskbar')).toBeVisible({ timeout: 10_000 });
+  await expect(desk.getByRole('dialog', { name: 'Welcome to Windows' })).toBeVisible({ timeout: 10_000 });
   if (signIn) await signOn(page);
   return desk;
 }
@@ -32,18 +32,26 @@ async function answer(desk: Locator, button: 'Yes' | 'No' | 'OK' | 'Cancel') {
 
 test('sign-on validates the name, and a reload keeps the profile but starts a fresh desktop', async ({ page }) => {
   const desk = await boot(page, { signIn: false });
-  const logon = desk.getByRole('dialog', { name: 'Welcome to the Time Machine' });
-  await logon.getByRole('textbox').fill('<b>');
+  const logon = desk.getByRole('dialog', { name: 'Welcome to Windows' });
+  // No password yet: the field shows a fixed mask and cannot be edited. A first visit cannot cancel.
+  await expect(logon.getByLabel('Password:')).toHaveValue('************');
+  await expect(logon.getByLabel('Password:')).toHaveAttribute('readonly', '');
+  await expect(logon.getByRole('button', { name: 'Cancel' })).toBeDisabled();
+  await expect(desk.locator('.w95-taskbar')).toBeHidden();
+  await logon.getByLabel('User name:').fill('<b>');
   await logon.getByRole('button', { name: 'OK' }).click();
   await expect(logon.getByRole('alert')).toHaveText('Use only letters (A-Z), numbers and spaces.');
-  await logon.getByRole('textbox').fill('  Night   Owl ');
+  await logon.getByLabel('User name:').fill('  Night   Owl ');
   await logon.getByRole('button', { name: 'OK' }).click();
   await expect(logon).toHaveCount(0);
   await start(desk, 'Programs', 'Accessories', 'Clock');
   await page.reload();
-  await expect(desk.locator('.w95-taskbar')).toBeVisible();
+  // Every start shows the logon, with the last user name filled in and Cancel available.
+  await expect(logon.getByLabel('User name:')).toHaveValue('Night Owl');
+  await expect(logon.getByRole('button', { name: 'Cancel' })).toBeEnabled();
+  await logon.getByRole('button', { name: 'OK' }).click();
   await expect(logon).toHaveCount(0);
-  await expect(desk.locator('.w95-window')).toHaveCount(0);
+  await expect(desk.locator('.w95-window[data-app]')).toHaveCount(0);
   await start(desk, 'Settings', 'Control Panel');
   await item(win(desk, 'control-panel'), 'Users').dblclick();
   await expect(win(desk, 'user-properties').getByRole('textbox')).toHaveValue('Night Owl');
@@ -70,6 +78,7 @@ test('Notepad saves to My Documents, shows it in Documents, asks before discardi
   await expect(pad).toHaveCount(0);
 
   await page.reload();
+  await signOn(page);
   await expect(desk.locator('.w95-taskbar')).toBeVisible();
   await start(desk, 'Documents', 'trip.txt');
   await expect(win(desk, 'notepad').getByRole('textbox')).toHaveValue('Packing list:\ncoffee');
@@ -197,6 +206,7 @@ test('Control Panel: Apply changes the desktop, Cancel keeps what was applied, s
   await expect(desk.locator('.w95-tray time')).toHaveText(/^\d{2}:\d{2}$/);
 
   await page.reload();
+  await signOn(page);
   await expect(desk).toHaveClass(/w95-scheme-brick/);
   await expect(desk.locator('.w95-tray time')).toHaveText(/^\d{2}:\d{2}$/);
 });
@@ -263,6 +273,7 @@ test('Minesweeper: keyboard play, marks, level sizes and resume', async ({ page 
   await cells.nth(240).click();
   const revealedBefore = await ms.getByRole('gridcell', { name: /: (empty|\d)$/ }).count();
   await page.reload();
+  await signOn(page);
   await start(desk, 'Programs', 'Accessories', 'Games', 'Minesweeper');
   await expect(ms.getByRole('gridcell')).toHaveCount(480);
   if (revealedBefore > 0) await expect(ms.getByRole('gridcell', { name: /: (empty|\d)$/ })).toHaveCount(revealedBefore);
@@ -283,6 +294,7 @@ test('Solitaire: draw, keyboard pick-up, undo, and resume', async ({ page }) => 
   await page.keyboard.press('Control+z');
   await expect(stock).toHaveAccessibleName('Stock, 21 cards');
   await page.reload();
+  await signOn(page);
   await start(desk, 'Programs', 'Accessories', 'Games', 'Solitaire');
   await expect(win(desk, 'solitaire').getByRole('button', { name: /Stock/ })).toHaveAccessibleName('Stock, 21 cards');
 });
@@ -299,6 +311,7 @@ test('window positions are remembered per program', async ({ page }) => {
   const moved = await clock.evaluate((el) => (el as HTMLElement).style.cssText);
   await clock.getByRole('button', { name: 'Close' }).click();
   await page.reload();
+  await signOn(page);
   await start(desk, 'Programs', 'Accessories', 'Clock');
   await expect.poll(() => win(desk, 'clock').evaluate((el) => (el as HTMLElement).style.cssText)).toBe(moved);
 });
