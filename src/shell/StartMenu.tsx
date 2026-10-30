@@ -1,4 +1,6 @@
 import { programsTree, type ProgramsNode } from '../apps/manifests';
+import { nameOf } from '../core/vfs/paths';
+import { stat } from '../core/vfs/vfs';
 import { METRICS } from '../core/windows/geometry';
 import { BRANDING } from './branding';
 import { useShell } from './context';
@@ -11,7 +13,7 @@ interface StartMenuProps {
 
 export function StartMenu({ onClose, keyboard }: StartMenuProps) {
   const shell = useShell();
-  const { launch, desktop, prefs } = shell;
+  const { launch, desktop, prefs, sessionState, openFile } = shell;
 
   const programs = (nodes: ProgramsNode[], path: string): MenuItem[] => {
     const items: MenuItem[] = nodes.map((n) =>
@@ -24,8 +26,22 @@ export function StartMenu({ onClose, keyboard }: StartMenuProps) {
 
   const items: MenuItem[] = [
     { id: 'programs', label: 'Programs', accessKey: 0, icon: 'icon.programs', submenu: () => programs(programsTree(), 'programs') },
-    // Recently opened documents arrive with the virtual file system (M2).
-    { id: 'documents', label: 'Documents', accessKey: 0, icon: 'icon.documents', submenu: () => [{ id: 'documents/empty', label: '(Empty)', disabled: true }] },
+    {
+      id: 'documents',
+      label: 'Documents',
+      accessKey: 0,
+      icon: 'icon.documents',
+      submenu: () => {
+        // Recently opened files that still exist (deleted ones drop out).
+        const recent = sessionState.recent.filter((p) => {
+          const info = stat(sessionState.vfs, p);
+          return info !== null && !info.deleted;
+        });
+        return recent.length === 0
+          ? [{ id: 'documents/empty', label: '(Empty)', disabled: true }]
+          : recent.map((p, i) => ({ id: `documents/${p}`, label: nameOf(p), accessKey: 0, icon: 'icon.notepad', onSelect: () => openFile(p) }));
+      },
+    },
     {
       id: 'settings',
       label: 'Settings',

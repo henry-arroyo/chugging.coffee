@@ -4,7 +4,7 @@ A Windows 95 desktop in the browser, connected to a shared, persistent, fictiona
 internet: an AOL-style online service, a Netscape-era browser, and seven interlinked `.test` sites.
 Served at `/time-machine/`. Static hosting on AWS (CDK v2), no backend in v1.
 
-**Status:** milestone M1: the Windows 95 desktop and window manager. See
+**Status:** milestone M2: local programs, games, the virtual C: drive and browser storage. See
 [docs/milestones.md](docs/milestones.md).
 
 ## Commands

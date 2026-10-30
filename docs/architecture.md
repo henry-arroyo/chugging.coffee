@@ -1,7 +1,7 @@
 # Architecture
 
-Status: **M1 built** (shell and window manager). Persistence, the virtual file system, the
-games, AOL, Netscape and the world content are planned (M2-M4).
+Status: **M2 built** (shell, window manager, persistence, virtual drive, local programs and
+games). AOL, Netscape and the world content are planned (M3-M4).
 
 ## Shape of the system
 
@@ -24,9 +24,10 @@ Browser tab  https://<host>/time-machine/
 │   ├── connection/  AOL handshake state machine (generation IDs)        [M3]
 │   ├── transfer/    shared FIFO byte scheduler on an injectable clock   [M3]
 │   ├── urls/        virtual address parsing and resolution              [M3]
-│   ├── vfs/         virtual C: drive, protection, quotas                [M2]
-│   └── games/       Klondike and Minesweeper rules                      [M2]
-├── Persistence (src/persistence) IndexedDB, migrations, export/import, multi-tab lock  [M2]
+│   ├── vfs/         virtual C: drive, protection, quotas, Recycle Bin   [M2]
+│   └── games/       Klondike and Minesweeper rules, seeded RNG          [M2]
+├── Persistence (src/persistence) Session, IndexedDB/memory backends, migrations,
+│                                  export/import, Web Locks single writer                [M2]
 └── World content (src/content)   StaticWorldRepository reading released JSON           [M3/M4]
 
 Static hosting: CloudFront → private S3 (OAC). No backend in v1.

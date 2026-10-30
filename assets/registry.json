@@ -2,6 +2,25 @@
   "schemaVersion": 1,
   "assets": [
     {
+      "assetId": "icon.accessibility",
+      "file": "icons/accessibility.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
       "assetId": "icon.aol",
       "file": "icons/aol.svg",
       "kind": "icon",
@@ -99,6 +118,44 @@
     {
       "assetId": "icon.control-panel",
       "file": "icons/control-panel.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.datetime",
+      "file": "icons/datetime.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.display",
+      "file": "icons/display.svg",
       "kind": "icon",
       "origin": "project-original",
       "source": "Drawn for this project (simple SVG shapes)",
@@ -268,8 +325,46 @@
       "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
     },
     {
+      "assetId": "icon.image",
+      "file": "icons/image.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
       "assetId": "icon.minesweeper",
       "file": "icons/minesweeper.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.modem",
+      "file": "icons/modem.svg",
       "kind": "icon",
       "origin": "project-original",
       "source": "Drawn for this project (simple SVG shapes)",
@@ -610,6 +705,25 @@
       "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
     },
     {
+      "assetId": "icon.storage",
+      "file": "icons/storage.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
       "assetId": "icon.taskbar",
       "file": "icons/taskbar.svg",
       "kind": "icon",
@@ -627,6 +741,82 @@
       "standIn": true,
       "expires": null,
       "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "icon.users",
+      "file": "icons/users.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+    },
+    {
+      "assetId": "wallpaper.coffee-beans",
+      "file": "wallpapers/coffee-beans.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Original stand-in wallpaper (D12)."
+    },
+    {
+      "assetId": "wallpaper.grid-paper",
+      "file": "wallpapers/grid-paper.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Original stand-in wallpaper (D12)."
+    },
+    {
+      "assetId": "wallpaper.night-sky",
+      "file": "wallpapers/night-sky.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Drawn for this project (simple SVG shapes)",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Original stand-in wallpaper (D12)."
     }
   ]
 }

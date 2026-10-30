@@ -143,3 +143,40 @@ whose click focuses the dialog. Other windows stay usable, as the handoff requir
 
 The shell imports no schema validators; they load with the first content fetch or import
 (M2/M3), keeping the initial bundle at about 87 KB gzipped.
+
+## D21. One session object owns personal state; apps get capability-scoped APIs (2026-10-30)
+
+`Session` (src/persistence/session.ts) holds the profile, drive, games, scores, window positions
+and recent files, and validates everything it loads. Applications never touch it directly: the
+shell builds each window's `AppHost` from the manifest's capabilities (`vfs-read`, `vfs-write`,
+`storage`, `settings`, `windows`). The session and its validators load as a separate chunk during
+startup (D20 kept).
+
+## D22. Immediate writes (2026-10-30)
+
+Each meaningful change is written at once, in order, through one queue. Batching saved little
+and lost the latest change on a quick reload. Minesweeper's running timer is the exception: it
+is saved every two seconds and on every move.
+
+## D23. One saving tab, via Web Locks (2026-10-30)
+
+The first tab takes the `ctm-writer` lock and saves. Other tabs open read-only, and "Use this
+tab" reloads with `steal`, which turns the old tab read-only. A newly loaded page waits up to 2 s
+for the lock, because a reloaded tab's old page may still hold it. Without Web Locks support every
+tab writes (documented limitation).
+
+## D24. Optional `taskbar` preferences in the profile schema (2026-10-30)
+
+Show Clock and small Start-menu icons are stored in `preferences.taskbar`, an optional field, so
+version-1 profiles without it stay valid. No data migration is needed.
+
+## D25. Close guards and shell file dialogs (2026-10-30)
+
+Applications may register a close guard (Notepad uses it to offer saving), and every close path
+(caption button, window menu, Alt+F4, File > Exit) goes through it. Open/Save As is a shell-owned
+modal dialog, so applications never see the drive beyond their own capabilities.
+
+## D26. Games use original art in every skin (2026-10-30)
+
+Klondike and Minesweeper follow the traditional rules, but card faces, backs, the minefield face
+and digits are original drawings regardless of the skin decision (D12).

@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState, type KeyboardEvent, type MutableRefObject } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore, type KeyboardEvent, type MutableRefObject } from 'react';
 import { APPS } from '../apps/registry';
-import type { AppDefinition, AppHost, ButtonChoice, MessageBoxOptions } from '../apps/types';
+import type { AppDefinition, AppHost, ButtonChoice, FileDialogOptions, MessageBoxOptions } from '../apps/types';
 import { EventBus } from '../core/events';
+import { extensionOf } from '../core/vfs/paths';
+import * as vfs from '../core/vfs/vfs';
 import type { Rect, Size } from '../core/windows/geometry';
 import { blockingDialog, displayRect, initialState, isHidden, reduce, type WindowSpec, type WindowState } from '../core/windows/manager';
-import { DEFAULT_PREFS, ShellContext, type ShellApi, type ShellPrefs } from './context';
+import type { Session } from '../persistence/session';
+import { ShellContext, shellPrefsOf, withShellPrefs, type ShellApi, type ShellPrefs } from './context';
 import { Desktop } from './Desktop';
+import { FileDialog } from './dialogs/FileDialog';
+import { LogonDialog } from './dialogs/LogonDialog';
 import { MessageBox } from './dialogs/MessageBox';
 import { RunDialog } from './dialogs/RunDialog';
 import { ShutDownDialog } from './dialogs/ShutDownDialog';
@@ -13,6 +18,7 @@ import { AppErrorBoundary } from './ErrorBoundary';
 import { useDismiss } from './Menu';
 import { BootScreen, OffScreen, ShuttingDownScreen } from './Screens';
 import { StartMenu } from './StartMenu';
+import { desktopStyle } from './theme';
 import { Taskbar } from './Taskbar';
 import { Window } from './Window';
 import './win95.css';
@@ -23,6 +29,7 @@ export interface ShellController {
 
 interface ShellProps {
   desktop: Size;
+  session: Session | null;
   controller?: MutableRefObject<ShellController | null>;
   /** Skip the startup screen (tests and returning visitors). */
   skipBoot?: boolean;
@@ -31,33 +38,52 @@ interface ShellProps {
 type Phase = 'boot' | 'desktop' | 'shutting-down' | 'off';
 
 /** Property-sheet style programs open as dialogs: no minimize or maximize. */
-const DIALOG_APPS = new Set(['taskbar-properties']);
+const DIALOG_APPS = new Set(['taskbar-properties', 'display-properties', 'sound-properties', 'modem-properties', 'datetime-properties', 'accessibility-properties', 'user-properties', 'storage-properties']);
+
+const noopSubscribe = () => () => {};
 
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
 }
 
-export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
+export function Shell({ desktop, session, controller, skipBoot = false }: ShellProps) {
   const [wm, dispatch] = useReducer(reduce, desktop, initialState);
   const wmRef = useRef(wm);
   wmRef.current = wm;
+  const sessionState = useSyncExternalStore(session?.subscribe ?? noopSubscribe, () => session?.getState() ?? null);
+  const sessionVersion = useRef(0);
+  const lastSessionState = useRef(sessionState);
+  if (lastSessionState.current !== sessionState) {
+    lastSessionState.current = sessionState;
+    sessionVersion.current++;
+  }
   const rootRef = useRef<HTMLDivElement>(null);
   const startRef = useRef<HTMLButtonElement>(null);
   const [outline, setOutline] = useState<Rect | null>(null);
-  const [prefs, setPrefsState] = useState<ShellPrefs>(DEFAULT_PREFS);
-  const prefsRef = useRef(prefs);
-  prefsRef.current = prefs;
-  const [phase, setPhase] = useState<Phase>(skipBoot ? 'desktop' : 'boot');
+  const [bootTimerDone, setBootTimerDone] = useState(skipBoot);
+  const [phase, setPhase] = useState<Phase>('boot');
   const [shutDownOpen, setShutDownOpen] = useState(false);
   const [start, setStart] = useState<{ open: boolean; keyboard: boolean }>({ open: false, keyboard: false });
   const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+  const [clipboard, setClipboard] = useState<string | null>(null);
   const nextId = useRef(1);
   const messageBoxes = useRef(new Map<string, { options: MessageBoxOptions; resolve: (c: ButtonChoice) => void }>());
+  const fileDialogs = useRef(new Map<string, { options: FileDialogOptions; resolve: (p: string | null) => void }>());
+  const windowArgs = useRef(new Map<string, { path?: string }>());
+  const closeGuards = useRef(new Map<string, () => Promise<boolean>>());
   const hosts = useRef(new Map<string, AppHost>());
   const events = useMemo(() => new EventBus(), []);
-  const reducedMotion = useMemo(prefersReducedMotion, []);
+  const preferences = session ? session.preferences() : null;
+  const reducedMotion = useMemo(prefersReducedMotion, []) || preferences?.accessibility.reducedMotion === true;
+  const sessionRef = useRef(session);
+  sessionRef.current = session;
 
   useEffect(() => dispatch({ type: 'setDesktopSize', size: desktop }), [desktop]);
+
+  // The desktop appears once the startup screen has run and the saved state has loaded.
+  useEffect(() => {
+    if (phase === 'boot' && bootTimerDone && session) setPhase('desktop');
+  }, [phase, bootTimerDone, session]);
 
   const newId = () => `w-${nextId.current++}`;
 
@@ -75,12 +101,12 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
     return new Promise<ButtonChoice>((resolve) => {
       const id = newId();
       messageBoxes.current.set(id, { options, resolve });
-      const width = Math.min(380, Math.max(240, options.text.length * 4 + 90));
+      const width = Math.min(400, Math.max(240, options.text.length * 4 + 90));
       const spec: WindowSpec = {
         appId: 'msgbox',
         title: options.title,
         icon: 'icon.app-generic',
-        size: { width, height: 130 },
+        size: { width, height: options.text.length > 140 ? 150 : 130 },
         minSize: { width: 200, height: 110 },
         resizable: false,
         maximizable: false,
@@ -93,14 +119,38 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
     });
   }, []);
 
+  const chooseFile = useCallback((ownerId: string, options: FileDialogOptions) => {
+    return new Promise<string | null>((resolve) => {
+      const id = newId();
+      fileDialogs.current.set(id, { options, resolve });
+      dispatch({
+        type: 'open',
+        id,
+        spec: {
+          appId: 'filedialog',
+          title: options.title ?? (options.mode === 'open' ? 'Open' : 'Save As'),
+          icon: 'icon.folder-open',
+          size: { width: 420, height: 270 },
+          minSize: { width: 380, height: 250 },
+          resizable: false,
+          maximizable: false,
+          kind: 'dialog',
+          ownerId,
+          modal: true,
+          content: `filedialog:${id}`,
+        },
+      });
+    });
+  }, []);
+
   const launch = useCallback(
-    (appId: string) => {
+    (appId: string, args: { path?: string } = {}) => {
       const def: AppDefinition | undefined = APPS[appId];
       if (!def) {
         void messageBox(null, { title: 'Error', text: `Cannot find the program '${appId}'.`, icon: 'error' });
         return;
       }
-      events.emit({ type: 'app.launch', appId });
+      events.emit({ type: 'app.launch', appId, ...(args.path ? { path: args.path } : {}) });
       if (def.manifest.instancing === 'single') {
         const existing = Object.values(wmRef.current.windows).find((w) => w.appId === appId && w.ownerId === null);
         if (existing) {
@@ -110,24 +160,68 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
       }
       const w = def.manifest.window;
       const dialog = DIALOG_APPS.has(appId);
+      // Reopen where the program was last placed (first window of a program only).
+      const saved = sessionRef.current?.getState().windows[appId];
+      const alreadyOpen = Object.values(wmRef.current.windows).some((x) => x.appId === appId);
+      const placement = saved && !alreadyOpen && !dialog ? saved : null;
+      const id = newId();
+      windowArgs.current.set(id, args);
       dispatch({
         type: 'open',
-        id: newId(),
+        id,
         spec: {
           appId,
           title: def.manifest.title,
           icon: def.manifest.icon,
-          size: { width: w.defaultWidth, height: w.defaultHeight },
+          size: placement && w.resizable ? { width: placement.normal.width, height: placement.normal.height } : { width: w.defaultWidth, height: w.defaultHeight },
           minSize: { width: w.minWidth, height: w.minHeight },
           resizable: w.resizable,
           maximizable: w.maximizable,
           kind: dialog ? 'dialog' : 'app',
           content: `app:${appId}`,
+          ...(placement ? { position: { x: placement.normal.x, y: placement.normal.y }, startMaximized: placement.state === 'maximized' } : {}),
         },
       });
     },
     [events, messageBox],
   );
+
+  const vfsError = useCallback(
+    (path: string, ownerId: string | null) =>
+      void messageBox(ownerId, { title: 'Error', text: `Cannot find '${path}'. Make sure the path and name are correct.`, icon: 'error' }),
+    [messageBox],
+  );
+
+  /** Opens a file, folder or shortcut on drive C: with the right program. */
+  const openFile = useCallback(
+    (path: string) => {
+      const s = sessionRef.current;
+      const info = s ? vfs.stat(s.getState().vfs, path) : null;
+      if (!info || info.deleted) return vfsError(path, null);
+      if (info.kind === 'folder') return launch('explorer', { path: info.path });
+      if (info.kind === 'shortcut') {
+        const target = info.target ?? '';
+        if (target.startsWith('app:')) return launch(target.slice(4));
+        return openFile(target);
+      }
+      s?.addRecent(info.path);
+      if (info.kind === 'image') return launch('imageview', { path: info.path });
+      if (info.kind === 'text') return launch('notepad', { path: info.path });
+      void messageBox(null, { title: info.name, text: `There is no program to open '${info.name}' (${extensionOf(info.name) || 'no'} files).`, icon: 'warning' });
+    },
+    [launch, messageBox, vfsError],
+  );
+
+  const requestClose = useCallback((windowId: string) => {
+    const guard = closeGuards.current.get(windowId);
+    if (!guard) {
+      dispatch({ type: 'close', id: windowId });
+      return;
+    }
+    void guard().then((allowed) => {
+      if (allowed) dispatch({ type: 'close', id: windowId });
+    });
+  }, []);
 
   const openRun = useCallback(() => {
     const existing = Object.values(wmRef.current.windows).find((w) => w.appId === 'run');
@@ -139,45 +233,46 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
     });
   }, [desktop.height]);
 
-  const setPrefs = useCallback((p: ShellPrefs) => setPrefsState(p), []);
+  const prefs: ShellPrefs = preferences ? shellPrefsOf(preferences) : { showClock: true, smallStartIcons: false, muted: false };
+  const setPrefs = useCallback((p: ShellPrefs) => {
+    const s = sessionRef.current;
+    if (s) s.setPreferences(withShellPrefs(s.preferences(), p));
+  }, []);
 
-  const api: ShellApi = useMemo(
-    () => ({
-      wm,
-      dispatch,
-      desktop,
-      launch,
-      messageBox,
-      openRun,
-      openShutDown: () => setShutDownOpen(true),
-      toDesktop,
-      setOutline,
-      prefs,
-      setPrefs,
-      events,
-      reducedMotion,
-    }),
-    [wm, desktop, launch, messageBox, openRun, toDesktop, prefs, setPrefs, events, reducedMotion],
-  );
+  if (controller) controller.current = { launch: (appId) => launch(appId) };
 
-  if (controller) controller.current = { launch };
-
-  // Resolve message boxes closed from their title bar, and forget hosts of closed windows.
+  // Resolve dialogs closed from their title bar, forget hosts and guards of closed windows.
   const previousWindows = useRef<Record<string, WindowState>>({});
   useEffect(() => {
     for (const id of Object.keys(previousWindows.current)) {
       if (wm.windows[id]) continue;
       events.emit({ type: 'window.closed', windowId: id });
       hosts.current.delete(id);
+      closeGuards.current.delete(id);
+      windowArgs.current.delete(id);
       const pending = messageBoxes.current.get(id);
       if (pending) {
         messageBoxes.current.delete(id);
         const buttons = pending.options.buttons ?? ['ok'];
         pending.resolve(buttons.includes('cancel') ? 'cancel' : buttons.includes('no') ? 'no' : 'ok');
       }
+      const dialog = fileDialogs.current.get(id);
+      if (dialog) {
+        fileDialogs.current.delete(id);
+        dialog.resolve(null);
+      }
     }
     previousWindows.current = wm.windows;
   }, [wm.windows, events]);
+
+  // Remember where each program's window was (normal rectangle and maximized state).
+  useEffect(() => {
+    if (!session) return;
+    for (const w of Object.values(wm.windows)) {
+      if (w.kind !== 'app' || w.ownerId !== null || w.display === 'minimized') continue;
+      session.saveWindow(w.appId, w.normal, w.display);
+    }
+  }, [wm.windows, session]);
 
   useEffect(() => {
     if (wm.focusedId) events.emit({ type: 'window.focused', windowId: wm.focusedId });
@@ -186,18 +281,82 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
   const hostFor = (win: WindowState, def: AppDefinition): AppHost => {
     const cached = hosts.current.get(win.id);
     if (cached) return cached;
+    const s = session!;
     const caps = new Set(def.manifest.capabilities);
+    const now = () => new Date().toISOString();
     const host: AppHost = {
       windowId: win.id,
-      close: () => dispatch({ type: 'close', id: win.id }),
+      args: windowArgs.current.get(win.id) ?? {},
+      close: () => requestClose(win.id),
+      subscribe: s.subscribe,
+      version: () => sessionVersion.current,
       ...(caps.has('windows')
         ? {
             setTitle: (title: string) => dispatch({ type: 'setTitle', id: win.id, title: title.slice(0, 120) }),
+            setSize: (width: number, height: number) => dispatch({ type: 'setSize', id: win.id, size: { width: Math.round(width), height: Math.round(height) } }),
             messageBox: (options: MessageBoxOptions) => messageBox(win.id, options),
             launch: (appId: string) => launch(appId),
+            openFile: (path: string) => openFile(path),
+            chooseFile: (options: FileDialogOptions) => chooseFile(win.id, options),
+            setCloseGuard: (guard: (() => Promise<boolean>) | null) => {
+              if (guard) closeGuards.current.set(win.id, guard);
+              else closeGuards.current.delete(win.id);
+            },
+            addRecent: (path: string) => s.addRecent(path),
           }
         : {}),
-      ...(caps.has('settings') ? { shellPrefs: { get: () => prefsRef.current, set: (p: ShellPrefs) => setPrefsState(p) } } : {}),
+      ...(caps.has('vfs-read')
+        ? {
+            files: {
+              stat: (p: string) => vfs.stat(s.getState().vfs, p),
+              list: (folder: string, o?: { includeHidden?: boolean }) => vfs.list(s.getState().vfs, folder, o),
+              search: (q: string, o?: { inFolder?: string; inContent?: boolean }) => vfs.search(s.getState().vfs, q, o),
+              recycled: () => vfs.recycled(s.getState().vfs),
+              usage: () => vfs.usage(s.getState().vfs),
+              ...(caps.has('vfs-write')
+                ? {
+                    writeText: (p: string, text: string) => s.applyVfs((v) => vfs.writeText(v, p, text, now())),
+                    createFolder: (parent: string, name: string) => s.applyVfs((v) => vfs.createFolder(v, parent, name, now())),
+                    rename: (p: string, name: string) => s.applyVfs((v) => vfs.rename(v, p, name, now())),
+                    copy: (src: string, dest: string) => s.applyVfs((v) => vfs.copy(v, src, dest, now())),
+                    remove: (p: string) => s.applyVfs((v) => vfs.remove(v, p, now())),
+                    restore: (p: string) => s.applyVfs((v) => vfs.restore(v, p, now())),
+                    purge: (p: string) => s.applyVfs((v) => vfs.purge(v, p)),
+                    emptyRecycleBin: () => s.setVfs(vfs.emptyRecycleBin(s.getState().vfs)),
+                  }
+                : {}),
+            },
+          }
+        : {}),
+      ...(caps.has('storage')
+        ? {
+            storage: {
+              klondike: () => s.getState().games.klondike,
+              minesweeper: () => s.getState().games.minesweeper,
+              saveGame: (g) => s.saveGame(g),
+              clearGame: (g) => s.clearGame(g),
+              bestTimes: () => s.getState().bestTimes,
+              recordBestTime: (level, seconds) => s.recordBestTime(level, seconds),
+              preferences: () => s.preferences(),
+              setPreferences: (p) => s.setPreferences(p),
+            },
+          }
+        : {}),
+      ...(caps.has('settings')
+        ? {
+            settings: {
+              preferences: () => s.preferences(),
+              setPreferences: (p) => s.setPreferences(p),
+              screenName: () => s.getState().profile?.screenName ?? '',
+              rename: (name: string) => s.rename(name),
+              storage: () => s.storageSummary(),
+              exportSave: () => s.exportSave(),
+              importSave: (text: string) => s.importSave(text),
+              reset: () => s.reset(),
+              shellPrefs: { get: () => shellPrefsOf(s.preferences()), set: (p: ShellPrefs) => s.setPreferences(withShellPrefs(s.preferences(), p)) },
+            },
+          }
+        : {}),
     };
     hosts.current.set(win.id, host);
     return host;
@@ -207,7 +366,7 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
     const content = win.content ?? '';
     if (content.startsWith('app:')) {
       const def = APPS[win.appId];
-      if (!def) return null;
+      if (!def || !session) return null;
       const Component = def.component;
       return (
         <AppErrorBoundary appTitle={def.manifest.title} onClose={() => dispatch({ type: 'close', id: win.id })} onCrash={(message) => events.emit({ type: 'app.crashed', appId: win.appId, message })}>
@@ -229,23 +388,67 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
         />
       );
     }
+    if (content.startsWith('filedialog:')) {
+      const entry = fileDialogs.current.get(win.id);
+      if (!entry || !session) return null;
+      return (
+        <FileDialog
+          windowId={win.id}
+          options={entry.options}
+          onDone={(path) => {
+            fileDialogs.current.delete(win.id);
+            dispatch({ type: 'close', id: win.id });
+            entry.resolve(path);
+          }}
+        />
+      );
+    }
     if (content === 'run') return <RunDialog windowId={win.id} />;
     return null;
   };
+
+  const api: ShellApi | null = useMemo(
+    () =>
+      session && sessionState && preferences
+        ? {
+            wm,
+            dispatch,
+            desktop,
+            launch,
+            openFile,
+            requestClose,
+            messageBox,
+            chooseFile,
+            openRun,
+            openShutDown: () => setShutDownOpen(true),
+            toDesktop,
+            setOutline,
+            prefs,
+            setPrefs,
+            preferences,
+            session,
+            sessionState,
+            clipboard,
+            setClipboard,
+            events,
+            reducedMotion,
+          }
+        : null,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [wm, desktop, launch, openFile, requestClose, messageBox, chooseFile, openRun, toDesktop, preferences, setPrefs, session, sessionState, clipboard, events, reducedMotion],
+  );
 
   // ------------------------------------------------------------ Start menu
 
   const closeStart = useCallback(() => setStart({ open: false, keyboard: false }), []);
   useDismiss(start.open, closeStart, startRef);
-
-  const toggleStart = (keyboard: boolean) => {
-    setStart((s) => ({ open: !s.open, keyboard }));
-  };
+  const toggleStart = (keyboard: boolean) => setStart((s) => ({ open: !s.open, keyboard }));
 
   // ------------------------------------------------------------ keyboard shortcuts
 
+  const loggedOn = Boolean(sessionState?.profile);
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (phase !== 'desktop' || shutDownOpen) return;
+    if (phase !== 'desktop' || shutDownOpen || !loggedOn) return;
     if (e.key === 'Escape' && e.ctrlKey) {
       e.preventDefault();
       toggleStart(true);
@@ -257,22 +460,41 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
       launch('help');
     } else if (e.key === 'F4' && e.altKey && wm.focusedId) {
       e.preventDefault();
-      dispatch({ type: 'close', id: wm.focusedId });
+      requestClose(wm.focusedId);
     }
   };
 
   // ------------------------------------------------------------ phases
 
-  const finishBoot = useCallback(() => setPhase('desktop'), []);
+  const finishBoot = useCallback(() => setBootTimerDone(true), []);
   const [afterShutdown, setAfterShutdown] = useState<'off' | 'boot'>('off');
-  const finishShutdown = useCallback(() => setPhase(afterShutdown), [afterShutdown]);
+  const finishShutdown = useCallback(() => {
+    if (afterShutdown === 'boot') setBootTimerDone(false);
+    setPhase(afterShutdown);
+  }, [afterShutdown]);
 
-  // Windows drawn in creation order (stable DOM); stacking comes from z-index.
   const allWindows = Object.values(wm.windows).sort((a, b) => a.created - b.created);
+  const theme = preferences ? desktopStyle(preferences) : { className: '', style: {} };
+
+  const screens = (
+    <>
+      {phase === 'boot' ? <BootScreen onDone={finishBoot} durationMs={bootTimerDone ? 0 : reducedMotion ? 300 : 1500} /> : null}
+      {phase === 'shutting-down' ? <ShuttingDownScreen onDone={finishShutdown} durationMs={reducedMotion ? 300 : 1500} /> : null}
+      {phase === 'off' ? <OffScreen onStart={() => { setBootTimerDone(false); setPhase('boot'); }} /> : null}
+    </>
+  );
+
+  if (!api) {
+    return (
+      <div ref={rootRef} className="w95" style={{ width: desktop.width, height: desktop.height }} data-phase="boot">
+        <BootScreen onDone={finishBoot} durationMs={bootTimerDone ? 1e9 : reducedMotion ? 300 : 1500} />
+      </div>
+    );
+  }
 
   return (
     <ShellContext.Provider value={api}>
-      <div ref={rootRef} className="w95" style={{ width: desktop.width, height: desktop.height }} onKeyDown={onKeyDown} data-phase={phase}>
+      <div ref={rootRef} className={`w95 ${theme.className}`} style={{ width: desktop.width, height: desktop.height, ...theme.style }} onKeyDown={onKeyDown} data-phase={phase}>
         <Desktop selected={selectedIcon} onSelect={setSelectedIcon} />
         {allWindows.map((win) => (
           <Window
@@ -298,6 +520,7 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
             }}
           />
         ) : null}
+        {phase === 'desktop' && !loggedOn ? <LogonDialog /> : null}
         {shutDownOpen ? (
           <ShutDownDialog
             onCancel={() => {
@@ -307,15 +530,15 @@ export function Shell({ desktop, controller, skipBoot = false }: ShellProps) {
             onChoose={(choice) => {
               setShutDownOpen(false);
               dispatch({ type: 'closeAll' });
+              void session?.flush();
               setAfterShutdown(choice === 'restart' ? 'boot' : 'off');
               setPhase('shutting-down');
             }}
           />
         ) : null}
-        {phase === 'boot' ? <BootScreen onDone={finishBoot} durationMs={reducedMotion ? 300 : 1500} /> : null}
-        {phase === 'shutting-down' ? <ShuttingDownScreen onDone={finishShutdown} durationMs={reducedMotion ? 300 : 1500} /> : null}
-        {phase === 'off' ? <OffScreen onStart={() => setPhase('boot')} /> : null}
+        {screens}
       </div>
     </ShellContext.Provider>
   );
 }
+

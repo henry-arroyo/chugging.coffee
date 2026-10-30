@@ -10,17 +10,17 @@ interface TaskbarProps {
   startRef: RefObject<HTMLButtonElement | null>;
 }
 
-function TrayClock() {
+function TrayClock({ format }: { format: '12h' | '24h' }) {
   const now = useNow('minute');
   return (
     <time dateTime={now.toISOString()} title={now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}>
-      {formatTrayTime(now)}
+      {formatTrayTime(now, format)}
     </time>
   );
 }
 
 export function Taskbar({ startOpen, onStart, startRef }: TaskbarProps) {
-  const { wm, dispatch, prefs, setPrefs } = useShell();
+  const { wm, dispatch, prefs, setPrefs, preferences } = useShell();
   const tasks = taskbarWindows(wm);
   return (
     <div className="w95-taskbar" role="toolbar" aria-label="Taskbar">
@@ -67,7 +67,7 @@ export function Taskbar({ startOpen, onStart, startRef }: TaskbarProps) {
         >
           <img src={iconUrl(prefs.muted ? 'icon.speaker-muted' : 'icon.speaker')} alt="" draggable={false} />
         </button>
-        {prefs.showClock ? <TrayClock /> : null}
+        {prefs.showClock ? <TrayClock format={preferences.clock.format} /> : null}
       </div>
     </div>
   );

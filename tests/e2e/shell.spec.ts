@@ -1,8 +1,9 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { signOn } from './helpers';
 
 const TASKBAR = 28;
 
-async function open(page: Page, { zoom = 1, width = 800, height = 600, boot = false } = {}) {
+async function open(page: Page, { zoom = 1, width = 800, height = 600 } = {}) {
   await page.addInitScript(
     ([z, w, h]) => localStorage.setItem('ctm.host.v1', JSON.stringify({ zoom: z, size: { width: w, height: h } })),
     [zoom, width, height] as const,
@@ -10,9 +11,10 @@ async function open(page: Page, { zoom = 1, width = 800, height = 600, boot = fa
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
-  await page.goto(boot ? '' : '?skipboot');
+  await page.goto('?skipboot');
   const desk = page.locator('.w95');
-  await expect(desk.locator('.w95-taskbar')).toBeVisible();
+  await expect(desk.locator('.w95-taskbar')).toBeVisible({ timeout: 10_000 });
+  await signOn(page);
   return { desk, errors };
 }
 
@@ -35,10 +37,14 @@ async function startProgram(desk: Locator, path: string[]) {
 
 const windowFor = (desk: Locator, appId: string) => desk.locator(`.w95-window[data-app="${appId}"]`);
 
-test('boots to the desktop and shows the startup screen first', async ({ page }) => {
-  const { desk, errors } = await open(page, { boot: true });
+test('boots to the desktop, showing the startup screen and then the sign-on', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto('');
+  const desk = page.locator('.w95');
   await expect(desk.locator('.w95-boot')).toBeVisible();
   await expect(desk.locator('.w95-boot')).toBeHidden({ timeout: 5000 });
+  await signOn(page);
   await expect(desk.getByRole('option', { name: 'My Computer' })).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -241,7 +247,7 @@ test('desktop icons work with the keyboard', async ({ page }) => {
   await expect(desk.getByRole('option', { name: 'Recycle Bin' })).toBeFocused();
   await expect(desk.getByRole('option', { name: 'Recycle Bin' })).toHaveAttribute('aria-selected', 'true');
   await page.keyboard.press('Enter');
-  await expect(windowFor(desk, 'recycle-bin')).toContainText('arrives in milestone M2');
+  await expect(windowFor(desk, 'recycle-bin')).toContainText('The Recycle Bin is empty.');
 });
 
 test('Taskbar Properties: Apply, Cancel and OK behave correctly', async ({ page }) => {

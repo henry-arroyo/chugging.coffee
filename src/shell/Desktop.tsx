@@ -13,7 +13,8 @@ interface DesktopProps {
 
 /** Desktop icons in a single column, Windows 95 style: click selects, double-click or Enter opens. */
 export function Desktop({ selected, onSelect }: DesktopProps) {
-  const { launch, dispatch } = useShell();
+  const { launch, dispatch, sessionState } = useShell();
+  const binFull = Object.values(sessionState.vfs.entries).some((f) => f.deleted);
   const refs = useRef<Record<string, HTMLButtonElement | null>>({});
   const tabStop = selected ?? ICONS[0]?.appId;
 
@@ -69,6 +70,7 @@ export function Desktop({ selected, onSelect }: DesktopProps) {
             aria-selected={selected === m.appId}
             tabIndex={tabStop === m.appId ? 0 : -1}
             data-desktop-icon={m.appId}
+            data-state={m.appId === 'recycle-bin' ? (binFull ? 'full' : 'empty') : undefined}
             onPointerDown={() => {
               onSelect(m.appId);
               dispatch({ type: 'focusDesktop' });
@@ -77,7 +79,7 @@ export function Desktop({ selected, onSelect }: DesktopProps) {
             onDoubleClick={() => launch(m.appId)}
             onKeyDown={(e) => onKeyDown(e, index, m.appId)}
           >
-            <img src={iconUrl(m.icon)} alt="" draggable={false} />
+            <img src={iconUrl(m.appId === 'recycle-bin' && binFull ? 'icon.recycle-full' : m.icon)} alt="" draggable={false} />
             <span>{m.title}</span>
           </button>
         ))}

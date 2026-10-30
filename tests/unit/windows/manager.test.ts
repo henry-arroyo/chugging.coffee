@@ -292,6 +292,24 @@ describe('geometry constraints', () => {
   });
 });
 
+describe('program-driven sizing', () => {
+  it('lets a program size a window the guest cannot resize, keeping it on screen', () => {
+    let s = run(open('m', app('m', { resizable: false, maximizable: false })), { type: 'setRect', id: 'm', rect: { x: 700, y: 400, width: 300, height: 200 } });
+    s = reduce(s, { type: 'setSize', id: 'm', size: { width: 500, height: 330 } });
+    expect(s.windows.m!.normal).toMatchObject({ width: 500, height: 330 });
+    expect(s.windows.m!.normal.x + 500).toBeLessThanOrEqual(800);
+    expect(s.windows.m!.normal.y + 330).toBeLessThanOrEqual(572);
+  });
+
+  it('is ignored for unknown, maximized or unchanged windows', () => {
+    const s = run(open('a'));
+    expect(reduce(s, { type: 'setSize', id: 'nope', size: { width: 1, height: 1 } })).toBe(s);
+    expect(reduce(s, { type: 'setSize', id: 'a', size: { width: 300, height: 200 } })).toBe(s);
+    const max = reduce(s, { type: 'maximize', id: 'a' });
+    expect(reduce(max, { type: 'setSize', id: 'a', size: { width: 400, height: 300 } })).toBe(max);
+  });
+});
+
 describe('closing', () => {
   it('focuses the next window down when the focused one closes', () => {
     const s = run(open('a'), open('b'), open('c'), { type: 'focus', id: 'a' }, { type: 'close', id: 'a' });

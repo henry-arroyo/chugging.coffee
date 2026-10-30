@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { signOn } from './helpers';
 
 /**
  * Captures screens for HUMAN review into tests/visual/pending/. Nothing is compared or approved
@@ -12,7 +13,13 @@ const OUT = 'tests/visual/pending';
 async function open(page: Page, width = 800, height = 600) {
   await page.addInitScript(([w, h]) => localStorage.setItem('ctm.host.v1', JSON.stringify({ zoom: 1, size: { width: w, height: h } })), [width, height] as const);
   await page.goto('?skipboot');
-  return page.locator('.w95');
+  const desk = page.locator('.w95[data-phase]');
+  await expect(desk.locator('.w95-taskbar')).toBeVisible({ timeout: 10_000 });
+  if (await desk.getByRole('dialog', { name: 'Welcome to the Time Machine' }).count()) {
+    await page.screenshot({ path: `${OUT}/00-sign-on.png` });
+    await signOn(page, 'Reviewer');
+  }
+  return desk;
 }
 
 test('capture shell screens', async ({ page }) => {
@@ -66,6 +73,32 @@ test('capture shell screens', async ({ page }) => {
   await desk.getByRole('button', { name: 'Yes' }).click();
   await expect(desk.locator('.w95-off')).toBeVisible({ timeout: 5000 });
   await desk.screenshot({ path: `${OUT}/08-safe-to-turn-off.png` });
+
+  desk = await open(page);
+  await page.addStyleTag({ content: '.w95-tray time { visibility: hidden; }' });
+  const start = async (...path: string[]) => {
+    await desk.locator('.w95-start-button').click();
+    for (const name of path) await desk.getByRole('menu').last().getByRole('menuitem', { name, exact: true }).click();
+  };
+  await start('Programs', 'Windows Explorer');
+  await desk.locator('.w95-window[data-app="explorer"] [data-item="My Documents"]').dblclick();
+  await desk.screenshot({ path: `${OUT}/10-explorer.png` });
+  await start('Programs', 'Accessories', 'Notepad');
+  await page.keyboard.type('Remember: buy coffee filters.');
+  await desk.locator('.w95-window[data-app="notepad"]').getByRole('menubar').getByRole('menuitem', { name: 'File' }).click();
+  await desk.getByRole('menu').last().getByRole('menuitem', { name: 'Save As...' }).click();
+  await desk.screenshot({ path: `${OUT}/11-notepad-save-as.png` });
+  await page.keyboard.press('Escape');
+  await start('Settings', 'Control Panel');
+  await desk.locator('.w95-window[data-app="control-panel"] [data-item="Display"]').dblclick();
+  await desk.screenshot({ path: `${OUT}/12-control-panel-display.png` });
+  await page.keyboard.press('Escape');
+  await start('Programs', 'Accessories', 'Games', 'Solitaire');
+  await desk.locator('.w95-window[data-app="solitaire"]').getByRole('button', { name: 'Maximize' }).click();
+  await desk.screenshot({ path: `${OUT}/13-solitaire.png` });
+  await start('Programs', 'Accessories', 'Games', 'Minesweeper');
+  await page.keyboard.press('Space');
+  await desk.screenshot({ path: `${OUT}/14-minesweeper.png` });
 
   desk = await open(page, 640, 480);
   await page.addStyleTag({ content: '.w95-tray time { visibility: hidden; }' });

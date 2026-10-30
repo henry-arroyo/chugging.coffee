@@ -164,7 +164,7 @@ export function Window({ win, rect, zIndex, active, blocked, hidden, children }:
     { id: 'minimize', label: 'Minimize', accessKey: 2, disabled: !win.minimizable, onSelect: () => dispatch({ type: 'minimize', id: win.id }) },
     { id: 'maximize', label: 'Maximize', accessKey: 2, disabled: !win.maximizable || maximized, onSelect: () => dispatch({ type: 'maximize', id: win.id }) },
     { id: 'sep', separator: true },
-    { id: 'close', label: 'Close', accessKey: 0, onSelect: () => dispatch({ type: 'close', id: win.id }) },
+    { id: 'close', label: 'Close', accessKey: 0, onSelect: () => shell.requestClose(win.id) },
   ];
 
   const style = hidden ? { display: 'none' } : { left: rect.x, top: rect.y, width: rect.width, height: rect.height, zIndex };
@@ -209,7 +209,7 @@ export function Window({ win, rect, zIndex, active, blocked, hidden, children }:
             aria-expanded={systemMenu}
             tabIndex={active ? 0 : -1}
             onClick={() => setSystemMenu((v) => !v)}
-            onDoubleClick={() => dispatch({ type: 'close', id: win.id })}
+            onDoubleClick={() => shell.requestClose(win.id)}
           >
             <img src={iconUrl(win.icon)} alt="" draggable={false} />
           </button>
@@ -235,7 +235,7 @@ export function Window({ win, rect, zIndex, active, blocked, hidden, children }:
               </button>
             </>
           )}
-          <button type="button" className="w95-caption-button w95-close" aria-label="Close" tabIndex={-1} onClick={() => dispatch({ type: 'close', id: win.id })}>
+          <button type="button" className="w95-caption-button w95-close" aria-label="Close" tabIndex={-1} onClick={() => shell.requestClose(win.id)}>
             <Glyph kind="close" />
           </button>
         </div>

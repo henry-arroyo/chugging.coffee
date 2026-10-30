@@ -4,7 +4,7 @@
 |---|---|---|
 | **M0** | References, rights, schemas, architecture and security design | **Complete (pending owner review)**: see below |
 | M1 | Windows 95 desktop and window management | **Complete (pending owner review)** |
-| M2 | Local applications and persistence | Not started |
+| M2 | Local applications and persistence | **Complete (pending owner review)** |
 | M3 | AOL, connection scheduler, Netscape | Not started |
 | M4 | Seven-site world and clue chain | Not started |
 | M5 | Accessibility, security, performance, browser QA, deployment-ready package | Not started |
@@ -127,3 +127,115 @@ chugging.coffee apex, account 196691452297, AOL 2.5, Netscape 2.0 beta.
 **Next step:** M2: identity and IndexedDB persistence, the virtual C: drive with Explorer, My
 Computer and Recycle Bin, Notepad, Control Panel, Find and Documents, then Solitaire and
 Minesweeper.
+
+## M2 report (2026-10-30)
+
+**Works**
+
+- **Guest sign-on.** First run asks for a screen name only (3-16 letters, digits, single spaces;
+  markup and control characters rejected). Names are unverified and local; renaming (Control Panel
+  > Users) keeps everything.
+- **Persistence** (`src/persistence/`):
+  - **Storage:** IndexedDB with versioned schema upgrades plus data migrations. Every write is
+    one transaction, and saves happen on each meaningful change (moves, files, settings,
+    window positions).
+  - **Untrusted data:** everything read back is validated against its contract, and games are
+    re-checked for consistency. Invalid records are dropped with a notice.
+  - **Failures:** storage that is denied, unavailable, full or failing falls back to a clearly
+    labeled temporary session that keeps working. Data saved by a newer version is never
+    overwritten.
+  - **One saving tab:** only one tab saves at a time, using the Web Locks writer lock. A second
+    tab is read-only, and "Use this tab" takes over. A freshly reloaded page waits up to 2 s for
+    the lock.
+  - **Export, import, reset:** export is a validated JSON file with no credential fields. Import
+    is limited to 1 MiB, fully validated, and confirmed before it replaces anything. Reset asks
+    twice.
+  - **Reloads:** a full reload restores files, settings and games, but never reopens windows or
+    dialogs.
+- **Virtual C: drive** (`src/core/vfs/`):
+  - **Paths:** Windows path rules; traversal, other drives, reserved names and bad characters
+    are rejected.
+  - **Protection:** seeded system files are protected by code-side metadata, never by stored
+    flags.
+  - **Limits:** 64 KiB per file and 5 MiB total (recycled files count until purged).
+  - **Recycle Bin:** deleted items move to `C:\Recycled\Dn` with their original path, and
+    restoring recreates missing folders.
+  - **Copying:** copies are named "Copy of …" / "Copy (2) of …", as in Windows 95.
+- **Programs:**
+  - **My Computer and folder windows:** large icons or details, New Folder / New Text Document,
+    inline rename (F2), Copy/Paste, Delete with confirmation, Backspace to go up.
+  - **Windows Explorer:** a folder tree plus details.
+  - **Recycle Bin:** restore, permanent delete with confirmation, and empty. The desktop icon
+    shows full or empty.
+  - **Notepad:** New, Open, Save and Save As through Open/Save As dialogs, Word Wrap, Time/Date
+    (F5), the 64 KB limit, protected files steered to Save As, and an unsaved-changes prompt on
+    close via a close guard.
+  - **Image Viewer** for the wallpaper pictures.
+  - **Find:** by name, `*`/`?` wildcards and contents.
+  - **Documents menu:** recent files.
+  - **Run:** opens C:\ paths.
+  - **Control Panel applets,** each with OK, Cancel and Apply:
+    - Display: pattern, wallpaper, six color schemes, desktop scale.
+    - Sounds: on/off and volume. The setting is stored; audio itself arrives in M3.
+    - Modems: connection speed, stored for M3.
+    - Date/Time: 12- or 24-hour clock.
+    - Accessibility: high contrast, larger text, reduced motion.
+    - Users: rename.
+    - Time Machine: storage status, export, import, reset.
+  - **Solitaire (Klondike):**
+    - **Rules:** draw one or three, legal moves only, unlimited stock recycling with no penalty,
+      undo (up to 100 steps), win detection.
+    - **Scoring:** exactly the handoff's (+10, +5, +5, −15, never below 0).
+    - **Play:** click-to-select or drag, double-click to send home, and a full keyboard path with
+      spoken announcements.
+    - **Saving:** resumes after reload.
+  - **Minesweeper:** Beginner, Intermediate and Expert; a safe first square with no no-guess
+    guarantee; flood fill; flags and question marks; chording (middle click, both buttons,
+    double-click, or C); keyboard and touch long-press marking; a timer that pauses while the tab
+    is hidden; local best times; resume after reload; and the window sizing to fit each level.
+- **Art:** three new stand-in wallpapers and seven applet icons, all registered as stand-ins. Card
+  faces, backs and the Minesweeper face are original drawings.
+
+**Tests actually run**
+
+- `npm test`: 480 passed, including:
+  - 48 virtual-drive tests: malicious paths, protection, quotas, copy naming, the Recycle Bin round
+    trip, search, and untrusted loading.
+  - 23 Klondike tests, including a 2,000-move random game that keeps all 52 cards, plus rejection
+    of tampered saves.
+  - 19 Minesweeper tests, including 200 safe first reveals across levels.
+  - 28 persistence tests: hostile records, quota fallback, read-only tabs, newer data versions,
+    export/import (oversized, non-JSON, smuggled fields, tampered games), reset, and IndexedDB
+    upgrades.
+- `npm run test:e2e`: 31/31 journeys in Chrome 156, and 93/93 over three repeats. New journeys:
+  - **Sign-on and storage:** sign-on validation and reload behavior; export → reset → import;
+    the read-only second tab and takeover; no-storage fallback.
+  - **Files:** Notepad save, Documents, the unsaved-changes prompt and reload; protected-file
+    Save As; Explorer create, rename, copy, delete and restore; the folder tree and image
+    viewer; Find.
+  - **Settings and games:** Control Panel Apply/Cancel and persistence; Minesweeper keyboard,
+    marks, level sizes and resume; Solitaire draw, keyboard, undo and resume; remembered window
+    positions.
+- Typecheck clean. Build: initial bundle 113 KB gzipped JS plus 4.7 KB CSS, and the session with
+  its validators loads as a separate 39 KB chunk during startup.
+- Fifteen screenshots in `tests/visual/pending/` await human review.
+
+**Bugs found and fixed while testing**
+
+- A reloaded tab often opened read-only because the old page still held the writer lock. It now
+  waits briefly.
+- React StrictMode opened the session twice in development. The session now opens once per page.
+- Game moves and window positions were batched, so a quick reload could lose the last change.
+  These writes are now immediate.
+- Keyboard focus dropped to the page after an inline rename. It now returns to the item.
+- The memory fallback crashed on a stored file record without a path.
+
+**Not done / not verified**
+
+- No sounds play yet (settings only). AOL and Netscape are M3; the seven-site world is M4.
+- Only Chromium was tested. Cross-browser, mobile and screen-reader passes are M5. The
+  45-minute session for leaks is M5.
+- The crash boundary still has no automated test.
+
+**Next step:** M3: the AOL client and connection state machine, the shared FIFO transfer
+scheduler, and Netscape.

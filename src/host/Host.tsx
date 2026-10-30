@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { MANIFESTS } from '../apps/manifests';
 import type { Size } from '../core/windows/geometry';
+import type { Session } from '../persistence/session';
 import { Shell, type ShellController } from '../shell/Shell';
 import './host.css';
 
@@ -11,6 +12,7 @@ const SIZES: Size[] = [
   { width: 640, height: 480 },
 ];
 const STORAGE_KEY = 'ctm.host.v1';
+const noopSubscribe = () => () => {};
 
 interface Stored {
   zoom: Zoom;
@@ -46,6 +48,30 @@ export function Host() {
   const viewportRef = useRef<HTMLElement>(null);
   const controller = useRef<ShellController | null>(null);
   const skipBoot = new URLSearchParams(window.location.search).has('skipboot');
+  const [session, setSession] = useState<Session | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const sessionState = useSyncExternalStore(session?.subscribe ?? noopSubscribe, () => session?.getState() ?? null);
+
+  // Personal state loads (with its validators) as a separate chunk while the startup screen runs.
+  useEffect(() => {
+    let alive = true;
+    import('../persistence/open')
+      .then((m) => m.openBrowserSession())
+      .then((s) => alive && setSession(s))
+      .catch((e: unknown) => alive && setLoadError(String(e)));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // Control Panel's desktop scale becomes the zoom when the guest changes it.
+  const scalePref = sessionState?.profile?.preferences.desktop.scale;
+  const lastScale = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    if (scalePref === undefined) return;
+    if (lastScale.current !== undefined && lastScale.current !== scalePref) setZoom(scalePref);
+    lastScale.current = scalePref;
+  }, [scalePref]);
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -106,6 +132,30 @@ export function Host() {
           </button>
         </div>
       </header>
+      {loadError ? (
+        <div className="host-notice" role="alert">
+          The Time Machine could not start: {loadError}
+        </div>
+      ) : null}
+      {sessionState && sessionState.mode !== 'persistent' ? (
+        <div className="host-notice host-notice-mode" role="status">
+          <strong>{sessionState.mode === 'read-only' ? 'Read-only tab.' : 'Temporary session.'}</strong>{' '}
+          {sessionState.mode === 'read-only' ? 'Another tab is saving your progress; changes here are not saved.' : 'Progress will be lost when this tab closes.'}
+          {sessionState.mode === 'read-only' ? (
+            <button type="button" onClick={() => void import('../persistence/open').then((m) => m.requestTakeover())}>
+              Use this tab
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+      {sessionState?.notices.map((n) => (
+        <div key={n.id} className="host-notice" role="status">
+          <span>{n.text}</span>
+          <button type="button" onClick={() => session?.dismissNotice(n.id)} aria-label="Dismiss notice">
+            Dismiss
+          </button>
+        </div>
+      ))}
       {appsOpen ? (
         <nav id="host-apps" className="host-apps" aria-label="Programs">
           <ul>
@@ -129,7 +179,7 @@ export function Host() {
         <div className="host-center">
           <div className="host-stage" style={{ width: size.width * scale, height: size.height * scale }}>
             <div style={{ width: size.width, height: size.height, transform: `scale(${scale})`, transformOrigin: '0 0' }}>
-              <Shell desktop={size} controller={controller} skipBoot={skipBoot} />
+              <Shell desktop={size} session={session} controller={controller} skipBoot={skipBoot} />
             </div>
           </div>
         </div>

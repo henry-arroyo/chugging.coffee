@@ -89,6 +89,8 @@ export type WMAction =
   | { type: 'cycle'; direction: 1 | -1 }
   | { type: 'setRect'; id: string; rect: Rect }
   | { type: 'setTitle'; id: string; title: string }
+  /** A program sizing its own window (allowed even when the guest cannot resize it). */
+  | { type: 'setSize'; id: string; size: Size }
   | { type: 'setDesktopSize'; size: Size };
 
 export function initialState(desktop: Size = { width: 800, height: 600 }): WMState {
@@ -342,6 +344,14 @@ export function reduce(state: WMState, action: WMAction): WMState {
 
     case 'setTitle':
       return update(state, action.id, { title: action.title });
+
+    case 'setSize': {
+      const w = state.windows[action.id];
+      if (!w || w.display !== 'normal') return state;
+      const size = fitSize(action.size, { width: 1, height: 1 }, state.workArea);
+      if (size.width === w.normal.width && size.height === w.normal.height) return state;
+      return update(state, action.id, { normal: placeInside({ ...w.normal, ...size }, state.workArea) });
+    }
 
     case 'setDesktopSize': {
       const workArea = workAreaFor(action.size);

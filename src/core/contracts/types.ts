@@ -178,6 +178,7 @@ export interface Preferences {
   clock: { format: '12h' | '24h' };
   solitaire: { drawCount: 1 | 3 };
   minesweeper: { level: MinesweeperLevel };
+  taskbar?: { showClock: boolean; smallStartIcons: boolean };
 }
 
 export interface Profile {

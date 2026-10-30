@@ -5,73 +5,215 @@
   "description": "Stored only in this browser. The screen name is unverified and may duplicate other guests'.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schemaVersion", "screenName", "createdAt", "updatedAt", "preferences"],
+  "required": [
+    "schemaVersion",
+    "screenName",
+    "createdAt",
+    "updatedAt",
+    "preferences"
+  ],
   "properties": {
-    "schemaVersion": { "const": 1 },
-    "screenName": { "$ref": "common.schema.json#/$defs/screenName" },
-    "createdAt": { "$ref": "common.schema.json#/$defs/dateTime" },
-    "updatedAt": { "$ref": "common.schema.json#/$defs/dateTime" },
-    "preferences": { "$ref": "#/$defs/preferences" }
+    "schemaVersion": {
+      "const": 1
+    },
+    "screenName": {
+      "$ref": "common.schema.json#/$defs/screenName"
+    },
+    "createdAt": {
+      "$ref": "common.schema.json#/$defs/dateTime"
+    },
+    "updatedAt": {
+      "$ref": "common.schema.json#/$defs/dateTime"
+    },
+    "preferences": {
+      "$ref": "#/$defs/preferences"
+    }
   },
   "$defs": {
     "preferences": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["desktop", "sound", "connection", "accessibility", "clock", "solitaire", "minesweeper"],
+      "required": [
+        "desktop",
+        "sound",
+        "connection",
+        "accessibility",
+        "clock",
+        "solitaire",
+        "minesweeper"
+      ],
       "properties": {
         "desktop": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["colorScheme", "wallpaper", "pattern", "scale"],
+          "required": [
+            "colorScheme",
+            "wallpaper",
+            "pattern",
+            "scale"
+          ],
           "properties": {
-            "colorScheme": { "enum": ["standard", "slate", "spruce", "brick", "high-contrast-black", "high-contrast-white"] },
-            "wallpaper": { "anyOf": [{ "$ref": "common.schema.json#/$defs/assetId" }, { "type": "null" }] },
-            "pattern": { "anyOf": [{ "enum": ["bricks", "weave", "diamonds", "dots", "scales"] }, { "type": "null" }] },
-            "scale": { "enum": [1, 1.25, 1.5, 2] }
+            "colorScheme": {
+              "enum": [
+                "standard",
+                "slate",
+                "spruce",
+                "brick",
+                "high-contrast-black",
+                "high-contrast-white"
+              ]
+            },
+            "wallpaper": {
+              "anyOf": [
+                {
+                  "$ref": "common.schema.json#/$defs/assetId"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "pattern": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "bricks",
+                    "weave",
+                    "diamonds",
+                    "dots",
+                    "scales"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "scale": {
+              "enum": [
+                1,
+                1.25,
+                1.5,
+                2
+              ]
+            }
           }
         },
         "sound": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["enabled", "volume"],
+          "required": [
+            "enabled",
+            "volume"
+          ],
           "properties": {
-            "enabled": { "type": "boolean" },
-            "volume": { "type": "number", "minimum": 0, "maximum": 1 }
+            "enabled": {
+              "type": "boolean"
+            },
+            "volume": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
           }
         },
         "connection": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["speed"],
-          "properties": { "speed": { "enum": ["normal", "fast"] } }
+          "required": [
+            "speed"
+          ],
+          "properties": {
+            "speed": {
+              "enum": [
+                "normal",
+                "fast"
+              ]
+            }
+          }
         },
         "accessibility": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["reducedMotion", "highContrast", "largerText"],
+          "required": [
+            "reducedMotion",
+            "highContrast",
+            "largerText"
+          ],
           "properties": {
-            "reducedMotion": { "type": "boolean" },
-            "highContrast": { "type": "boolean" },
-            "largerText": { "type": "boolean" }
+            "reducedMotion": {
+              "type": "boolean"
+            },
+            "highContrast": {
+              "type": "boolean"
+            },
+            "largerText": {
+              "type": "boolean"
+            }
           }
         },
         "clock": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["format"],
-          "properties": { "format": { "enum": ["12h", "24h"] } }
+          "required": [
+            "format"
+          ],
+          "properties": {
+            "format": {
+              "enum": [
+                "12h",
+                "24h"
+              ]
+            }
+          }
         },
         "solitaire": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["drawCount"],
-          "properties": { "drawCount": { "enum": [1, 3] } }
+          "required": [
+            "drawCount"
+          ],
+          "properties": {
+            "drawCount": {
+              "enum": [
+                1,
+                3
+              ]
+            }
+          }
         },
         "minesweeper": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["level"],
-          "properties": { "level": { "enum": ["beginner", "intermediate", "expert"] } }
+          "required": [
+            "level"
+          ],
+          "properties": {
+            "level": {
+              "enum": [
+                "beginner",
+                "intermediate",
+                "expert"
+              ]
+            }
+          }
+        },
+        "taskbar": {
+          "description": "Optional; added in M2. Older profiles without it use the defaults.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "showClock",
+            "smallStartIcons"
+          ],
+          "properties": {
+            "showClock": {
+              "type": "boolean"
+            },
+            "smallStartIcons": {
+              "type": "boolean"
+            }
+          }
         }
       }
     }

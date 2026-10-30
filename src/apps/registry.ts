@@ -1,37 +1,50 @@
+import type { ComponentType } from 'react';
+import { AccessibilityProperties, DateTimeProperties, DisplayProperties, ModemProperties, SoundProperties, StorageProperties, UserProperties } from './control/Applets';
+import ControlPanel from './control/ControlPanel';
 import Clock from './clock/Clock';
+import Find from './files/Find';
+import { Explorer, Folder, MyComputer } from './files/FolderWindow';
+import ImageView from './files/ImageView';
+import Notepad from './files/Notepad';
+import RecycleBin from './files/RecycleBin';
+import Minesweeper from './games/Minesweeper';
+import Solitaire from './games/Solitaire';
 import Help from './help/Help';
 import { MANIFESTS } from './manifests';
 import { notBuilt } from './system/NotBuilt';
 import TaskbarProperties from './system/TaskbarProperties';
 import type { AppDefinition, AppProps } from './types';
-import type { ComponentType } from 'react';
 
 const BUILT: Record<string, ComponentType<AppProps>> = {
   clock: Clock,
   help: Help,
   'taskbar-properties': TaskbarProperties,
+  'my-computer': MyComputer,
+  folder: Folder,
+  explorer: Explorer,
+  'recycle-bin': RecycleBin,
+  notepad: Notepad,
+  imageview: ImageView,
+  find: Find,
+  'control-panel': ControlPanel,
+  'display-properties': DisplayProperties,
+  'sound-properties': SoundProperties,
+  'modem-properties': ModemProperties,
+  'datetime-properties': DateTimeProperties,
+  'accessibility-properties': AccessibilityProperties,
+  'user-properties': UserProperties,
+  'storage-properties': StorageProperties,
+  solitaire: Solitaire,
+  minesweeper: Minesweeper,
 };
 
-const PLANNED: Record<string, 'M2' | 'M3'> = {
-  'my-computer': 'M2',
-  'recycle-bin': 'M2',
-  explorer: 'M2',
-  notepad: 'M2',
-  solitaire: 'M2',
-  minesweeper: 'M2',
-  'control-panel': 'M2',
-  find: 'M2',
-  aol: 'M3',
-  netscape: 'M3',
-};
+const PLANNED: Record<string, 'M2' | 'M3'> = { aol: 'M3', netscape: 'M3' };
 
 export const APPS: Record<string, AppDefinition> = Object.fromEntries(
   MANIFESTS.map((manifest) => {
     const built = BUILT[manifest.module];
-    const plannedFor = PLANNED[manifest.appId];
-    const definition: AppDefinition = built
-      ? { manifest, component: built }
-      : { manifest, component: notBuilt(manifest.appId === 'explorer' ? 'Windows Explorer' : manifest.title, plannedFor ?? 'M2'), plannedFor: plannedFor ?? 'M2' };
+    const plannedFor = PLANNED[manifest.appId] ?? 'M3';
+    const definition: AppDefinition = built ? { manifest, component: built } : { manifest, component: notBuilt(manifest.title, plannedFor), plannedFor };
     return [manifest.appId, definition];
   }),
 );

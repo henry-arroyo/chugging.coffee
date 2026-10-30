@@ -20,6 +20,7 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}/time-machine/`,
     trace: 'retain-on-failure',
+    screenshot: 'only-on-failure',
     launchOptions,
   },
   projects: [

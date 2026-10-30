@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { runAliases } from '../../apps/manifests';
 import { resolveRunCommand } from '../../core/run';
+import { stat } from '../../core/vfs/vfs';
 import { useShell } from '../context';
 import { iconUrl } from '../icons';
 
@@ -17,9 +18,17 @@ export function RunDialog({ windowId }: { windowId: string }) {
       shell.launch(result.appId);
       return;
     }
+    if (result.kind === 'path') {
+      const info = stat(shell.sessionState.vfs, result.path);
+      if (info && !info.deleted) {
+        shell.dispatch({ type: 'close', id: windowId });
+        shell.openFile(info.path);
+        return;
+      }
+    }
     const text =
       result.kind === 'path'
-        ? `Cannot find '${result.path}'. Files and folders on drive C: arrive with Windows Explorer (milestone M2).`
+        ? `Cannot find '${result.path}'. Make sure the path and name are correct.`
         : result.reason === 'empty'
           ? 'Type the name of a program to open.'
           : result.reason === 'not-found'

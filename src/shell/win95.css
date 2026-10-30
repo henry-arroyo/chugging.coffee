@@ -681,3 +681,194 @@
   gap: 10px;
   padding: 12px;
 }
+
+/* ------------------------------------------------------------------ color schemes */
+
+.w95.w95-scheme-slate {
+  --w95-desktop: #3a6ea5;
+  --w95-title: #2c3e50;
+  --w95-select: #2c3e50;
+  --w95-face: #c6c9cc;
+  --w95-light: #e2e4e6;
+}
+.w95.w95-scheme-spruce {
+  --w95-desktop: #3c6e4f;
+  --w95-title: #1f4e2e;
+  --w95-select: #1f4e2e;
+  --w95-face: #c4ccc2;
+  --w95-light: #e0e6de;
+}
+.w95.w95-scheme-brick {
+  --w95-desktop: #7a3b2e;
+  --w95-title: #800000;
+  --w95-select: #800000;
+  --w95-face: #d0c4b4;
+  --w95-light: #e8ded2;
+}
+.w95.w95-scheme-high-contrast-black {
+  --w95-desktop: #000000;
+  --w95-face: #000000;
+  --w95-light: #ffffff;
+  --w95-highlight: #ffffff;
+  --w95-shadow: #ffffff;
+  --w95-dark: #ffffff;
+  --w95-title: #800080;
+  --w95-title-inactive: #008000;
+  --w95-title-text: #ffffff;
+  --w95-title-text-inactive: #ffffff;
+  --w95-select: #800080;
+  --w95-window: #000000;
+  --w95-text: #ffffff;
+  --w95-gray-text: #00ff00;
+}
+.w95.w95-scheme-high-contrast-white {
+  --w95-desktop: #ffffff;
+  --w95-face: #ffffff;
+  --w95-light: #000000;
+  --w95-highlight: #000000;
+  --w95-shadow: #000000;
+  --w95-dark: #000000;
+  --w95-title: #000000;
+  --w95-title-inactive: #ffffff;
+  --w95-title-text: #ffffff;
+  --w95-title-text-inactive: #000000;
+  --w95-select: #000000;
+  --w95-window: #ffffff;
+  --w95-text: #000000;
+  --w95-gray-text: #808080;
+}
+.w95.w95-scheme-high-contrast-white .w95-desktop-icon {
+  color: #000000;
+}
+.w95.w95-larger-text {
+  font-size: 13px;
+  line-height: 16px;
+}
+.w95.w95-larger-text .w95-titlebar {
+  height: 20px;
+}
+
+/* ------------------------------------------------------------------ file lists */
+
+.w95-itemlist {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+.w95-itemlist-icons {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px;
+  padding: 6px;
+}
+.w95-itemlist-icon {
+  width: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 2px;
+  text-align: center;
+}
+.w95-itemlist-icon img {
+  width: 32px;
+  height: 32px;
+}
+.w95-itemlist-icon span {
+  padding: 0 2px;
+  overflow-wrap: anywhere;
+}
+.w95-itemlist-icon[aria-selected='true'] span,
+.w95-itemlist-row[aria-selected='true'] .w95-itemlist-name > span {
+  background: var(--w95-select);
+  color: var(--w95-select-text);
+}
+.w95-itemlist-icon[aria-selected='true'] img,
+.w95-itemlist-row[aria-selected='true'] img {
+  filter: brightness(0.55) sepia(1) hue-rotate(190deg) saturate(6);
+}
+.w95-itemlist-icon:focus-visible,
+.w95-itemlist-row:focus-visible {
+  outline: none;
+}
+.w95-itemlist-icon:focus-visible span,
+.w95-itemlist-row:focus-visible .w95-itemlist-name > span {
+  outline: 1px dotted var(--w95-text);
+}
+.w95-itemlist-header,
+.w95-itemlist-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 2fr) repeat(var(--cols, 3), minmax(70px, 1fr));
+  gap: 0 6px;
+  align-items: center;
+}
+.w95-itemlist-header {
+  position: sticky;
+  top: 0;
+  background: var(--w95-face);
+  box-shadow: var(--w95-raised);
+  padding: 2px 4px;
+  z-index: 1;
+}
+.w95-itemlist-row {
+  padding: 1px 4px;
+  white-space: nowrap;
+}
+.w95-itemlist-row > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.w95-itemlist-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.w95-itemlist-name img {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.w95-itemlist-empty {
+  margin: 8px;
+  color: var(--w95-gray-text);
+}
+.w95-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 0 4px;
+}
+.w95-tree {
+  list-style: none;
+  margin: 0;
+  padding: 2px;
+}
+.w95-tree ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 14px;
+}
+.w95-tree-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  padding: 0 2px;
+}
+.w95-tree-row img {
+  width: 16px;
+  height: 16px;
+}
+.w95-tree-row[aria-selected='true'] > span {
+  background: var(--w95-select);
+  color: var(--w95-select-text);
+}
+.w95-tree-toggle {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  font: 9px/9px monospace;
+  background: var(--w95-window);
+  border: 1px solid var(--w95-shadow);
+}

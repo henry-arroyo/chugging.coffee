@@ -2,13 +2,13 @@ import { useState } from 'react';
 import type { AppProps } from '../types';
 
 export default function TaskbarProperties({ host }: AppProps) {
-  const saved = host.shellPrefs!.get();
+  const saved = host.settings!.shellPrefs.get();
   const [draft, setDraft] = useState(saved);
   const [applied, setApplied] = useState(saved);
   const dirty = draft.showClock !== applied.showClock || draft.smallStartIcons !== applied.smallStartIcons;
 
   const apply = () => {
-    host.shellPrefs!.set({ ...host.shellPrefs!.get(), showClock: draft.showClock, smallStartIcons: draft.smallStartIcons });
+    host.settings!.shellPrefs.set({ ...host.settings!.shellPrefs.get(), showClock: draft.showClock, smallStartIcons: draft.smallStartIcons });
     setApplied(draft);
   };
 
