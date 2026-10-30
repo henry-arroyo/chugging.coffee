@@ -1,0 +1,12 @@
+{
+  "environment": "prod",
+  "confirmed": true,
+  "account": "196691452297",
+  "region": "us-east-1",
+  "profile": "time-machine-prod",
+  "operatorRoleName": "ctm-prod-operator",
+  "qualifier": "ctmprod",
+  "domainName": "chugging.coffee",
+  "certificateArn": null,
+  "expiresOn": null
+}

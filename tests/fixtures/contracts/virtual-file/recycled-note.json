@@ -1,0 +1,12 @@
+{
+  "path": "C:\\Recycled\\old note.txt",
+  "kind": "text",
+  "origin": "user",
+  "createdAt": "2026-10-29T21:10:00Z",
+  "modifiedAt": "2026-10-29T21:10:00Z",
+  "text": "gone but not forgotten",
+  "deleted": {
+    "originalPath": "C:\\My Documents\\old note.txt",
+    "deletedAt": "2026-10-29T21:20:00Z"
+  }
+}

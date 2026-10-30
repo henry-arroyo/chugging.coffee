@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/widget-props.schema.json",
+  "title": "Registered widget and its properties",
+  "description": "Widgets are reviewed, bundled components. Pages can only choose a registered widget and supply data that matches its props.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "props"],
+      "properties": {
+        "name": { "const": "hit-counter" },
+        "props": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["count", "digits"],
+          "properties": {
+            "count": { "type": "integer", "minimum": 0, "maximum": 99999999 },
+            "digits": { "type": "integer", "minimum": 4, "maximum": 8 }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "props"],
+      "properties": {
+        "name": { "const": "brew-calculator" },
+        "props": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["defaultCups", "gramsPerCup"],
+          "properties": {
+            "defaultCups": { "type": "integer", "minimum": 1, "maximum": 12 },
+            "gramsPerCup": { "type": "number", "minimum": 5, "maximum": 20 }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "props"],
+      "properties": {
+        "name": { "const": "download-time-calculator" },
+        "props": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["speedsBps"],
+          "properties": {
+            "speedsBps": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 6,
+              "uniqueItems": true,
+              "items": { "enum": [2400, 9600, 14400, 28800, 33600, 57600] }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "props"],
+      "properties": {
+        "name": { "const": "directory-search" },
+        "props": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scope"],
+          "properties": {
+            "scope": { "enum": ["all-sites", "release-updates"] }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "props"],
+      "properties": {
+        "name": { "const": "guestbook-archive" },
+        "props": {
+          "description": "Read-only, authored entries from fictional characters. Never visitor submissions.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["entries"],
+          "properties": {
+            "entries": {
+              "type": "array",
+              "maxItems": 50,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["name", "storyDate", "message"],
+                "properties": {
+                  "name": { "type": "string", "minLength": 1, "maxLength": 40 },
+                  "storyDate": { "$ref": "common.schema.json#/$defs/storyDate" },
+                  "message": { "type": "string", "minLength": 1, "maxLength": 500 }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "props"],
+      "properties": {
+        "name": { "const": "clue-logbook" },
+        "props": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["chainId"],
+          "properties": {
+            "chainId": { "$ref": "common.schema.json#/$defs/id" }
+          }
+        }
+      }
+    }
+  ]
+}

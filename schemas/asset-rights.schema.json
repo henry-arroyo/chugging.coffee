@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/asset-rights.schema.json",
+  "title": "Asset rights registry",
+  "description": "Every file a build ships must have an entry here. Public builds accept only approved entries that have not expired.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "assets"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "assets": {
+      "type": "array",
+      "maxItems": 5000,
+      "items": { "$ref": "#/$defs/asset" }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetId", "file", "kind", "origin", "source", "creator", "license", "attribution", "permissionEvidence", "allowedUse", "status", "standIn", "expires"],
+      "properties": {
+        "assetId": { "$ref": "common.schema.json#/$defs/assetId" },
+        "file": {
+          "description": "Path relative to assets/public.",
+          "type": "string",
+          "maxLength": 200,
+          "pattern": "^[a-z0-9][a-z0-9_-]*(?:/[a-z0-9][a-z0-9_-]*)*\\.(?:png|gif|svg|webp|jpg|woff2|mp3|ogg|wav|json)$"
+        },
+        "kind": { "enum": ["image", "icon", "font", "sound", "cursor", "data"] },
+        "origin": {
+          "description": "project-original: made for this project; third-party: licensed from someone else; historical: from or derived from 1990s software.",
+          "enum": ["project-original", "third-party", "historical"]
+        },
+        "source": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "creator": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "license": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "attribution": { "type": "string", "maxLength": 300 },
+        "permissionEvidence": {
+          "description": "Where proof of permission is kept (license file, written grant, ticket). Empty only for pending/blocked/reference-only.",
+          "type": "string",
+          "maxLength": 300
+        },
+        "allowedUse": {
+          "type": "array",
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "enum": ["public-build", "development", "documentation"] }
+        },
+        "status": { "enum": ["approved", "pending", "blocked", "reference-only"] },
+        "standIn": {
+          "description": "True for clearly labeled development stand-ins awaiting the final art decision.",
+          "type": "boolean"
+        },
+        "expires": {
+          "anyOf": [{ "$ref": "common.schema.json#/$defs/date" }, { "type": "null" }]
+        },
+        "notes": { "type": "string", "maxLength": 1000 }
+      }
+    }
+  }
+}

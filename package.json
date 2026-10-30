@@ -1,0 +1,50 @@
+{
+  "name": "chugging-time-machine",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A Windows 95 desktop connected to a shared, fictional December 1995 internet.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run contracts:check && npm run assets:check:public && tsc -p tsconfig.json && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.node.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "contracts:build": "tsx scripts/build-validators.ts",
+    "contracts:check": "tsx scripts/build-validators.ts --check",
+    "assets:check": "tsx scripts/check-assets.ts",
+    "assets:check:public": "tsx scripts/check-assets.ts --public",
+    "infra:check": "tsx infra/scripts/infra.ts check",
+    "infra:synth": "tsx infra/scripts/infra.ts synth",
+    "infra:diff": "tsx infra/scripts/infra.ts diff",
+    "infra:deploy": "tsx infra/scripts/infra.ts deploy",
+    "infra:status": "tsx infra/scripts/infra.ts status",
+    "infra:destroy": "tsx infra/scripts/infra.ts destroy",
+    "access:setup": "tsx infra/access/setup-access.ts",
+    "access:verify": "tsx infra/access/verify-access.ts"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "aws-cdk": "2.1145.0",
+    "aws-cdk-lib": "2.273.0",
+    "constructs": "10.8.1",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.4",
+    "vitest": "5.0.4",
+    "yaml": "2.9.1"
+  }
+}

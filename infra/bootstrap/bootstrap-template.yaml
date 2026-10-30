@@ -1,0 +1,495 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  chugging.coffee Time Machine - restricted CDK bootstrap for ONE environment
+  (stack CDKToolkit-ctmprod or CDKToolkit-ctmtest). Derived from the CDK v2 bootstrap template
+  (version 32) with: no ECR repository, image-publishing role, lookup role or KMS key; deploy and
+  file-publishing roles trusted only by that environment's operator role (ctm-<env>-operator
+  from ctm-foundation, which must exist first); a CloudFormation
+  execution policy limited to that environment's resources instead of AdministratorAccess; and the
+  foundation permission boundary on every role. Applied only by the bootstrap maintainer.
+  DRAFT FOR OWNER REVIEW - not yet applied to any account.
+
+Parameters:
+  Qualifier:
+    Type: String
+    AllowedValues: [ctmprod, ctmtest]
+  Environment:
+    Type: String
+    AllowedValues: [prod, test]
+  StackPrefix:
+    Type: String
+    AllowedValues: [CtmProd, CtmTest]
+    Description: Prefix of the environment's exact stack names (CtmProd-Site, CtmTest-Site, ...).
+  CertificateDomainName:
+    Type: String
+    Default: ''
+    Description: >-
+      Production only, and only after the owner approves certificate management: the exact domain
+      the certificate stack may request. Empty grants no ACM permissions at all.
+    AllowedPattern: '^$|^(?:[a-z0-9-]+\.)+[a-z]{2,}$'
+
+Conditions:
+  ManageCertificate:
+    Fn::And:
+      - Fn::Equals: [{ Ref: Environment }, prod]
+      - Fn::Not: [{ Fn::Equals: [{ Ref: CertificateDomainName }, ''] }]
+
+Rules:
+  ConsistentEnvironment:
+    Assertions:
+      - Assert:
+          Fn::Or:
+            - Fn::And:
+                - Fn::Equals: [{ Ref: Environment }, prod]
+                - Fn::Equals: [{ Ref: Qualifier }, ctmprod]
+                - Fn::Equals: [{ Ref: StackPrefix }, CtmProd]
+            - Fn::And:
+                - Fn::Equals: [{ Ref: Environment }, test]
+                - Fn::Equals: [{ Ref: Qualifier }, ctmtest]
+                - Fn::Equals: [{ Ref: StackPrefix }, CtmTest]
+        AssertDescription: Environment, Qualifier and StackPrefix must all name the same environment.
+  CertificateOnlyInProd:
+    RuleCondition:
+      Fn::Equals: [{ Ref: Environment }, test]
+    Assertions:
+      - Assert:
+          Fn::Equals: [{ Ref: CertificateDomainName }, '']
+        AssertDescription: The test environment never manages certificates.
+
+Resources:
+  StagingBucket:
+    Type: AWS::S3::Bucket
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Properties:
+      BucketName:
+        Fn::Sub: cdk-${Qualifier}-assets-${AWS::AccountId}-${AWS::Region}
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: CleanupOldVersions
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 30
+          - Id: AbortIncompleteMultipartUploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+      Tags:
+        - { Key: Project, Value: chugging-time-machine }
+        - { Key: Environment, Value: { Ref: Environment } }
+        - { Key: ManagedBy, Value: cdk-bootstrap }
+
+  StagingBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: { Ref: StagingBucket }
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowSSLRequestsOnly
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - { 'Fn::Sub': '${StagingBucket.Arn}' }
+              - { 'Fn::Sub': '${StagingBucket.Arn}/*' }
+            Condition:
+              Bool:
+                aws:SecureTransport: 'false'
+          # Only this environment's file-publishing role may write deployment artifacts.
+          - Sid: OnlyFilePublishingRoleWrites
+            Effect: Deny
+            Principal: '*'
+            Action: ['s3:PutObject', 's3:DeleteObject', 's3:DeleteObjectVersion']
+            Resource: { 'Fn::Sub': '${StagingBucket.Arn}/*' }
+            Condition:
+              ArnNotEquals:
+                aws:PrincipalArn: { 'Fn::GetAtt': [FilePublishingRole, Arn] }
+
+  FilePublishingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Sub: cdk-${Qualifier}-file-publishing-role-${AWS::AccountId}-${AWS::Region}
+      MaxSessionDuration: 3600
+      PermissionsBoundary: { 'Fn::Sub': 'arn:aws:iam::${AWS::AccountId}:policy/ctm-permissions-boundary' }
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { AWS: { 'Fn::Sub': 'arn:aws:iam::${AWS::AccountId}:role/ctm-${Environment}-operator' } }
+            Action: ['sts:AssumeRole', 'sts:TagSession']
+      Policies:
+        - PolicyName: publish-deployment-artifacts
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: StagingBucketOnly
+                Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:GetBucketLocation
+                  - s3:ListBucket
+                  - s3:PutObject
+                  - s3:AbortMultipartUpload
+                Resource:
+                  - { 'Fn::Sub': '${StagingBucket.Arn}' }
+                  - { 'Fn::Sub': '${StagingBucket.Arn}/*' }
+                Condition:
+                  StringEquals:
+                    s3:ResourceAccount: { Ref: AWS::AccountId }
+      Tags:
+        - { Key: aws-cdk:bootstrap-role, Value: file-publishing }
+        - { Key: Project, Value: chugging-time-machine }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  DeploymentActionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Sub: cdk-${Qualifier}-deploy-role-${AWS::AccountId}-${AWS::Region}
+      MaxSessionDuration: 3600
+      PermissionsBoundary: { 'Fn::Sub': 'arn:aws:iam::${AWS::AccountId}:policy/ctm-permissions-boundary' }
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { AWS: { 'Fn::Sub': 'arn:aws:iam::${AWS::AccountId}:role/ctm-${Environment}-operator' } }
+            Action: ['sts:AssumeRole', 'sts:TagSession']
+      Policies:
+        - PolicyName: deploy-environment-stacks
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              # Change sets only, only on this environment's exact stacks, only run as this
+              # environment's execution role, and only with allowlisted resource types.
+              - Sid: ChangeSetsWithExecutionRole
+                Effect: Allow
+                Action: cloudformation:CreateChangeSet
+                Resource:
+                  - { 'Fn::Sub': 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackPrefix}-Site/*' }
+                  - { 'Fn::Sub': 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackPrefix}-Certificate/*' }
+                Condition:
+                  StringEquals:
+                    cloudformation:RoleArn: { 'Fn::GetAtt': [CloudFormationExecutionRole, Arn] }
+                  ForAllValues:StringEquals:
+                    cloudformation:ResourceTypes:
+                      - AWS::S3::Bucket
+                      - AWS::S3::BucketPolicy
+                      - AWS::CloudFront::Distribution
+                      - AWS::CloudFront::OriginAccessControl
+                      - AWS::CloudFront::ResponseHeadersPolicy
+                      - AWS::CloudFront::Function
+                      - AWS::CertificateManager::Certificate
+                  'Null':
+                    cloudformation:ResourceTypes: 'false'
+              - Sid: OperateEnvironmentStacks
+                Effect: Allow
+                Action:
+                  - cloudformation:DescribeChangeSet
+                  - cloudformation:ExecuteChangeSet
+                  - cloudformation:DeleteChangeSet
+                  - cloudformation:DescribeStacks
+                  - cloudformation:DescribeStackEvents
+                  - cloudformation:DescribeStackResources
+                  - cloudformation:ListStackResources
+                  - cloudformation:GetTemplate
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:UpdateTerminationProtection
+                Resource:
+                  - { 'Fn::Sub': 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackPrefix}-Site/*' }
+                  - { 'Fn::Sub': 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackPrefix}-Certificate/*' }
+              # When no role is named, CloudFormation reuses the stack's stored role, which is
+              # always the execution role because every create above requires it.
+              - Sid: DeleteAndRecoverWithExecutionRole
+                Effect: Allow
+                Action:
+                  - cloudformation:DeleteStack
+                  - cloudformation:RollbackStack
+                  - cloudformation:ContinueUpdateRollback
+                Resource:
+                  - { 'Fn::Sub': 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackPrefix}-Site/*' }
+                  - { 'Fn::Sub': 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${StackPrefix}-Certificate/*' }
+                Condition:
+                  StringEqualsIfExists:
+                    cloudformation:RoleArn: { 'Fn::GetAtt': [CloudFormationExecutionRole, Arn] }
+              - Sid: PassOnlyThisExecutionRole
+                Effect: Allow
+                Action: iam:PassRole
+                Resource: { 'Fn::GetAtt': [CloudFormationExecutionRole, Arn] }
+                Condition:
+                  StringEquals:
+                    iam:PassedToService: cloudformation.amazonaws.com
+              - Sid: ReadDeploymentArtifacts
+                Effect: Allow
+                Action: ['s3:GetObject', 's3:GetBucketLocation', 's3:ListBucket']
+                Resource:
+                  - { 'Fn::Sub': '${StagingBucket.Arn}' }
+                  - { 'Fn::Sub': '${StagingBucket.Arn}/*' }
+                Condition:
+                  StringEquals:
+                    s3:ResourceAccount: { Ref: AWS::AccountId }
+              - Sid: ReadBootstrapVersion
+                Effect: Allow
+                Action: ['ssm:GetParameter', 'ssm:GetParameters']
+                Resource:
+                  Fn::Sub: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/cdk-bootstrap/${Qualifier}/version
+              - Sid: ReadToolkitStack
+                Effect: Allow
+                Action: cloudformation:DescribeStacks
+                Resource:
+                  Fn::Sub: arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/CDKToolkit-${Qualifier}/*
+              - Sid: WhoAmI
+                Effect: Allow
+                Action: sts:GetCallerIdentity
+                Resource: '*'
+      Tags:
+        - { Key: aws-cdk:bootstrap-role, Value: deploy }
+        - { Key: Project, Value: chugging-time-machine }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  CloudFormationExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Sub: cdk-${Qualifier}-cfn-exec-role-${AWS::AccountId}-${AWS::Region}
+      PermissionsBoundary: { 'Fn::Sub': 'arn:aws:iam::${AWS::AccountId}:policy/ctm-permissions-boundary' }
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: cloudformation.amazonaws.com }
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - { Ref: ExecutionPolicy }
+      Tags:
+        - { Key: aws-cdk:bootstrap-role, Value: cfn-exec }
+        - { Key: Project, Value: chugging-time-machine }
+        - { Key: Environment, Value: { Ref: Environment } }
+
+  # Everything CloudFormation may do for this environment. Replaces AdministratorAccess.
+  ExecutionPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName:
+        Fn::Sub: ctm-${Environment}-cfn-execution
+      Description: chugging.coffee Time Machine - CloudFormation execution permissions for one environment
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CreateSiteBucket
+            Effect: Allow
+            Action: s3:CreateBucket
+            Resource: { 'Fn::Sub': 'arn:aws:s3:::ctm-${Environment}-site-${AWS::AccountId}' }
+          - Sid: ConfigureSiteBucket
+            Effect: Allow
+            Action:
+              - s3:DeleteBucket
+              - s3:ListBucket
+              - 's3:Get*'
+              - s3:PutBucketPolicy
+              - s3:DeleteBucketPolicy
+              - s3:PutBucketPublicAccessBlock
+              - s3:PutEncryptionConfiguration
+              - s3:PutBucketVersioning
+              - s3:PutBucketTagging
+              - s3:PutBucketOwnershipControls
+              - s3:PutLifecycleConfiguration
+            Resource: { 'Fn::Sub': 'arn:aws:s3:::ctm-${Environment}-site-${AWS::AccountId}' }
+            Condition:
+              StringEquals:
+                s3:ResourceAccount: { Ref: AWS::AccountId }
+
+          # CloudFormation creates distributions without tags and tags them right after
+          # (observed in the sibling luna.is project), so creation cannot be tag-gated.
+          # Creating cannot affect an existing resource.
+          - Sid: CreateDistribution
+            Effect: Allow
+            Action: cloudfront:CreateDistribution
+            Resource: '*'
+          # Claim a fresh, untagged distribution for this environment. The values are fixed, so
+          # a test deploy can never label anything prod (or the reverse).
+          - Sid: TagNewDistribution
+            Effect: Allow
+            Action: cloudfront:TagResource
+            Resource: { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:distribution/*' }
+            Condition:
+              StringEquals:
+                aws:RequestTag/Project: chugging-time-machine
+                aws:RequestTag/Environment: { Ref: Environment }
+              'Null':
+                aws:ResourceTag/Project: 'true'
+          - Sid: RetagOwnDistribution
+            Effect: Allow
+            Action: cloudfront:TagResource
+            Resource: { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:distribution/*' }
+            Condition:
+              StringEquals:
+                aws:ResourceTag/Project: chugging-time-machine
+                aws:ResourceTag/Environment: { Ref: Environment }
+              StringEqualsIfExists:
+                aws:RequestTag/Project: chugging-time-machine
+                aws:RequestTag/Environment: { Ref: Environment }
+          - Sid: UntagOwnDistributionExceptProtectedKeys
+            Effect: Allow
+            Action: cloudfront:UntagResource
+            Resource: { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:distribution/*' }
+            Condition:
+              StringEquals:
+                aws:ResourceTag/Project: chugging-time-machine
+                aws:ResourceTag/Environment: { Ref: Environment }
+              ForAllValues:StringNotEquals:
+                aws:TagKeys: [Project, Environment, ManagedBy]
+          - Sid: ManageOwnDistribution
+            Effect: Allow
+            Action:
+              - cloudfront:GetDistribution
+              - cloudfront:GetDistributionConfig
+              - cloudfront:UpdateDistribution
+              - cloudfront:DeleteDistribution
+              - cloudfront:ListTagsForResource
+            Resource: { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:distribution/*' }
+            Condition:
+              StringEquals:
+                aws:ResourceTag/Project: chugging-time-machine
+                aws:ResourceTag/Environment: { Ref: Environment }
+          # A fresh distribution has no tags yet when CloudFormation first reads it back.
+          - Sid: ReadUntaggedNewDistribution
+            Effect: Allow
+            Action: [cloudfront:GetDistribution, cloudfront:ListTagsForResource]
+            Resource: { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:distribution/*' }
+            Condition:
+              'Null':
+                aws:ResourceTag/Project: 'true'
+          - Sid: EnvironmentFunctions
+            Effect: Allow
+            Action:
+              - cloudfront:CreateFunction
+              - cloudfront:DescribeFunction
+              - cloudfront:GetFunction
+              - cloudfront:UpdateFunction
+              - cloudfront:PublishFunction
+              - cloudfront:DeleteFunction
+            Resource: { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:function/ctm-${Environment}-*' }
+          # IAM offers no tag or name conditions for origin access controls and response-headers
+          # policies. Limited to this account; CloudFormation only changes ones its stack owns,
+          # and resource import is denied by the permission boundary. See docs/security-design.md.
+          - Sid: UntaggableCloudFrontResources
+            Effect: Allow
+            Action:
+              - cloudfront:CreateOriginAccessControl
+              - cloudfront:GetOriginAccessControl
+              - cloudfront:UpdateOriginAccessControl
+              - cloudfront:DeleteOriginAccessControl
+              - cloudfront:CreateResponseHeadersPolicy
+              - cloudfront:GetResponseHeadersPolicy
+              - cloudfront:UpdateResponseHeadersPolicy
+              - cloudfront:DeleteResponseHeadersPolicy
+            Resource:
+              - { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:origin-access-control/*' }
+              - { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:response-headers-policy/*' }
+          - Sid: CreateUntaggableCloudFrontResources
+            Effect: Allow
+            Action: [cloudfront:CreateOriginAccessControl, cloudfront:CreateResponseHeadersPolicy]
+            Resource: '*'
+
+          - Sid: ReadBootstrapVersion
+            Effect: Allow
+            Action: ['ssm:GetParameter', 'ssm:GetParameters']
+            Resource:
+              Fn::Sub: arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/cdk-bootstrap/${Qualifier}/version
+          - Sid: ReadDeploymentArtifacts
+            Effect: Allow
+            Action: s3:GetObject
+            Resource: { 'Fn::Sub': '${StagingBucket.Arn}/*' }
+            Condition:
+              StringEquals:
+                s3:ResourceAccount: { Ref: AWS::AccountId }
+
+          # Production certificate, only when CertificateDomainName is set (owner-approved).
+          - Fn::If:
+              - ManageCertificate
+              - Sid: RequestExactCertificate
+                Effect: Allow
+                Action: acm:RequestCertificate
+                Resource: '*'
+                Condition:
+                  ForAllValues:StringEquals:
+                    acm:DomainNames: [{ Ref: CertificateDomainName }]
+                  StringEquals:
+                    acm:ValidationMethod: DNS
+              - { Ref: AWS::NoValue }
+          - Fn::If:
+              - ManageCertificate
+              - Sid: TagNewCertificate
+                Effect: Allow
+                Action: acm:AddTagsToCertificate
+                Resource: { 'Fn::Sub': 'arn:aws:acm:${AWS::Region}:${AWS::AccountId}:certificate/*' }
+                Condition:
+                  StringEquals:
+                    aws:RequestTag/Project: chugging-time-machine
+                    aws:RequestTag/Environment: prod
+                  'Null':
+                    aws:ResourceTag/Project: 'true'
+              - { Ref: AWS::NoValue }
+          - Fn::If:
+              - ManageCertificate
+              - Sid: ManageOwnCertificate
+                Effect: Allow
+                Action: [acm:DescribeCertificate, acm:ListTagsForCertificate, acm:DeleteCertificate, acm:AddTagsToCertificate]
+                Resource: { 'Fn::Sub': 'arn:aws:acm:${AWS::Region}:${AWS::AccountId}:certificate/*' }
+                Condition:
+                  StringEquals:
+                    aws:ResourceTag/Project: chugging-time-machine
+                    aws:ResourceTag/Environment: prod
+                  StringEqualsIfExists:
+                    aws:RequestTag/Project: chugging-time-machine
+                    aws:RequestTag/Environment: prod
+              - { Ref: AWS::NoValue }
+          - Fn::If:
+              - ManageCertificate
+              - Sid: ReadUntaggedNewCertificate
+                Effect: Allow
+                Action: [acm:DescribeCertificate, acm:ListTagsForCertificate]
+                Resource: { 'Fn::Sub': 'arn:aws:acm:${AWS::Region}:${AWS::AccountId}:certificate/*' }
+                Condition:
+                  'Null':
+                    aws:ResourceTag/Project: 'true'
+              - { Ref: AWS::NoValue }
+
+  CdkBootstrapVersion:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Type: String
+      Name:
+        Fn::Sub: /cdk-bootstrap/${Qualifier}/version
+      Value: '32'
+      Tags:
+        Project: chugging-time-machine
+        Environment: { Ref: Environment }
+
+Outputs:
+  BucketName:
+    Value: { Ref: StagingBucket }
+  DeployRoleArn:
+    Value: { 'Fn::GetAtt': [DeploymentActionRole, Arn] }
+  FilePublishingRoleArn:
+    Value: { 'Fn::GetAtt': [FilePublishingRole, Arn] }
+  CloudFormationExecutionRoleArn:
+    Value: { 'Fn::GetAtt': [CloudFormationExecutionRole, Arn] }
+  BootstrapVersion:
+    Value: '32'

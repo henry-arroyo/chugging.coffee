@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "assetId": "icon.notepad",
+      "file": "icons/notepad.svg",
+      "kind": "icon",
+      "origin": "project-original",
+      "source": "Drawn for this project",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": ["public-build", "development"],
+      "status": "approved",
+      "standIn": true,
+      "expires": null,
+      "notes": "Stand-in until the skin decision."
+    },
+    {
+      "assetId": "font.pixel-sans",
+      "file": "fonts/pixel-sans.woff2",
+      "kind": "font",
+      "origin": "third-party",
+      "source": "Example open font project",
+      "creator": "Example Foundry",
+      "license": "OFL-1.1",
+      "attribution": "Pixel Sans by Example Foundry, OFL 1.1",
+      "permissionEvidence": "assets/licenses/OFL-pixel-sans.txt",
+      "allowedUse": ["public-build", "development", "documentation"],
+      "status": "approved",
+      "standIn": false,
+      "expires": "2030-01-01"
+    },
+    {
+      "assetId": "sound.dialup",
+      "file": "sounds/dialup.ogg",
+      "kind": "sound",
+      "origin": "project-original",
+      "source": "Synthesized for this project",
+      "creator": "TBD",
+      "license": "TBD",
+      "attribution": "",
+      "permissionEvidence": "",
+      "allowedUse": ["development"],
+      "status": "pending",
+      "standIn": true,
+      "expires": null
+    }
+  ]
+}

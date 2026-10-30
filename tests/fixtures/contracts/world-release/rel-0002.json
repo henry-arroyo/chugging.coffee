@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "rel-0002",
+  "sequence": 2,
+  "storyDate": "1995-12-08",
+  "title": "Second week of December",
+  "publishedAt": "2026-11-15T12:00:00Z",
+  "previousReleaseId": "rel-0001",
+  "compatibility": {
+    "minClientVersion": "0.1.0",
+    "rollbackSafeTo": [
+      "rel-0001"
+    ]
+  },
+  "sites": [
+    {
+      "siteId": "chugging",
+      "host": "chugging.test",
+      "manifest": "sites/chugging/manifest.json",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "redirects": [
+    {
+      "from": "http://chugging.test/news.html",
+      "to": "http://chugging.test/notices.html",
+      "sinceReleaseId": "rel-0002"
+    }
+  ],
+  "retiredClues": [
+    {
+      "clueId": "old-map-scrap",
+      "retiredInReleaseId": "rel-0002",
+      "replacedBy": "lantern-star-chart"
+    }
+  ],
+  "clueChains": [
+    {
+      "chainId": "lantern-lights",
+      "title": "The Lantern Point lights",
+      "steps": [
+        {
+          "clueId": "lantern-star-chart",
+          "pageId": "lantern-logbook",
+          "blockId": "entry-3",
+          "hints": [
+            "Someone at Northstar keeps a star chart.",
+            "Check the astronomy club page."
+          ]
+        }
+      ],
+      "reward": {
+        "documentId": "lantern-letter",
+        "vfsPath": "C:\\My Documents\\Lantern Letter.txt",
+        "title": "Lantern Letter",
+        "text": "You found it."
+      }
+    }
+  ],
+  "aolKeywords": [
+    {
+      "keyword": "coffee",
+      "target": "http://chugging.test/"
+    },
+    {
+      "keyword": "news",
+      "target": "aol-area:news"
+    }
+  ],
+  "updates": [
+    {
+      "storyDate": "1995-12-08",
+      "headline": "Night Owl BBS adds a new file area",
+      "address": "http://nightowl.test/"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/virtual-file.schema.json",
+  "title": "Virtual filesystem entry",
+  "description": "An entry on the simulated C: drive. Whether an entry is protected comes from trusted seed metadata, never from this record alone.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["path", "kind", "origin", "createdAt", "modifiedAt"],
+  "properties": {
+    "path": { "$ref": "common.schema.json#/$defs/vfsPath" },
+    "kind": { "enum": ["folder", "text", "image", "shortcut"] },
+    "origin": {
+      "description": "user: made by the guest; collected: earned from the world (e.g. a clue reward).",
+      "enum": ["user", "collected"]
+    },
+    "createdAt": { "$ref": "common.schema.json#/$defs/dateTime" },
+    "modifiedAt": { "$ref": "common.schema.json#/$defs/dateTime" },
+    "text": {
+      "description": "Text content. The VFS also enforces 65,536 UTF-8 bytes per file and about 5 MiB in total.",
+      "type": "string",
+      "maxLength": 65536
+    },
+    "assetId": { "$ref": "common.schema.json#/$defs/assetId" },
+    "target": {
+      "anyOf": [
+        { "type": "string", "pattern": "^app:[a-z0-9]+(?:-[a-z0-9]+)*$", "maxLength": 68 },
+        { "$ref": "common.schema.json#/$defs/vfsPath" }
+      ]
+    },
+    "sourceDocumentId": { "$ref": "common.schema.json#/$defs/id" },
+    "deleted": {
+      "description": "Present while the entry is in the Recycle Bin.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["originalPath", "deletedAt"],
+      "properties": {
+        "originalPath": { "$ref": "common.schema.json#/$defs/vfsPath" },
+        "deletedAt": { "$ref": "common.schema.json#/$defs/dateTime" }
+      }
+    }
+  },
+  "allOf": [
+    { "if": { "properties": { "kind": { "const": "text" } } }, "then": { "required": ["text"] } },
+    { "if": { "properties": { "kind": { "const": "image" } } }, "then": { "required": ["assetId"] } },
+    { "if": { "properties": { "kind": { "const": "shortcut" } } }, "then": { "required": ["target"] } }
+  ]
+}

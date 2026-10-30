@@ -1,0 +1,70 @@
+[
+  {
+    "type": "app.launch",
+    "appId": "netscape",
+    "address": "http://switchboard.test/"
+  },
+  {
+    "type": "window.minimized",
+    "windowId": "w-3"
+  },
+  {
+    "type": "net.state",
+    "state": "negotiating",
+    "generation": 4
+  },
+  {
+    "type": "net.state",
+    "state": "offline",
+    "generation": 4,
+    "error": "Busy signal"
+  },
+  {
+    "type": "net.transfer",
+    "requestId": "r-12",
+    "phase": "progress",
+    "bytesDone": 2880,
+    "bytesTotal": 81920
+  },
+  {
+    "type": "nav.request",
+    "address": "http://chugging.test/menu.html",
+    "source": "netscape"
+  },
+  {
+    "type": "vfs.changed",
+    "paths": [
+      "C:\\My Documents\\shopping list.txt"
+    ]
+  },
+  {
+    "type": "storage.status",
+    "mode": "temporary",
+    "reason": "denied"
+  },
+  {
+    "type": "release.available",
+    "releaseId": "rel-0002"
+  },
+  {
+    "type": "discovery.recorded",
+    "clueId": "lantern-star-chart",
+    "releaseId": "rel-0001"
+  },
+  {
+    "type": "audio.play",
+    "soundId": "sound.dialup"
+  },
+  {
+    "type": "settings.applied",
+    "keys": [
+      "desktop",
+      "connection"
+    ]
+  },
+  {
+    "type": "app.crashed",
+    "appId": "solitaire",
+    "message": "Render error"
+  }
+]

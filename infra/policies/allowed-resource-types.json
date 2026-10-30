@@ -1,0 +1,14 @@
+{
+  "$comment": "CloudFormation resource types each stack may contain. infra:check fails on anything else. Expanding this list is a permission expansion and needs owner approval (docs/security-design.md).",
+  "site": [
+    "AWS::S3::Bucket",
+    "AWS::S3::BucketPolicy",
+    "AWS::CloudFront::Distribution",
+    "AWS::CloudFront::OriginAccessControl",
+    "AWS::CloudFront::ResponseHeadersPolicy",
+    "AWS::CloudFront::Function"
+  ],
+  "certificate": [
+    "AWS::CertificateManager::Certificate"
+  ]
+}

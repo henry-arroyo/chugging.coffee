@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/window-geometry.schema.json",
+  "title": "Saved window geometry",
+  "description": "Last normal (restored) rectangle and state per application, measured on the virtual desktop.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "desktop", "windows"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "desktop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 640, "maximum": 1600 },
+        "height": { "type": "integer", "minimum": 480, "maximum": 1200 }
+      }
+    },
+    "windows": {
+      "type": "object",
+      "maxProperties": 64,
+      "propertyNames": { "$ref": "common.schema.json#/$defs/id" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["normal", "state"],
+        "properties": {
+          "normal": { "$ref": "common.schema.json#/$defs/geometry" },
+          "state": { "enum": ["normal", "maximized", "minimized"] }
+        }
+      }
+    }
+  }
+}

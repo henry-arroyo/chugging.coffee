@@ -1,0 +1,221 @@
+{
+  "format": "chugging-time-machine-save",
+  "schemaVersion": 1,
+  "exportedAt": "2026-10-29T22:00:00Z",
+  "profile": {
+    "schemaVersion": 1,
+    "screenName": "Night Owl 95",
+    "createdAt": "2026-10-29T21:00:00.000Z",
+    "updatedAt": "2026-10-29T21:05:00Z",
+    "preferences": {
+      "desktop": {
+        "colorScheme": "standard",
+        "wallpaper": null,
+        "pattern": null,
+        "scale": 1
+      },
+      "sound": {
+        "enabled": false,
+        "volume": 0.6
+      },
+      "connection": {
+        "speed": "normal"
+      },
+      "accessibility": {
+        "reducedMotion": false,
+        "highContrast": false,
+        "largerText": false
+      },
+      "clock": {
+        "format": "12h"
+      },
+      "solitaire": {
+        "drawCount": 3
+      },
+      "minesweeper": {
+        "level": "beginner"
+      }
+    }
+  },
+  "bookmarks": [
+    {
+      "address": "http://switchboard.test/",
+      "title": "Switchboard",
+      "addedAt": "2026-10-29T21:30:00Z"
+    }
+  ],
+  "discoveries": [
+    {
+      "clueId": "lantern-star-chart",
+      "releaseId": "rel-0001",
+      "at": "2026-10-29T21:40:00Z"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\My Documents\\shopping list.txt",
+      "kind": "text",
+      "origin": "user",
+      "createdAt": "2026-10-29T21:10:00Z",
+      "modifiedAt": "2026-10-29T21:11:00Z",
+      "text": "coffee filters\n28.8 modem cable\n"
+    }
+  ],
+  "windows": {
+    "schemaVersion": 1,
+    "desktop": {
+      "width": 800,
+      "height": 600
+    },
+    "windows": {
+      "notepad": {
+        "normal": {
+          "x": 40,
+          "y": 30,
+          "width": 420,
+          "height": 300
+        },
+        "state": "normal"
+      },
+      "netscape": {
+        "normal": {
+          "x": 20,
+          "y": 10,
+          "width": 640,
+          "height": 480
+        },
+        "state": "maximized"
+      }
+    }
+  },
+  "games": {
+    "klondike": {
+      "game": "klondike",
+      "schemaVersion": 1,
+      "drawCount": 3,
+      "seed": 1995,
+      "state": {
+        "stock": [
+          "4S",
+          "KC",
+          "2H",
+          "5S",
+          "7C",
+          "8D",
+          "3C",
+          "QD",
+          "5H",
+          "6S",
+          "KS",
+          "10S",
+          "2S",
+          "KH",
+          "AS",
+          "9S",
+          "3S",
+          "4D",
+          "JH",
+          "AC",
+          "7H",
+          "5C",
+          "10C",
+          "9C"
+        ],
+        "waste": [],
+        "foundations": [
+          [],
+          [],
+          [],
+          []
+        ],
+        "tableau": [
+          {
+            "faceDown": [],
+            "faceUp": [
+              "2C"
+            ]
+          },
+          {
+            "faceDown": [
+              "KD"
+            ],
+            "faceUp": [
+              "10H"
+            ]
+          },
+          {
+            "faceDown": [
+              "8C",
+              "QC"
+            ],
+            "faceUp": [
+              "QS"
+            ]
+          },
+          {
+            "faceDown": [
+              "4C",
+              "JD",
+              "3H"
+            ],
+            "faceUp": [
+              "JC"
+            ]
+          },
+          {
+            "faceDown": [
+              "7D",
+              "3D",
+              "AD",
+              "9H"
+            ],
+            "faceUp": [
+              "4H"
+            ]
+          },
+          {
+            "faceDown": [
+              "5D",
+              "6D",
+              "8H",
+              "9D",
+              "JS"
+            ],
+            "faceUp": [
+              "10D"
+            ]
+          },
+          {
+            "faceDown": [
+              "7S",
+              "QH",
+              "AH",
+              "6C",
+              "2D",
+              "8S"
+            ],
+            "faceUp": [
+              "6H"
+            ]
+          }
+        ],
+        "score": 0,
+        "stockPasses": 0
+      },
+      "undo": [],
+      "moves": 0,
+      "elapsedMs": 0,
+      "status": "playing"
+    }
+  },
+  "bestTimes": {
+    "beginner": {
+      "seconds": 87,
+      "name": "Night Owl 95",
+      "at": "2026-10-29T21:50:00Z"
+    }
+  },
+  "recentDocuments": [
+    "C:\\My Documents\\shopping list.txt"
+  ]
+}

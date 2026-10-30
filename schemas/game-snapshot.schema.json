@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/game-snapshot.schema.json",
+  "title": "Saved game",
+  "description": "Shape only. Game modules re-check conservation (52 distinct cards, consistent mine counts) on load and discard invalid saves.",
+  "oneOf": [{ "$ref": "#/$defs/klondike" }, { "$ref": "#/$defs/minesweeper" }],
+  "$defs": {
+    "pile": {
+      "type": "array",
+      "maxItems": 52,
+      "items": { "$ref": "common.schema.json#/$defs/card" }
+    },
+    "klondikeState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stock", "waste", "foundations", "tableau", "score", "stockPasses"],
+      "properties": {
+        "stock": { "$ref": "#/$defs/pile" },
+        "waste": { "$ref": "#/$defs/pile" },
+        "foundations": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "type": "array", "maxItems": 13, "items": { "$ref": "common.schema.json#/$defs/card" } }
+        },
+        "tableau": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["faceDown", "faceUp"],
+            "properties": {
+              "faceDown": { "type": "array", "maxItems": 6, "items": { "$ref": "common.schema.json#/$defs/card" } },
+              "faceUp": { "type": "array", "maxItems": 13, "items": { "$ref": "common.schema.json#/$defs/card" } }
+            }
+          }
+        },
+        "score": { "type": "integer", "minimum": 0, "maximum": 100000 },
+        "stockPasses": { "type": "integer", "minimum": 0, "maximum": 10000 }
+      }
+    },
+    "klondike": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["game", "schemaVersion", "drawCount", "seed", "state", "undo", "moves", "elapsedMs", "status"],
+      "properties": {
+        "game": { "const": "klondike" },
+        "schemaVersion": { "const": 1 },
+        "drawCount": { "enum": [1, 3] },
+        "seed": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "state": { "$ref": "#/$defs/klondikeState" },
+        "undo": {
+          "description": "Earlier states, oldest first, capped so saves stay small.",
+          "type": "array",
+          "maxItems": 100,
+          "items": { "$ref": "#/$defs/klondikeState" }
+        },
+        "moves": { "$ref": "common.schema.json#/$defs/nonNegativeInt" },
+        "elapsedMs": { "$ref": "common.schema.json#/$defs/nonNegativeInt" },
+        "status": { "enum": ["playing", "won"] }
+      }
+    },
+    "cellList": {
+      "type": "array",
+      "maxItems": 480,
+      "uniqueItems": true,
+      "items": { "type": "integer", "minimum": 0, "maximum": 479 }
+    },
+    "minesweeper": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["game", "schemaVersion", "level", "width", "height", "mines", "mineCells", "revealed", "flagged", "questioned", "elapsedMs", "status"],
+      "properties": {
+        "game": { "const": "minesweeper" },
+        "schemaVersion": { "const": 1 },
+        "level": { "enum": ["beginner", "intermediate", "expert"] },
+        "width": { "enum": [9, 16, 30] },
+        "height": { "enum": [9, 16] },
+        "mines": { "enum": [10, 40, 99] },
+        "mineCells": {
+          "description": "Empty until the first reveal places mines away from the clicked cell.",
+          "$ref": "#/$defs/cellList"
+        },
+        "revealed": { "$ref": "#/$defs/cellList" },
+        "flagged": { "$ref": "#/$defs/cellList" },
+        "questioned": { "$ref": "#/$defs/cellList" },
+        "elapsedMs": { "$ref": "common.schema.json#/$defs/nonNegativeInt" },
+        "status": { "enum": ["ready", "playing", "won", "lost"] }
+      },
+      "allOf": [
+        { "if": { "properties": { "level": { "const": "beginner" } } }, "then": { "properties": { "width": { "const": 9 }, "height": { "const": 9 }, "mines": { "const": 10 } } } },
+        { "if": { "properties": { "level": { "const": "intermediate" } } }, "then": { "properties": { "width": { "const": 16 }, "height": { "const": 16 }, "mines": { "const": 40 } } } },
+        { "if": { "properties": { "level": { "const": "expert" } } }, "then": { "properties": { "width": { "const": 30 }, "height": { "const": 16 }, "mines": { "const": 99 } } } }
+      ]
+    }
+  }
+}

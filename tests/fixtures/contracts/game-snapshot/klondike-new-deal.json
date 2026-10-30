@@ -1,0 +1,118 @@
+{
+  "game": "klondike",
+  "schemaVersion": 1,
+  "drawCount": 3,
+  "seed": 1995,
+  "state": {
+    "stock": [
+      "4S",
+      "KC",
+      "2H",
+      "5S",
+      "7C",
+      "8D",
+      "3C",
+      "QD",
+      "5H",
+      "6S",
+      "KS",
+      "10S",
+      "2S",
+      "KH",
+      "AS",
+      "9S",
+      "3S",
+      "4D",
+      "JH",
+      "AC",
+      "7H",
+      "5C",
+      "10C",
+      "9C"
+    ],
+    "waste": [],
+    "foundations": [
+      [],
+      [],
+      [],
+      []
+    ],
+    "tableau": [
+      {
+        "faceDown": [],
+        "faceUp": [
+          "2C"
+        ]
+      },
+      {
+        "faceDown": [
+          "KD"
+        ],
+        "faceUp": [
+          "10H"
+        ]
+      },
+      {
+        "faceDown": [
+          "8C",
+          "QC"
+        ],
+        "faceUp": [
+          "QS"
+        ]
+      },
+      {
+        "faceDown": [
+          "4C",
+          "JD",
+          "3H"
+        ],
+        "faceUp": [
+          "JC"
+        ]
+      },
+      {
+        "faceDown": [
+          "7D",
+          "3D",
+          "AD",
+          "9H"
+        ],
+        "faceUp": [
+          "4H"
+        ]
+      },
+      {
+        "faceDown": [
+          "5D",
+          "6D",
+          "8H",
+          "9D",
+          "JS"
+        ],
+        "faceUp": [
+          "10D"
+        ]
+      },
+      {
+        "faceDown": [
+          "7S",
+          "QH",
+          "AH",
+          "6C",
+          "2D",
+          "8S"
+        ],
+        "faceUp": [
+          "6H"
+        ]
+      }
+    ],
+    "score": 0,
+    "stockPasses": 0
+  },
+  "undo": [],
+  "moves": 0,
+  "elapsedMs": 0,
+  "status": "playing"
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "siteId": "chugging",
+  "host": "chugging.test",
+  "title": "Chugging Coffee House",
+  "homePath": "/",
+  "sinceReleaseId": "rel-0001",
+  "pages": [
+    {
+      "pageId": "chugging-home",
+      "path": "/",
+      "aliases": [
+        "/index.html"
+      ],
+      "document": "pages/home.json"
+    },
+    {
+      "pageId": "chugging-notices",
+      "path": "/notices.html",
+      "document": "pages/notices.json"
+    }
+  ]
+}

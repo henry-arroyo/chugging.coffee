@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "screenName": "Night Owl 95",
+  "createdAt": "2026-10-29T21:00:00.000Z",
+  "updatedAt": "2026-10-29T21:05:00Z",
+  "preferences": {
+    "desktop": {
+      "colorScheme": "standard",
+      "wallpaper": null,
+      "pattern": null,
+      "scale": 1
+    },
+    "sound": {
+      "enabled": false,
+      "volume": 0.6
+    },
+    "connection": {
+      "speed": "normal"
+    },
+    "accessibility": {
+      "reducedMotion": false,
+      "highContrast": false,
+      "largerText": false
+    },
+    "clock": {
+      "format": "12h"
+    },
+    "solitaire": {
+      "drawCount": 3
+    },
+    "minesweeper": {
+      "level": "beginner"
+    }
+  }
+}

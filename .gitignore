@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.log
+.DS_Store
+
+# CDK
+infra/cdk.out/
+
+# Reference-only historical material must never be committed or published.
+assets/reference-only/*
+!assets/reference-only/README.md
+

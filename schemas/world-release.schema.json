@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/world-release.schema.json",
+  "title": "World release",
+  "description": "One immutable, shared canonical state of the fictional internet. Clients pin to the release they loaded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "releaseId", "sequence", "storyDate", "title", "publishedAt", "previousReleaseId", "compatibility", "sites", "redirects", "retiredClues", "clueChains", "aolKeywords", "updates"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "releaseId": { "$ref": "common.schema.json#/$defs/releaseId" },
+    "sequence": { "type": "integer", "minimum": 1, "maximum": 9999 },
+    "storyDate": { "$ref": "common.schema.json#/$defs/storyDate" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "publishedAt": { "$ref": "common.schema.json#/$defs/dateTime" },
+    "previousReleaseId": {
+      "anyOf": [{ "$ref": "common.schema.json#/$defs/releaseId" }, { "type": "null" }]
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minClientVersion", "rollbackSafeTo"],
+      "properties": {
+        "minClientVersion": { "$ref": "common.schema.json#/$defs/semver" },
+        "rollbackSafeTo": {
+          "description": "Earlier releases this one can be rolled back to without breaking saved discoveries.",
+          "type": "array",
+          "maxItems": 100,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/releaseId" }
+        }
+      }
+    },
+    "sites": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["siteId", "host", "manifest", "sha256"],
+        "properties": {
+          "siteId": { "$ref": "common.schema.json#/$defs/id" },
+          "host": { "$ref": "common.schema.json#/$defs/host" },
+          "manifest": {
+            "description": "Manifest path relative to the release root.",
+            "type": "string",
+            "maxLength": 160,
+            "pattern": "^sites/[a-z0-9-]+/manifest\\.json$"
+          },
+          "sha256": { "$ref": "common.schema.json#/$defs/sha256" }
+        }
+      }
+    },
+    "redirects": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "to", "sinceReleaseId"],
+        "properties": {
+          "from": { "$ref": "common.schema.json#/$defs/virtualAddress" },
+          "to": { "$ref": "common.schema.json#/$defs/virtualAddress" },
+          "sinceReleaseId": { "$ref": "common.schema.json#/$defs/releaseId" }
+        }
+      }
+    },
+    "retiredClues": {
+      "description": "Clues removed from canon. Saved discoveries of a retired clue map to its replacement, or stay as history when null.",
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["clueId", "retiredInReleaseId", "replacedBy"],
+        "properties": {
+          "clueId": { "$ref": "common.schema.json#/$defs/id" },
+          "retiredInReleaseId": { "$ref": "common.schema.json#/$defs/releaseId" },
+          "replacedBy": { "anyOf": [{ "$ref": "common.schema.json#/$defs/id" }, { "type": "null" }] }
+        }
+      }
+    },
+    "clueChains": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["chainId", "title", "steps", "reward"],
+        "properties": {
+          "chainId": { "$ref": "common.schema.json#/$defs/id" },
+          "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "steps": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["clueId", "pageId", "blockId", "hints"],
+              "properties": {
+                "clueId": { "$ref": "common.schema.json#/$defs/id" },
+                "pageId": { "$ref": "common.schema.json#/$defs/id" },
+                "blockId": { "$ref": "common.schema.json#/$defs/id" },
+                "hints": {
+                  "description": "Progressively stronger hints, weakest first.",
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "items": { "type": "string", "minLength": 1, "maxLength": 280 }
+                }
+              }
+            }
+          },
+          "reward": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["documentId", "vfsPath", "title", "text"],
+            "properties": {
+              "documentId": { "$ref": "common.schema.json#/$defs/id" },
+              "vfsPath": { "$ref": "common.schema.json#/$defs/vfsPath" },
+              "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+              "text": { "type": "string", "minLength": 1, "maxLength": 8192 }
+            }
+          }
+        }
+      }
+    },
+    "aolKeywords": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["keyword", "target"],
+        "properties": {
+          "keyword": { "type": "string", "minLength": 1, "maxLength": 32, "pattern": "^[a-z0-9](?:[a-z0-9 ]{0,30}[a-z0-9])?$" },
+          "target": {
+            "anyOf": [
+              { "$ref": "common.schema.json#/$defs/virtualAddress" },
+              { "type": "string", "pattern": "^aol-area:[a-z0-9-]{1,32}$" }
+            ]
+          }
+        }
+      }
+    },
+    "updates": {
+      "description": "World news shown on Switchboard and The Daily Packet.",
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["storyDate", "headline", "address"],
+        "properties": {
+          "storyDate": { "$ref": "common.schema.json#/$defs/storyDate" },
+          "headline": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "address": { "$ref": "common.schema.json#/$defs/virtualAddress" }
+        }
+      }
+    },
+    "notes": { "type": "string", "maxLength": 2000 }
+  }
+}

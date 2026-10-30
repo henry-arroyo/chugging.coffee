@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/app-manifest.schema.json",
+  "title": "Application manifest",
+  "description": "Declares a reviewed, bundled application and the scoped capabilities the host grants it. Nothing is installed at runtime.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "appId", "title", "icon", "module", "capabilities", "instancing", "window"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "appId": { "$ref": "common.schema.json#/$defs/id" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "icon": { "$ref": "common.schema.json#/$defs/assetId" },
+    "module": {
+      "description": "Key of a module registered in the build-time application registry.",
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "capabilities": {
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "enum": ["windows", "storage", "vfs-read", "vfs-write", "navigation", "network", "audio", "settings"] }
+    },
+    "instancing": { "enum": ["single", "multiple"] },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["defaultWidth", "defaultHeight", "minWidth", "minHeight", "resizable", "maximizable"],
+      "properties": {
+        "defaultWidth": { "type": "integer", "minimum": 100, "maximum": 1600 },
+        "defaultHeight": { "type": "integer", "minimum": 60, "maximum": 1200 },
+        "minWidth": { "type": "integer", "minimum": 100, "maximum": 1600 },
+        "minHeight": { "type": "integer", "minimum": 60, "maximum": 1200 },
+        "resizable": { "type": "boolean" },
+        "maximizable": { "type": "boolean" }
+      }
+    },
+    "startMenu": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["folders", "order"],
+      "properties": {
+        "folders": {
+          "description": "Cascading folder names under Programs, outermost first. Empty places the item directly in Programs.",
+          "type": "array",
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1, "maxLength": 40 }
+        },
+        "order": { "type": "integer", "minimum": 0, "maximum": 999 }
+      }
+    },
+    "desktopIcon": { "type": "boolean" },
+    "runAliases": {
+      "description": "Names accepted by Start > Run.",
+      "type": "array",
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z0-9]{1,16}$" }
+    },
+    "opensKinds": {
+      "type": "array",
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": { "enum": ["text", "image"] }
+    }
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "pageId": "chugging-home",
+  "siteId": "chugging",
+  "path": "/",
+  "title": "Chugging Coffee House",
+  "layout": "centered",
+  "theme": {
+    "background": "#fff8e7",
+    "text": "#3b2412",
+    "link": "#0000ee",
+    "visitedLink": "#551a8b",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-01",
+    "author": "Dot"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "id": "title",
+      "level": 1,
+      "text": "Chugging Coffee House",
+      "align": "center"
+    },
+    {
+      "type": "image",
+      "id": "mug",
+      "assetId": "site.chugging.mug",
+      "alt": "A steaming mug",
+      "width": 120,
+      "height": 90,
+      "declaredBytes": 6144,
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "id": "intro",
+      "content": [
+        {
+          "type": "text",
+          "text": "Open late. "
+        },
+        {
+          "type": "text",
+          "text": "Free refills",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "break"
+        },
+        {
+          "type": "link",
+          "href": "http://switchboard.test/directory.html",
+          "text": "Find us on Switchboard"
+        },
+        {
+          "type": "text",
+          "text": " or read the "
+        },
+        {
+          "type": "link",
+          "href": "/notices.html",
+          "text": "notice board"
+        },
+        {
+          "type": "text",
+          "text": ". Keyword: "
+        },
+        {
+          "type": "link",
+          "href": "aol://keyword/coffee",
+          "text": "COFFEE",
+          "marks": [
+            "code"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "id": "packet-link",
+      "href": "http://packet.test/",
+      "text": "The Daily Packet",
+      "description": "Local news"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "text",
+            "text": "House blend"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "#menu",
+            "text": "Full menu"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "table",
+      "id": "menu",
+      "caption": "Menu",
+      "border": 1,
+      "header": [
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Drink"
+            }
+          ]
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Price"
+            }
+          ],
+          "align": "right"
+        }
+      ],
+      "rows": [
+        [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Drip"
+              }
+            ]
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "$0.95"
+              }
+            ],
+            "align": "right"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "preformatted",
+      "id": "art",
+      "text": "  ( (\n   ) )\n ........\n |      |]\n \\      /\n  `----'",
+      "label": "Text drawing of a coffee cup"
+    },
+    {
+      "type": "widget",
+      "id": "counter",
+      "widget": {
+        "name": "hit-counter",
+        "props": {
+          "count": 1995,
+          "digits": 6
+        }
+      }
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "brew-calculator",
+        "props": {
+          "defaultCups": 4,
+          "gramsPerCup": 10
+        }
+      }
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "download-time-calculator",
+        "props": {
+          "speedsBps": [
+            14400,
+            28800
+          ]
+        }
+      }
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "directory-search",
+        "props": {
+          "scope": "all-sites"
+        }
+      }
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "guestbook-archive",
+        "props": {
+          "entries": [
+            {
+              "name": "Wren",
+              "storyDate": "1995-11-30",
+              "message": "Best pie in town."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "clue-logbook",
+        "props": {
+          "chainId": "lantern-lights"
+        }
+      }
+    }
+  ],
+  "transfer": {
+    "chunks": [
+      {
+        "index": 0,
+        "kind": "text",
+        "blockIds": [
+          "title",
+          "intro"
+        ],
+        "declaredBytes": 2048
+      },
+      {
+        "index": 1,
+        "kind": "image",
+        "blockIds": [
+          "mug"
+        ],
+        "declaredBytes": 6144
+      }
+    ]
+  }
+}

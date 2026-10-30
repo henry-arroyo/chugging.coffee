@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "appId": "notepad",
+  "title": "Notepad",
+  "icon": "icon.notepad",
+  "module": "notepad",
+  "capabilities": [
+    "windows",
+    "vfs-read",
+    "vfs-write"
+  ],
+  "instancing": "multiple",
+  "window": {
+    "defaultWidth": 420,
+    "defaultHeight": 300,
+    "minWidth": 200,
+    "minHeight": 120,
+    "resizable": true,
+    "maximizable": true
+  },
+  "startMenu": {
+    "folders": [
+      "Accessories"
+    ],
+    "order": 10
+  },
+  "desktopIcon": false,
+  "runAliases": [
+    "notepad"
+  ],
+  "opensKinds": [
+    "text"
+  ]
+}

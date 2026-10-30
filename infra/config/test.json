@@ -1,0 +1,12 @@
+{
+  "environment": "test",
+  "confirmed": true,
+  "account": "196691452297",
+  "region": "us-east-1",
+  "profile": "time-machine-test",
+  "operatorRoleName": "ctm-test-operator",
+  "qualifier": "ctmtest",
+  "domainName": null,
+  "certificateArn": null,
+  "expiresOn": "2026-12-31"
+}

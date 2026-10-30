@@ -1,0 +1,14 @@
+{
+  "game": "minesweeper",
+  "schemaVersion": 1,
+  "level": "beginner",
+  "width": 9,
+  "height": 9,
+  "mines": 10,
+  "mineCells": [],
+  "revealed": [],
+  "flagged": [],
+  "questioned": [],
+  "elapsedMs": 0,
+  "status": "ready"
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chugging.coffee/time-machine/schemas/save-export.schema.json",
+  "title": "Exported local progress",
+  "description": "Everything a guest can export and import. Files are limited to 1 MiB before parsing. There is no field for credentials or tokens.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "schemaVersion", "exportedAt", "profile", "bookmarks", "discoveries", "files", "windows", "games", "bestTimes", "recentDocuments"],
+  "properties": {
+    "format": { "const": "chugging-time-machine-save" },
+    "schemaVersion": { "const": 1 },
+    "exportedAt": { "$ref": "common.schema.json#/$defs/dateTime" },
+    "profile": { "$ref": "profile.schema.json" },
+    "bookmarks": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["address", "title", "addedAt"],
+        "properties": {
+          "address": { "$ref": "common.schema.json#/$defs/virtualAddress" },
+          "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+          "addedAt": { "$ref": "common.schema.json#/$defs/dateTime" }
+        }
+      }
+    },
+    "discoveries": {
+      "type": "array",
+      "maxItems": 1000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["clueId", "releaseId", "at"],
+        "properties": {
+          "clueId": { "$ref": "common.schema.json#/$defs/id" },
+          "releaseId": { "$ref": "common.schema.json#/$defs/releaseId" },
+          "at": { "$ref": "common.schema.json#/$defs/dateTime" }
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "maxItems": 500,
+      "items": { "$ref": "virtual-file.schema.json" }
+    },
+    "windows": { "$ref": "window-geometry.schema.json" },
+    "games": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "klondike": { "allOf": [{ "$ref": "game-snapshot.schema.json" }, { "type": "object", "properties": { "game": { "const": "klondike" } } }] },
+        "minesweeper": { "allOf": [{ "$ref": "game-snapshot.schema.json" }, { "type": "object", "properties": { "game": { "const": "minesweeper" } } }] }
+      }
+    },
+    "bestTimes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "beginner": { "$ref": "#/$defs/bestTime" },
+        "intermediate": { "$ref": "#/$defs/bestTime" },
+        "expert": { "$ref": "#/$defs/bestTime" }
+      }
+    },
+    "recentDocuments": {
+      "type": "array",
+      "maxItems": 15,
+      "items": { "$ref": "common.schema.json#/$defs/vfsPath" }
+    }
+  },
+  "$defs": {
+    "bestTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seconds", "name", "at"],
+      "properties": {
+        "seconds": { "type": "integer", "minimum": 1, "maximum": 999 },
+        "name": { "$ref": "common.schema.json#/$defs/screenName" },
+        "at": { "$ref": "common.schema.json#/$defs/dateTime" }
+      }
+    }
+  }
+}
