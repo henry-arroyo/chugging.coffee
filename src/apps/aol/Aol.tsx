@@ -36,7 +36,7 @@ const SPEC: Record<string, { title: string; w: number; h: number; centered?: boo
   home: { title: 'Welcome', w: 400, h: 200 },
   news: { title: "Today's News", w: 400, h: 240 },
   mail: { title: 'New Mail', w: 420, h: 250 },
-  chat: { title: 'People Connection: Lobby', w: 440, h: 280 },
+  chat: { title: 'Lobby', w: 580, h: 360 },
   internet: { title: 'Internet Connection', w: 360, h: 260 },
   games: { title: 'Games', w: 280, h: 140 },
   favorites: { title: 'Favorite Places', w: 320, h: 220 },
@@ -366,7 +366,7 @@ export default function Aol({ host }: AppProps) {
     if (kind === 'home') return <Home screenName={screenName} unread={unread} world={world} onMail={() => open('mail')} onOpen={browse} />;
     if (kind === 'news') return <News world={world} onOpen={browse} />;
     if (kind === 'mail') return <Mail letters={letters} read={readMail} onRead={(id) => setReadMail((s) => new Set(s).add(id))} />;
-    if (kind === 'chat') return <ChatRoom screenName={screenName} />;
+    if (kind === 'chat') return <ChatRoom screenName={screenName} onInfo={info} />;
     if (kind === 'internet') return <Internet world={world} onOpen={browse} />;
     if (kind === 'games') return <Games onLaunch={(appId) => host.launch?.(appId)} />;
     if (kind === 'favorites') return <Favorites bookmarks={nav.bookmarks()} onOpen={browse} />;

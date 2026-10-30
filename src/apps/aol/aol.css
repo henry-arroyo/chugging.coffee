@@ -408,15 +408,73 @@
   font: 12px/15px 'Courier New', Courier, monospace;
   white-space: pre-wrap;
 }
-.aol-chat-notice {
-  padding: 2px 6px;
-  background: var(--w95-tooltip);
-  border: 1px solid #808080;
+/* ---------------------------------------------------------------- public chat room */
+.aol-body-chat {
+  background: #fff8e8;
+}
+.aol-chatroom {
+  display: flex;
+  gap: 8px;
+  height: 100%;
+  padding: 4px;
+  box-sizing: border-box;
+  background: #fff8e8;
+}
+.aol-chat-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 .aol-chat-log {
   flex: 1;
   min-height: 80px;
-  padding: 3px;
+  padding: 2px 4px;
+  font: 12px/15px Arial, Helvetica, sans-serif;
+}
+.aol-chat-line {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  column-gap: 4px;
+}
+.aol-chat-who {
+  font: bold 10px/15px Arial, Helvetica, sans-serif;
+  color: #2020c0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.aol-chat-me {
+  color: #000;
+}
+.aol-chat-format {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+.aol-chat-font {
+  width: 150px;
+  height: 20px;
+  padding: 1px 2px;
+}
+.aol-chat-color {
+  width: 72px;
+  height: 20px;
+  padding: 1px 2px;
+}
+.aol-chat-fmt {
+  width: 20px;
+  height: 18px;
+  padding: 0;
+  font: 12px/16px 'Times New Roman', Times, serif;
+  background: var(--w95-face);
+  border: 0;
+  box-shadow: var(--w95-raised);
+}
+.aol-chat-fmt[aria-pressed='true'] {
+  box-shadow: var(--w95-pressed);
+  background: #e0e0e0;
 }
 .aol-chat-send {
   display: flex;
@@ -424,4 +482,94 @@
 }
 .aol-chat-send .w95-field {
   flex: 1;
+  height: 26px;
 }
+.aol-chat-sendbutton {
+  width: 54px;
+  font: bold italic 13px/20px 'Times New Roman', Times, serif;
+  color: #fff;
+  background: linear-gradient(#a0a8b8, #6c7488);
+  border: 0;
+  box-shadow: inset -1px -1px #303848, inset 1px 1px #e0e8f8;
+  text-shadow: 1px 1px #303848;
+}
+.aol-chat-sendbutton:active {
+  box-shadow: inset 1px 1px #303848;
+}
+.aol-chat-aside {
+  flex: none;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.aol-chat-count b {
+  font-size: 11px;
+}
+.aol-chat-count span {
+  font: bold italic 12px 'Times New Roman', Times, serif;
+}
+.aol-chat-people {
+  height: 140px;
+  padding: 1px;
+}
+.aol-chat-person {
+  padding: 0 2px;
+  white-space: nowrap;
+}
+.aol-chat-person[aria-selected='true'],
+.aol-chat-person:focus {
+  outline: none;
+  color: var(--w95-select-text);
+  background: var(--w95-select);
+}
+.aol-chat-hint {
+  font-size: 10px;
+  text-align: center;
+}
+.aol-chat-sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 2px;
+  margin-top: 4px;
+}
+.aol-chat-side {
+  display: flex;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: bold 10px/12px Arial, Helvetica, sans-serif;
+  color: #800000;
+  text-align: left;
+}
+.aol-chat-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 1px solid #404040;
+}
+.aol-chat-notice {
+  margin: auto 0 0;
+  padding: 2px 4px;
+  font-size: 10px;
+  background: var(--w95-tooltip);
+  border: 1px solid #808080;
+}
+.aol-chat-text.aol-c-black { color: #000; }
+.aol-c-navy { color: #000080; }
+.aol-c-blue { color: #0000ff; }
+.aol-c-red { color: #c00000; }
+.aol-c-maroon { color: #800000; }
+.aol-c-green { color: #008000; }
+.aol-c-purple { color: #800080; }
+.aol-c-teal { color: #008080; }
+.aol-b { font-weight: bold; }
+.aol-i { font-style: italic; }
+.aol-u { text-decoration: underline; }
+.aol-f-serif { font-family: 'Times New Roman', Times, serif; font-size: 13px; }
+.aol-f-comic { font-family: 'Comic Sans MS', 'Chalkboard', cursive; }
+.aol-f-sans { font-family: Arial, Helvetica, sans-serif; }

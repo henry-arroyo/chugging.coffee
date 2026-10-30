@@ -426,3 +426,12 @@ update flow.
   - The outer AOL window's title-bar icon is still the navy triangle, because the shell uses one
     icon per program. The child windows use the green one.
   - Flashbar tooltips and most step texts are educated guesses.
+- **Chat room (owner request, later the same day):** the Lobby follows the owner's chat-room
+  screenshot.
+  - **Layout:** the log with bold blue screen names and each member's own colour and font; an
+    "N people here" list (double-click a name for a fictional profile); and the More Chat,
+    Private Chat, Notify AOL, Member Directory and Chat Preferences buttons.
+  - **Typing:** a font, colour, bold, italic and underline bar, plus a Send button.
+  - **Safety:** styles come from a fixed palette, so they are never free-form. The room is still
+    labeled as scripted.
+  - **Tests:** the chat journey now covers formatting and profiles.

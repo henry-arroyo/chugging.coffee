@@ -164,9 +164,16 @@ test('mail, the scripted chat room and cancelling a sign-on', async ({ page }) =
   await expect(aol.locator('.aol-letter-body')).toContainText('Hi Night Owl!');
   await flashbar(aol, 'People Connection').click();
   await expect(aol.getByText('Scripted room: the other members are fictional')).toBeVisible();
-  await aol.getByLabel('Message').fill('hello lobby');
-  await aol.getByRole('button', { name: 'Send' }).click();
-  await expect(aol.getByRole('log')).toContainText('Night Owl: hello lobby');
+  const room = aol.getByRole('region', { name: 'Lobby' });
+  await expect(room.getByRole('listbox', { name: 'People here' }).getByRole('option', { name: 'Night Owl' })).toBeVisible();
+  await room.getByRole('button', { name: 'Bold' }).click();
+  await room.getByLabel('Text color').selectOption('green');
+  await room.getByLabel('Message').fill('hello lobby');
+  await room.getByRole('button', { name: 'Send' }).click();
+  await expect(room.getByRole('log')).toContainText('Night Owl: hello lobby');
+  await expect(room.getByRole('log').getByText('hello lobby')).toHaveClass(/aol-b/);
+  await room.getByRole('option', { name: 'ModemMike' }).dblclick();
+  await answer(desk, 'OK', /486DX2/);
 
   // Closing AOL while online asks, then signs off.
   await aol.locator('[aria-label="Close"]').first().click();

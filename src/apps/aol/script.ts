@@ -36,10 +36,44 @@ export function seededMail(screenName: string): Letter[] {
   ];
 }
 
+/** Text styles a member can pick, from a fixed palette (no free-form styling). */
+export interface ChatStyle {
+  color?: 'black' | 'navy' | 'blue' | 'red' | 'maroon' | 'green' | 'purple' | 'teal';
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  font?: 'sans' | 'serif' | 'comic';
+}
+
 export interface ChatLine {
   who: string;
   text: string;
+  style?: ChatStyle;
 }
+
+/** How each fictional member types. */
+export const MEMBER_STYLES: Record<string, ChatStyle> = {
+  OnlineHost: {},
+  ModemMike: { color: 'navy', bold: true, font: 'serif' },
+  JavaJen: { color: 'maroon', font: 'serif' },
+  BookwormB: { color: 'green', italic: true },
+  SurfDude95: { color: 'purple', bold: true, font: 'comic' },
+  'Guide Pixel': { color: 'teal' },
+  NetNanaRuth: { color: 'red', font: 'serif' },
+};
+
+/** Who is in the room besides the guest (a few never speak, as in any real room). */
+export const LOBBY_MEMBERS = ['BookwormB', 'Guide Pixel', 'JavaJen', 'ModemMike', 'NetNanaRuth', 'PizzaPete44', 'QuietQuilter', 'SurfDude95', 'TrekFan1701', 'Zipdisk Zed'];
+
+/** Fictional member profiles, shown on double-click. */
+export const PROFILES: Record<string, string> = {
+  BookwormB: 'Location: the library, mostly\nHobbies: mysteries, crosswords',
+  'Guide Pixel': 'AOL Community Guide (fictional)\nHere to help in the Lobby',
+  JavaJen: 'Location: downtown\nHobbies: coffee, more coffee',
+  ModemMike: 'Computers: 486DX2/66, 28.8 modem\nQuote: "faster is better"',
+  NetNanaRuth: 'Grandmother of six, new to computers\nHobbies: quilting, e-mail',
+  SurfDude95: 'Hobbies: the Web, skateboarding\nQuote: "cowabunga"',
+};
 
 /** Lines the room's fictional members say, in a loop. */
 export const LOBBY_SCRIPT: ChatLine[] = [
@@ -56,4 +90,8 @@ export const LOBBY_SCRIPT: ChatLine[] = [
   { who: 'SurfDude95', text: 'netscape 2 beta is out, it has frames now' },
   { who: 'BookwormB', text: 'what is a frame' },
   { who: 'SurfDude95', text: 'nobody knows' },
+  { who: 'OnlineHost', text: 'NetNanaRuth has entered the room.' },
+  { who: 'NetNanaRuth', text: 'HELLO EVERYONE IS THIS THE LOBBY' },
+  { who: 'Guide Pixel', text: 'Welcome, Ruth! Yes it is. Your caps lock is on :)' },
+  { who: 'NetNanaRuth', text: 'oh dear. thank you dear' },
 ];
