@@ -12,12 +12,21 @@ export function BootScreen({ onDone, durationMs }: { onDone: () => void; duratio
       window.removeEventListener('keydown', skip);
     };
   }, [onDone, durationMs]);
+  const w = BRANDING.wordmark;
   return (
     <div className="w95-screen w95-boot" role="status" aria-live="polite" onPointerDown={onDone}>
-      <div>
+      <div className="w95-boot-logo" aria-hidden="true">
         <img src={iconUrl('icon.start')} alt="" />
-        <p>{BRANDING.bootMessage}</p>
+        <div className="w95-boot-words">
+          <span className="w95-boot-company">{w.company}</span>
+          <span className="w95-boot-product">
+            {w.product}
+            <span className="w95-boot-version">{w.version}</span>
+          </span>
+        </div>
       </div>
+      <div className="w95-boot-bar" aria-hidden="true" />
+      <span className="host-visually-hidden">{BRANDING.bootMessage}</span>
     </div>
   );
 }

@@ -38,6 +38,18 @@ as the logos themselves, so they are not used either. Each logo slot (Start butt
 the AOL client and keyword artwork, the Netscape "N" and throbber) is ready to take the approved
 file.
 
+### Owner-reported approval (2026-10-30)
+
+The owner reports verbal approval from contacts at Microsoft, AOL and the Netscape brand owner to
+use their brand likeness (logos and marks) **as long as the service does not charge money**.
+There is no written record yet. Registry entries for these marks record exactly that as their
+permission evidence, plus the condition. Recommended: get a short written confirmation (an email
+is enough) from each company and file it with the evidence, because verbal approval is hard to
+show later, and the handoff's rights process expects evidence on file.
+
+**Condition: the Time Machine must stay free.** Charging for it (or adding payments) would end
+this permission. v1 has no payments, per the handoff.
+
 ### Clearance requests to make (owner)
 
 | Rights holder | What to ask for |

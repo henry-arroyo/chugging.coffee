@@ -452,8 +452,15 @@
   white-space: nowrap;
   letter-spacing: 0.5px;
 }
+.w95-start-banner span {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0;
+}
 .w95-start-banner span b {
   color: var(--w95-highlight);
+  font-weight: 400;
+  margin-top: 2px;
 }
 
 /* ------------------------------------------------------------------ taskbar */
@@ -615,13 +622,74 @@
   font-size: 14px;
   line-height: 20px;
 }
+/* Startup splash: sky, clouds, the logo and wordmark, and the moving color bar. */
 .w95-screen.w95-boot {
-  background: #000;
-  color: #c0c0c0;
+  color: #000;
+  background:
+    radial-gradient(ellipse 120px 38px at 18% 22%, rgba(255, 255, 255, 0.9), transparent 70%),
+    radial-gradient(ellipse 170px 46px at 30% 26%, rgba(255, 255, 255, 0.75), transparent 70%),
+    radial-gradient(ellipse 150px 40px at 76% 18%, rgba(255, 255, 255, 0.85), transparent 70%),
+    radial-gradient(ellipse 210px 52px at 86% 70%, rgba(255, 255, 255, 0.8), transparent 70%),
+    radial-gradient(ellipse 180px 44px at 14% 78%, rgba(255, 255, 255, 0.7), transparent 70%),
+    radial-gradient(ellipse 140px 34px at 56% 86%, rgba(255, 255, 255, 0.65), transparent 70%),
+    linear-gradient(#4f86d2, #8fbdf0 60%, #b9d8f7);
 }
-.w95-screen.w95-boot img {
-  width: 64px;
-  height: 64px;
+.w95-boot-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -40px;
+}
+.w95-boot-logo img {
+  width: 132px;
+  height: 132px;
+  image-rendering: auto;
+}
+.w95-boot-words {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+}
+.w95-boot-company {
+  font-size: 30px;
+  line-height: 30px;
+  margin-left: 4px;
+}
+.w95-boot-product {
+  font-size: 62px;
+  line-height: 62px;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+.w95-boot-version {
+  font-weight: 300;
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+.w95-boot-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7px;
+  background: repeating-linear-gradient(90deg, #000040, #1c4fbf 12%, #7fb2ff 25%, #1c4fbf 38%, #000040 50%);
+  background-size: 200% 100%;
+  animation: w95-boot-bar 1.4s linear infinite;
+}
+@keyframes w95-boot-bar {
+  to {
+    background-position: -200% 0;
+  }
+}
+.w95-reduced-motion .w95-boot-bar {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .w95-boot-bar {
+    animation: none;
+  }
 }
 .w95-screen.w95-wait {
   background: var(--w95-desktop);

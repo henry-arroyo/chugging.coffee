@@ -1,12 +1,13 @@
 /**
- * Branded text and wordmarks. Product names used as plain labels ("Netscape Navigator",
- * "America Online") describe what is being simulated. Wordmark-style elements are slots that hold
- * stand-ins until authentic artwork is cleared (docs/asset-rights.md).
+ * Branded text and wordmarks. Microsoft, AOL and Netscape marks are used under the owner-reported
+ * permission recorded in docs/asset-rights.md (D29): free service only.
  */
 export const BRANDING = {
-  /** Vertical Start-menu banner: stand-in for the authentic wordmark. */
-  startBanner: { lead: 'Time Machine', tail: '95' },
-  bootMessage: 'Starting the Time Machine…',
+  /** Vertical Start-menu banner. */
+  startBanner: { lead: 'Windows', tail: '95' },
+  /** Startup splash wordmark. */
+  wordmark: { company: 'Microsoft', product: 'Windows', version: '95' },
+  bootMessage: 'Starting Windows 95...',
   /** Plain-text name of the simulated system, as in its logon dialog (not a logo or wordmark). */
   logonTitle: 'Welcome to Windows',
   logonPrompt: 'Type a user name and password to log on to Windows.',

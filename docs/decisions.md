@@ -210,3 +210,16 @@ Owner decisions.
     storage could still read or reset the data, so it is a lock against casual use, not an
     account.
   - Whether exports carry the hash is decided when this is built.
+
+## D29. Authentic Windows, AOL and Netscape logos under owner-reported permission (2026-10-30)
+
+The owner reports verbal approval from each company to use their brand likeness while the
+service is free. The logo slots now hold project-drawn SVG versions of the 1995-era marks:
+- the Windows flag (Start button and startup screen) and the "Windows 95" Start-menu banner;
+- the AOL logo;
+- the Netscape "N".
+
+Registry entries are `approved`, `origin: third-party`, with the verbal approval and the
+no-charge condition as evidence. Written confirmation is still recommended (asset-rights.md).
+Other Microsoft, AOL and Netscape artwork (system icons, sounds, fonts, the startup cloud
+artwork) stays stand-in or original unless the owner asks for it under the same permission.

@@ -250,3 +250,16 @@ scheduler, and Netscape.
   the screen's large text.
 - **Tests:** 480 unit; 32/32 journeys, 96/96 over three repeats. The visual captures were
   regenerated, including `00-logon.png`.
+
+## Logos (2026-10-30)
+
+- **Permission:** the owner reports verbal approval from Microsoft, AOL and the Netscape brand
+  owner to use their brand likeness while the service is free (D29). The approval and its
+  no-charge condition are recorded as evidence; written confirmation is still recommended.
+- **Logos drawn:** project-drawn SVG versions of the Windows flag (Start button, startup
+  splash), the AOL triangle and the Netscape "N" replace those three stand-ins. Public reference
+  renders were viewed locally and not copied into the repository.
+- **Text marks:** the Start menu banner reads "Windows 95", and the startup screen is a Windows
+  95-style splash (sky, logo, wordmark, color bar; the bar stays still with reduced motion).
+- **Checks:** 480 unit; 32/32 journeys; the public asset gate passes, with 41 stand-ins remaining
+  (system icons, wallpapers).

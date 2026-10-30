@@ -24,20 +24,20 @@
       "assetId": "icon.aol",
       "file": "icons/aol.svg",
       "kind": "icon",
-      "origin": "project-original",
-      "source": "Drawn for this project (simple SVG shapes)",
-      "creator": "chugging.coffee",
-      "license": "Project-owned",
-      "attribution": "",
-      "permissionEvidence": "Created in-repo; see git history",
+      "origin": "third-party",
+      "source": "America Online triangle as printed on the AOL for Windows 2.5 disk (1995); traced as SVG for this project from a thresholded map of the owner-supplied disk photo (photo not committed). Navy from the 16-color Windows palette, as a 1995 program icon.",
+      "creator": "Mark: America Online (now AOL; current owner per asset-rights.md). Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "America Online triangle is a trademark of America Online.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. Condition: the service must not charge money.",
       "allowedUse": [
         "public-build",
         "development"
       ],
       "status": "approved",
-      "standIn": true,
+      "standIn": false,
       "expires": null,
-      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+      "notes": "D29. Get written confirmation and file it as evidence. Permission ends if the service charges money."
     },
     {
       "assetId": "icon.app-generic",
@@ -499,20 +499,20 @@
       "assetId": "icon.netscape",
       "file": "icons/netscape.svg",
       "kind": "icon",
-      "origin": "project-original",
-      "source": "Drawn for this project (simple SVG shapes)",
-      "creator": "chugging.coffee",
-      "license": "Project-owned",
-      "attribution": "",
-      "permissionEvidence": "Created in-repo; see git history",
+      "origin": "third-party",
+      "source": "Netscape \"N\" (1995 era); drawn as SVG for this project from public reference images (not copied files)",
+      "creator": "Mark: Netscape Communications (brand now owned by AOL). Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "Netscape \"N\" is a trademark of Netscape Communications.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. Condition: the service must not charge money.",
       "allowedUse": [
         "public-build",
         "development"
       ],
       "status": "approved",
-      "standIn": true,
+      "standIn": false,
       "expires": null,
-      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+      "notes": "D29. Get written confirmation and file it as evidence. Permission ends if the service charges money."
     },
     {
       "assetId": "icon.notepad",
@@ -708,20 +708,20 @@
       "assetId": "icon.start",
       "file": "icons/start.svg",
       "kind": "icon",
-      "origin": "project-original",
-      "source": "Drawn for this project (simple SVG shapes)",
-      "creator": "chugging.coffee",
-      "license": "Project-owned",
-      "attribution": "",
-      "permissionEvidence": "Created in-repo; see git history",
+      "origin": "third-party",
+      "source": "Microsoft Windows flag (1995 era); drawn as SVG for this project from public reference images (not copied files)",
+      "creator": "Mark: Microsoft. Drawing: chugging.coffee",
+      "license": "Brand-likeness permission reported by the owner; non-commercial use only",
+      "attribution": "Microsoft Windows flag is a trademark of Microsoft.",
+      "permissionEvidence": "Verbal approval reported by the owner (Henry Arroyo) on 2026-10-30 from a contact at the company; no written record yet. Condition: the service must not charge money.",
       "allowedUse": [
         "public-build",
         "development"
       ],
       "status": "approved",
-      "standIn": true,
+      "standIn": false,
       "expires": null,
-      "notes": "Stand-in for the authentic icon slot until rights are cleared (D12)."
+      "notes": "D29. Get written confirmation and file it as evidence. Permission ends if the service charges money."
     },
     {
       "assetId": "icon.storage",
