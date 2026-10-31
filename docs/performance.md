@@ -17,7 +17,7 @@ cache, 800x600 desktop. This stands in for a mid-range laptop on ordinary home b
 | Logon usable after navigation (includes the deliberate 1.5 s Windows startup screen) | under 3 s | **2.4 s** |
 | Initial download, gzip-compressed (shell, styles, art, session chunk) | at most 1 MiB | **about 195 KiB** (885 KiB uncompressed) |
 | Window drag, 95th-percentile frame time with CPU 4x slower | smooth | **16.7 ms** (60 frames per second) |
-| 45-minute exploration session | no leaks | **pending a clean run.** An interrupted run showed flat memory (about 6.7 MB), DOM nodes and listeners over 68 cycles |
+| 45-minute exploration session (185 cycles, 1,665 actions) | no leaks | **Passed.** The heap levels off at 6.9 MB from minute 30 to 45; DOM nodes (1,083) and listeners (202) stay constant |
 
 Notes:
 

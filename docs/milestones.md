@@ -577,13 +577,16 @@ package.
 - `npm run infra:check`: both environments synthesize and validate. Test would create the same
   six resource types as before (bucket, bucket policy, CloudFront function, response-headers
   policy, origin access control, distribution). The production certificate stack is unchanged.
-- **45-minute leak session: not yet completed cleanly.**
-  - **First attempt:** it was disrupted when a parallel test run cleared the shared results
-    folder. Its samples (68 cycles, 612 actions, 0 page errors) showed the heap flat at about
-    6.7 MB, with constant DOM node (1,083) and listener (202) counts from minute 5 on.
-  - **Clean rerun:** stopped at the owner's request (the computer needed to shut down).
-  - **To do:** rerun with nothing else running:
-    `npm run build && SOAK_MINUTES=45 npx playwright test -c playwright.prod.config.ts soak`.
+- **45-minute leak session: passed** (clean, uninterrupted run against the production build,
+  keep-awake on).
+  - **Activity:** 185 full cycles and 1,665 actions in 45.0 minutes, with 0 page errors. Each
+    cycle was sign on, browse six pages, chat, Minesweeper, Notepad, sign off and close
+    everything.
+  - **Memory after forced garbage collection:**
+    - **Heap:** 6.4 MB at minute 5, 6.9 MB at minute 30, and 6.9 MB at minute 45. It levels off
+      instead of climbing.
+    - **DOM nodes:** constant at 1,083 from minute 5 to the end.
+    - **Event listeners:** constant at 202 throughout.
 
 **Not done / not verified**
 
@@ -594,7 +597,6 @@ package.
 - **Written permission:** written brand permission for Microsoft, AOL and Netscape is still
   recommended before a public launch.
 - **Dependencies:** adopt `fast-uri` 3.1.9 after 2026-11-02.
-- **Leak session:** the 45-minute session still needs one clean, uninterrupted run (see above).
 
 **Next step:** the owner reviews this report and the screenshots, then decides whether to
 authorize a test deployment (`CtmTest-Site`, six resources, about $0-5 a month).

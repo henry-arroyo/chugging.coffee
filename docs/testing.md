@@ -50,6 +50,7 @@ replaces `LD_LIBRARY_PATH`; the script also points Mesa's EGL loader at the loca
 | 2026-10-30 | Chrome for Testing 156.0.8078.4 | Chromium | M5: all journeys, including axe scans, keyboard-only, and touch (mobile emulation, 412x915) |
 | 2026-10-30 | Playwright Firefox 157.0 (Linux) | Gecko | M5: all journeys except touch (Playwright cannot emulate mobile in Firefox) |
 | 2026-10-30 | Playwright WebKit 27.2 (WPE, Linux) | WebKit | M5: all journeys, including touch (mobile emulation) |
+| 2026-10-30 | Chrome for Testing 156.0.8078.4 | Chromium | M5: 45-minute leak session against the production build: passed (185 cycles, 0 errors, flat memory) |
 
 **Not tested on real products:** Microsoft Edge (Chromium-based; covered by the Chromium engine
 only), Apple Safari on macOS/iOS (covered by Playwright's WebKit build, not Safari itself), and
