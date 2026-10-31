@@ -413,3 +413,20 @@ Owner decision (answers open questions 10 and 11):
   have needed a permission expansion).
 - **Leftovers:** the test bucket's earlier `time-machine/` objects (57 versions, never served after
   the redirect) were deleted on 2026-10-31, every version, by exact key and version ID.
+
+## D48. CloudFront stays on pay-as-you-go (2026-10-31)
+
+The owner asked to move both distributions to the CloudFront flat-rate Free plan. The account
+already uses its 3 Free plans (henryarroyo.com, hookelesystems.com, mauitechservice.com), and that
+quota cannot be raised. Nothing was changed. Pay-as-you-go includes CloudFront's always-free
+allowance (1 TB transfer and 10 million requests a month, shared by the account's pay-as-you-go
+distributions), which should keep the Time Machine at about $0 for CloudFront.
+
+If the plan is revisited:
+- **Requirements:** every flat-rate plan requires an attached AWS WAF web ACL, plus an
+  `AWS::PricingPlanManager::Subscription`. Both would go in the site stacks.
+- **Permissions:** the expansion was approved in principle on 2026-10-31 but never written or
+  applied. It would add WAF and pricing-plan actions, and never `ApprovePaidSubscription`, so
+  paid plans can't activate from a deploy.
+- **Deletion:** a subscribed distribution cannot be deleted until its plan is cancelled. A Free
+  plan cancels immediately.

@@ -35,8 +35,9 @@ Targets from the handoff: preview $0–5/month and production $0–10/month. Bot
 large margin. A sudden viral spike is the main risk: about 1 TB is free, then roughly $85 per
 additional TB. Consider a budget alert at $5 and $20.
 
-Also worth checking at deploy time: CloudFront's flat-rate pricing plans, if available to the
-account, and whether the always-free tier still applies as assumed.
+Flat-rate plans were checked on 2026-10-31: the account's 3 Free plans are all used by other
+sites, so both Time Machine distributions stay on pay-as-you-go with the always-free allowance
+above (D48).
 
 ## Test environment
 
