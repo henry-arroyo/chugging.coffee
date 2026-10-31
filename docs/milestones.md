@@ -674,8 +674,8 @@ redirects there. Records are in `infra/deploy-records/`.
 - **Browser checks:** `PROD_URL=https://chugging.coffee/` passed 4/4 (CSP-clean journey,
   startup 3.0 s on the throttled profile, about 195 KiB compressed, 16.7 ms drag frames).
   Startup is right at the 3 s target over the real internet (2.4 s locally).
-- **Mail:** MX and TXT records were confirmed unchanged in public DNS. The owner's test email is
-  pending.
+- **Mail:** MX and TXT records were confirmed unchanged in public DNS, and the owner's test email to a
+  chugging.coffee address arrived after the cutover.
 
 **Not done**
 
