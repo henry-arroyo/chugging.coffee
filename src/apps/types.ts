@@ -109,6 +109,14 @@ export interface NavigationApi {
   bookmarks(): Bookmark[];
   addBookmark(address: string, title: string): boolean;
   removeBookmark(address: string): void;
+  /** Clue ids found so far, mapped through the pinned release's retired clues. */
+  discoveries(): ReadonlySet<string>;
+  /** Records the clues on a page the guest has fully loaded; returns the newly found ones. */
+  noticePage(pageId: string): string[];
+  /** Forgets one chain's clues so it can be played again. */
+  resetChain(chainId: string): void;
+  /** Saves a completed chain's reward document to My Documents. */
+  collectReward(chainId: string): Promise<{ ok: true; path: string; existed: boolean } | { ok: false; error: string }>;
 }
 
 /**

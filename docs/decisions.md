@@ -309,3 +309,25 @@ The owner asked for the AOL client to look authentic and supplied three screensh
   Departments that have no content yet open a short fictional department window.
 - **References.** The screenshots stay local in `assets/reference-only/aol25/` and are logged in
   historical-references.md.
+
+## D38. Published releases are frozen in the repository (2026-10-30)
+
+A release's files never change after publishing. `content/world/published/<releaseId>/` holds
+the exact bytes of each frozen release, and the build copies them unchanged after re-checking
+contracts and checksums. Only the newest release is built from `content/sites`, so editing a site
+can never change what a pinned tab or a rollback serves. `npm run content:freeze` freezes the
+newest release at publish time. `rel-0001` was frozen in M4 before any site changed.
+
+## D39. A clue counts when its page has fully loaded (2026-10-30)
+
+Netscape records the clues on a page once the whole page has arrived. Progress is personal (the
+profile's `discoveries`) and is mapped through `retiredClues`. The reward is written with the
+drive's `addCollected` operation, only when the chain is complete and only to a `.txt` file
+directly in `C:\My Documents`; it never overwrites. "Start over" forgets that chain's clues but
+keeps any saved document.
+
+## D40. New editions are offered, never forced (2026-10-30)
+
+Once a tab has pinned a release, it re-reads `current.json` when it becomes visible and every 10
+minutes, and offers a restart once. Declining keeps the pinned edition for the rest of the
+visit.

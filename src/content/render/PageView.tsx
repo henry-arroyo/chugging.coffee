@@ -9,7 +9,7 @@ import type { WebAddress } from '../../core/net/address';
 import { assetUrl } from '../../shell/icons';
 import type { PlannedChunk } from '../plan';
 import type { PinnedWorld } from '../repository';
-import { WidgetView } from './widgets';
+import { WidgetView, type CluesContext } from './widgets';
 import './page.css';
 
 export interface PageViewProps {
@@ -22,6 +22,7 @@ export interface PageViewProps {
   isVisited: (href: string) => boolean;
   onNavigate: (href: string) => void;
   onHover: (href: string | null) => void;
+  clues?: CluesContext;
 }
 
 const FONTS = { serif: "'Times New Roman', Times, serif", sans: 'Arial, Helvetica, sans-serif', mono: "'Courier New', Courier, monospace" };
@@ -37,7 +38,7 @@ function marked(text: ReactNode, marks: Mark[] | undefined): ReactNode {
   return out;
 }
 
-export function PageView({ doc, chunks, revealed, base, world, isVisited, onNavigate, onHover }: PageViewProps) {
+export function PageView({ doc, chunks, revealed, base, world, isVisited, onNavigate, onHover, clues }: PageViewProps) {
   const chunkOf: number[] = [];
   chunks.forEach((c, i) => c.blocks.forEach((b) => (chunkOf[b] = i)));
   const theme = doc.theme ?? {};
@@ -122,7 +123,7 @@ export function PageView({ doc, chunks, revealed, base, world, isVisited, onNavi
       case 'widget':
         return (
           <div key={index} id={id} className="page-widget">
-            <WidgetView widget={block.widget} world={world} renderLink={link} base={base} />
+            <WidgetView widget={block.widget} world={world} clues={clues} renderLink={link} base={base} />
           </div>
         );
     }

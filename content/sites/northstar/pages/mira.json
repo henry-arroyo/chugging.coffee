@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "pageId": "northstar-mira",
+  "siteId": "northstar",
+  "path": "/~mira/",
+  "title": "Mira's Home Page",
+  "layout": "homepage",
+  "theme": {
+    "background": "#ffffcc",
+    "text": "#000000",
+    "link": "#0000ff",
+    "visitedLink": "#800080",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-06",
+    "author": "Mira Chen"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Welcome to Mira's Home Page!",
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Under construction!",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": " Last updated December 6."
+        }
+      ],
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Hi! I'm a second-year physics student. I like telescopes, science fiction and very strong coffee."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Cool links"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "link",
+            "href": "/club/",
+            "text": "Astronomy Club"
+          },
+          {
+            "type": "text",
+            "text": " (I am the secretary)"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "http://chugging.test/menu.html",
+            "text": "Chugging's menu"
+          },
+          {
+            "type": "text",
+            "text": " (get the mocha)"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "http://nightowl.test/",
+            "text": "Night Owl Bulletin"
+          },
+          {
+            "type": "text",
+            "text": " (where I am at 2 am)"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "http://lantern.test/gallery.html",
+            "text": "Wren's lighthouse pictures"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "hit-counter",
+        "props": {
+          "count": 214,
+          "digits": 5
+        }
+      },
+      "id": "counter"
+    }
+  ]
+}

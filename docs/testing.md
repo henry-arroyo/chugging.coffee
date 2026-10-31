@@ -28,6 +28,7 @@ for d in *.deb; do dpkg-deb -x "$d" ../root; done
 | 2026-10-30 | Chrome for Testing 156.0.8078.4 (headless shell, Playwright 1.64.0, Linux/WSL2) | Chromium | M1: 18/18 shell journeys; 54/54 over three repeats |
 | 2026-10-30 | Same | Chromium | M2: 31/31 journeys (shell + programs); 93/93 over three repeats |
 | 2026-10-30 | Same | Chromium | M3: 37/37 journeys (adds AOL, Netscape, network); 108/108 over three repeats before the sound journey was added |
+| 2026-10-30 | Same | Chromium | M4: 43/43 journeys (adds the clue chain, Switchboard reachability, new-edition prompt, dark pages) |
 
 Firefox, Safari/WebKit, Edge and mobile smoke tests are scheduled for M5 and are **not yet run**.
 

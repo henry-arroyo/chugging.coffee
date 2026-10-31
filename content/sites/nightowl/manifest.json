@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "siteId": "nightowl",
+  "host": "nightowl.test",
+  "title": "Night Owl Bulletin",
+  "homePath": "/",
+  "sinceReleaseId": "rel-0002",
+  "pages": [
+    {
+      "pageId": "nightowl-home",
+      "path": "/",
+      "aliases": [
+        "/index.html"
+      ],
+      "document": "pages/home.json"
+    },
+    {
+      "pageId": "nightowl-archive",
+      "path": "/archive.html",
+      "document": "pages/archive.json"
+    },
+    {
+      "pageId": "nightowl-sysop",
+      "path": "/sysop.html",
+      "document": "pages/sysop.json"
+    }
+  ]
+}

@@ -150,3 +150,41 @@ test('capture online screens', async ({ page }) => {
   await expect(aol.getByRole('log')).toContainText('ModemMike', { timeout: 10_000 });
   await desk.screenshot({ path: `${OUT}/22-aol-chat.png` });
 });
+
+test('capture world screens', async ({ page }) => {
+  test.setTimeout(180_000);
+  const desk = await open(page);
+  await page.addStyleTag({ content: '.w95-tray time { visibility: hidden; }' });
+  const win = (appId: string) => desk.locator(`.w95-window[data-app="${appId}"]`);
+  await desk.locator('[data-desktop-icon="aol"]').dblclick();
+  const aol = win('aol');
+  await aol.getByRole('button', { name: 'Setup', exact: true }).click();
+  await aol.getByLabel('Connection sounds').uncheck();
+  await aol.getByLabel('Fast connection (shorter waits)').check();
+  await aol.getByRole('region', { name: 'Setup' }).getByRole('button', { name: 'OK' }).click();
+  await aol.getByRole('button', { name: 'Sign On', exact: true }).click();
+  await expect(aol.getByRole('region', { name: 'Main Menu' })).toBeVisible({ timeout: 20_000 });
+  await aol.locator('.aol-flashbar').getByRole('button', { name: 'Internet Connection', exact: true }).click();
+  await aol.getByRole('button', { name: 'World Wide Web', exact: true }).click();
+  const ns = win('netscape');
+  await expect(ns.locator('.ns-status-text')).toContainText('Document: Done.', { timeout: 20_000 });
+  await ns.getByRole('button', { name: 'Maximize' }).click();
+  const shots: [string, string][] = [
+    ['23-switchboard-home', 'http://switchboard.test/'],
+    ['24-northstar-home', 'http://northstar.test/'],
+    ['25-northstar-club', 'http://northstar.test/club/'],
+    ['26-bytemarket-home', 'http://bytemarket.test/'],
+    ['27-nightowl-archive', 'http://nightowl.test/archive.html'],
+    ['28-lantern-home', 'http://lantern.test/'],
+    ['29-lantern-gallery', 'http://lantern.test/gallery.html'],
+    ['30-chugging-notices', 'http://chugging.test/notices.html'],
+    ['31-lantern-logbook', 'http://lantern.test/logbook.html'],
+  ];
+  for (const [name, address] of shots) {
+    const field = ns.locator('.ns-location-field');
+    await field.fill(address);
+    await field.press('Enter');
+    await expect(ns.locator('.ns-status-text')).toContainText('Document: Done.', { timeout: 20_000 });
+    await desk.screenshot({ path: `${OUT}/${name}.png` });
+  }
+});

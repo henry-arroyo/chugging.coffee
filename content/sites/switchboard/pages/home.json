@@ -5,21 +5,141 @@
   "path": "/",
   "title": "Switchboard - Your Guide to the Web",
   "layout": "centered",
-  "theme": { "background": "#ffffff", "text": "#000000", "link": "#0000ee", "visitedLink": "#551a8b", "font": "serif" },
-  "meta": { "lastModified": "1995-11-30", "author": "The Switchboard Team" },
+  "theme": {
+    "background": "#ffffff",
+    "text": "#000000",
+    "link": "#0000ee",
+    "visitedLink": "#551a8b",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "The Switchboard Team"
+  },
   "blocks": [
-    { "type": "image", "id": "logo", "assetId": "site.switchboard.logo", "alt": "Switchboard", "width": 300, "height": 60, "declaredBytes": 4096, "align": "center" },
-    { "type": "paragraph", "id": "tagline", "align": "center", "content": [{ "type": "text", "text": "Plug in. Look around. Over a thousand listings and growing!", "marks": ["italic"] }] },
-    { "type": "rule" },
-    { "type": "heading", "id": "directory", "level": 2, "text": "The Directory" },
-    { "type": "link", "href": "http://chugging.test/", "text": "Chugging Coffee House", "description": "Coffee, pie and the best corner booth in town. Now with a menu online." },
-    { "type": "link", "href": "http://packet.test/", "text": "The Daily Packet", "description": "Local news, updated most days. Read the latest headlines." },
-    { "type": "rule" },
-    { "type": "paragraph", "content": [
-      { "type": "link", "href": "/whats-new.html", "text": "What's New" },
-      { "type": "text", "text": " | Have a site? Send the address to the Switchboard Team and we'll take a look." }
-    ] },
-    { "type": "widget", "id": "counter", "widget": { "name": "hit-counter", "props": { "count": 10482, "digits": 6 } } },
-    { "type": "paragraph", "align": "center", "content": [{ "type": "text", "text": "Best viewed with Netscape Navigator at 640x480 or higher.", "marks": ["italic"] }] }
+    {
+      "type": "image",
+      "id": "logo",
+      "assetId": "site.switchboard.logo",
+      "alt": "Switchboard",
+      "width": 300,
+      "height": 60,
+      "declaredBytes": 4096,
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "id": "tagline",
+      "align": "center",
+      "content": [
+        {
+          "type": "text",
+          "text": "Plug in. Look around. Over a thousand listings and growing!",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "The Directory",
+      "id": "directory"
+    },
+    {
+      "type": "link",
+      "href": "http://chugging.test/",
+      "text": "Chugging Coffee House",
+      "description": "Coffee, pie and the best corner booth in town. Menu and notice board online."
+    },
+    {
+      "type": "link",
+      "href": "http://packet.test/",
+      "text": "The Daily Packet",
+      "description": "Local news, updated most days."
+    },
+    {
+      "type": "link",
+      "href": "http://northstar.test/",
+      "text": "Northstar Campus",
+      "description": "Northstar College: physics and astronomy, the astronomy club and student pages."
+    },
+    {
+      "type": "link",
+      "href": "http://bytemarket.test/",
+      "text": "Byte Market",
+      "description": "Computers, modems and parts. Classified ads and a download-time calculator."
+    },
+    {
+      "type": "link",
+      "href": "http://nightowl.test/",
+      "text": "Night Owl Bulletin",
+      "description": "A late-night bulletin board, now on the Web. Message archive and sysop notes."
+    },
+    {
+      "type": "link",
+      "href": "http://lantern.test/",
+      "text": "Lantern Point",
+      "description": "Wren Holloway's home page: the lighthouse, a photo gallery and a mysterious logbook."
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "link",
+          "href": "/directory.html",
+          "text": "Search the directory"
+        },
+        {
+          "type": "text",
+          "text": " | "
+        },
+        {
+          "type": "link",
+          "href": "/whats-new.html",
+          "text": "What's New"
+        },
+        {
+          "type": "text",
+          "text": " | "
+        },
+        {
+          "type": "link",
+          "href": "/help.html",
+          "text": "Help for new users"
+        }
+      ]
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "hit-counter",
+        "props": {
+          "count": 11904,
+          "digits": 6
+        }
+      },
+      "id": "counter"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Best viewed with Netscape Navigator at 640x480 or higher.",
+          "marks": [
+            "italic"
+          ]
+        }
+      ],
+      "align": "center"
+    }
   ]
 }

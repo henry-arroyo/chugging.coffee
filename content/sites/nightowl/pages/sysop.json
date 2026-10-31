@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "pageId": "nightowl-sysop",
+  "siteId": "nightowl",
+  "path": "/sysop.html",
+  "title": "Night Owl - Sysop Notes",
+  "layout": "terminal",
+  "theme": {
+    "background": "#000000",
+    "text": "#33ff33",
+    "link": "#ffff00",
+    "visitedLink": "#ff9933",
+    "font": "mono"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "Sysop Gus"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "SYSOP NOTES"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "12/08: Web page is up. The BBS stays the same: be nice, no warez, and do not tie up the line for more than an hour."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "12/03: Upgraded to a 28.8 modem from "
+        },
+        {
+          "type": "link",
+          "href": "http://bytemarket.test/",
+          "text": "Byte Market"
+        },
+        {
+          "type": "text",
+          "text": ". Thanks, Sam."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "11/20: To the student from Northstar who keeps logging in at 4 am: go to sleep. (See "
+        },
+        {
+          "type": "link",
+          "href": "http://northstar.test/~mira/",
+          "text": "her page"
+        },
+        {
+          "type": "text",
+          "text": ".)"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "link",
+          "href": "/",
+          "text": "[Q] Back to main menu"
+        }
+      ]
+    }
+  ]
+}

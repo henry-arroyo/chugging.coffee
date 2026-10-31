@@ -28,7 +28,8 @@
     "access:verify": "tsx infra/access/verify-access.ts",
     "test:e2e": "playwright test",
     "visual:capture": "CAPTURE=1 playwright test tests/e2e/visual-capture.spec.ts",
-    "content:check": "tsx scripts/world/build.ts"
+    "content:check": "tsx scripts/world/build.ts",
+    "content:freeze": "tsx scripts/world/freeze.ts"
   },
   "dependencies": {
     "ajv": "8.20.0",

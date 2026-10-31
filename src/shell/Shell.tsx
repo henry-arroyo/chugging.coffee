@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState, useSyncExternalStore, type KeyboardEvent, type MutableRefObject } from 'react';
 import { APPS } from '../apps/registry';
 import type { AppDefinition, AppHost, ButtonChoice, FileDialogOptions, LaunchArgs, MessageBoxOptions } from '../apps/types';
+import { chainProgress, cluesOnPage, effectiveClues } from '../content/clues';
 import { NetworkService } from '../content/network';
 import { StaticWorldRepository } from '../content/repository';
 import { EventBus } from '../core/events';
@@ -285,6 +286,38 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
 
   if (controller) controller.current = { launch: (appId) => launch(appId) };
 
+  // A newer edition of the world: offer a restart once. This tab stays pinned to its release
+  // until the guest says yes; nothing changes underneath them.
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
+  useEffect(() => {
+    let asked = false;
+    const check = async () => {
+      if (asked || phaseRef.current !== 'desktop' || !network.repository.current || document.visibilityState === 'hidden') return;
+      const next = await network.repository.checkForUpdate().catch(() => null);
+      if (!next || asked) return;
+      asked = true;
+      events.emit({ type: 'release.available', releaseId: next });
+      const choice = await messageBox(null, {
+        title: 'Time Machine',
+        icon: 'info',
+        buttons: ['yes', 'no'],
+        text: 'A new edition of the 1995 Web is available.\n\nRestart the Time Machine now to see it? Your files, settings and discoveries are kept.',
+      });
+      if (choice === 'yes') {
+        await sessionRef.current?.flush();
+        window.location.reload();
+      }
+    };
+    const timer = setInterval(() => void check(), 10 * 60_000);
+    const onVisible = () => document.visibilityState === 'visible' && void check();
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [network, events, messageBox]);
+
   // Resolve dialogs closed from their title bar, forget hosts and guards of closed windows.
   const previousWindows = useRef<Record<string, WindowState>>({});
   useEffect(() => {
@@ -444,6 +477,45 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
               bookmarks: () => s.getState().bookmarks,
               addBookmark: (address: string, title: string) => s.addBookmark(address, title),
               removeBookmark: (address: string) => s.removeBookmark(address),
+              discoveries: () => {
+                const world = network.repository.current;
+                return effectiveClues(s.getState().discoveries.map((d) => d.clueId), world?.release.retiredClues ?? []);
+              },
+              noticePage: (pageId: string) => {
+                const world = network.repository.current;
+                if (!world) return [];
+                const found: string[] = [];
+                for (const { clueId } of cluesOnPage(world.release, pageId)) {
+                  if (s.recordDiscovery(clueId, world.release.releaseId)) {
+                    found.push(clueId);
+                    events.emit({ type: 'discovery.recorded', clueId, releaseId: world.release.releaseId });
+                  }
+                }
+                return found;
+              },
+              resetChain: (chainId: string) => {
+                const chain = network.repository.current?.release.clueChains.find((c) => c.chainId === chainId);
+                if (!chain) return;
+                const ids = new Set(chain.steps.map((st) => st.clueId));
+                // Also forget saved ids that map onto this chain through retired clues.
+                const retired = network.repository.current?.release.retiredClues ?? [];
+                const saved = s.getState().discoveries.map((d) => d.clueId);
+                s.clearDiscoveries(saved.filter((id) => [...effectiveClues([id], retired)].some((x) => ids.has(x))));
+              },
+              collectReward: async (chainId: string) => {
+                const world = await network.world().catch(() => null);
+                const chain = world?.release.clueChains.find((c) => c.chainId === chainId);
+                if (!world || !chain) return { ok: false as const, error: 'This logbook is not part of the current edition of the Web.' };
+                const found = effectiveClues(s.getState().discoveries.map((d) => d.clueId), world.release.retiredClues);
+                if (!chainProgress(chain, found).complete) return { ok: false as const, error: 'Some pieces are still missing.' };
+                const path = chain.reward.vfsPath;
+                if (!/^C:\\My Documents\\[^\\]+$/i.test(path)) return { ok: false as const, error: 'The document has nowhere safe to go.' };
+                if (vfs.stat(s.getState().vfs, path)) return { ok: true as const, path, existed: true };
+                const r = s.applyVfs((v) => vfs.addCollected(v, path, chain.reward.text, chain.reward.documentId, new Date().toISOString()));
+                if (!r.ok) return { ok: false as const, error: r.error === 'disk-full' || r.error === 'too-many-files' ? 'Drive C: is full. Delete some files and empty the Recycle Bin.' : `The document could not be saved (${r.error}).` };
+                events.emit({ type: 'vfs.changed', paths: [path] });
+                return { ok: true as const, path, existed: false };
+              },
             },
           }
         : {}),

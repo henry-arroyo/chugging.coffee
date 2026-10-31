@@ -5,27 +5,103 @@
   "path": "/",
   "title": "The Daily Packet",
   "layout": "newspaper",
-  "theme": { "background": "#ffffff", "text": "#000000", "link": "#000080", "visitedLink": "#800080", "font": "serif" },
-  "meta": { "lastModified": "1995-12-01", "author": "The Daily Packet newsroom" },
+  "theme": {
+    "background": "#ffffff",
+    "text": "#000000",
+    "link": "#000080",
+    "visitedLink": "#800080",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "The Packet newsroom"
+  },
   "blocks": [
-    { "type": "image", "id": "masthead", "assetId": "site.packet.masthead", "alt": "The Daily Packet", "width": 400, "height": 70, "declaredBytes": 9216, "align": "center" },
-    { "type": "paragraph", "align": "center", "content": [{ "type": "text", "text": "Friday, December 1, 1995 - Updated most days", "marks": ["italic"] }] },
-    { "type": "rule" },
-    { "type": "heading", "level": 2, "text": "Today's headlines" },
-    { "type": "link", "href": "/coffee-online.html", "text": "Coffee house puts its menu on the World Wide Web", "description": "Owner says the 'home page' has already brought in new night-owl regulars." },
-    { "type": "paragraph", "content": [
-      { "type": "text", "text": "Library modem lines: ", "marks": ["bold"] },
-      { "type": "text", "text": "The city council will vote Tuesday on adding four more dial-in lines at the public library, after patrons reported busy signals most evenings." }
-    ] },
-    { "type": "paragraph", "content": [
-      { "type": "text", "text": "Weather: ", "marks": ["bold"] },
-      { "type": "text", "text": "Clear and cold tonight, low of 28. Bundle up." }
-    ] },
-    { "type": "rule" },
-    { "type": "paragraph", "content": [
-      { "type": "text", "text": "Find more local pages on " },
-      { "type": "link", "href": "http://switchboard.test/", "text": "Switchboard" },
-      { "type": "text", "text": "." }
-    ] }
+    {
+      "type": "image",
+      "id": "masthead",
+      "assetId": "site.packet.masthead",
+      "alt": "The Daily Packet",
+      "width": 400,
+      "height": 70,
+      "declaredBytes": 9216,
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "align": "center",
+      "content": [
+        {
+          "type": "text",
+          "text": "Friday, December 8, 1995 - Updated most days",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Today's headlines"
+    },
+    {
+      "type": "link",
+      "href": "/library-modems.html",
+      "text": "Council approves modem lines for the library",
+      "description": "Four public Internet terminals by spring, after a 5 to 2 vote."
+    },
+    {
+      "type": "link",
+      "href": "http://lantern.test/",
+      "text": "A mystery light at Lantern Point",
+      "description": "Stargazers at Northstar report flashes from the old lighthouse, dark since 1971."
+    },
+    {
+      "type": "link",
+      "href": "/coffee-online.html",
+      "text": "Coffee house puts its menu on the World Wide Web",
+      "description": "Owner says the 'home page' has already brought in new night-owl regulars."
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Weather: ",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Clear and cold tonight, low of 28. Bundle up."
+        }
+      ]
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Find more local pages on "
+        },
+        {
+          "type": "link",
+          "href": "http://switchboard.test/",
+          "text": "Switchboard"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    }
   ]
 }

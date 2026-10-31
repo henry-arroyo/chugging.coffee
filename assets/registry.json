@@ -1745,6 +1745,96 @@
       "standIn": false,
       "expires": null,
       "notes": "D29, D37. Get written confirmation and file it as evidence. Permission ends if the service charges money."
+    },
+    {
+      "assetId": "site.northstar.crest",
+      "file": "site/northstar-crest.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Northstar Campus crest, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
+    },
+    {
+      "assetId": "site.bytemarket.logo",
+      "file": "site/bytemarket-logo.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Byte Market logo, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
+    },
+    {
+      "assetId": "site.lantern.lighthouse",
+      "file": "site/lantern-lighthouse.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Lantern Point lighthouse at dusk, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
+    },
+    {
+      "assetId": "site.lantern.harbor",
+      "file": "site/lantern-harbor.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Harbor below Lantern Point, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
+    },
+    {
+      "assetId": "site.lantern.nightsky",
+      "file": "site/lantern-nightsky.svg",
+      "kind": "image",
+      "origin": "project-original",
+      "source": "Stars over Lantern Point, drawn for this project for the fictional web",
+      "creator": "chugging.coffee",
+      "license": "Project-owned",
+      "attribution": "",
+      "permissionEvidence": "Created in-repo; see git history",
+      "allowedUse": [
+        "public-build",
+        "development"
+      ],
+      "status": "approved",
+      "standIn": false,
+      "expires": null
     }
   ]
 }

@@ -38,6 +38,7 @@ async function sha256Hex(text: string): Promise<string> {
 
 export class StaticWorldRepository {
   private pinned: Promise<PinnedWorld> | null = null;
+  private loaded: PinnedWorld | null = null;
   private readonly pages = new Map<string, Promise<PageDocument>>();
 
   constructor(
@@ -108,11 +109,17 @@ export class StaticWorldRepository {
   world(): Promise<PinnedWorld> {
     if (!this.pinned) {
       this.pinned = this.load();
-      this.pinned.catch(() => {
-        this.pinned = null;
-      });
+      this.pinned.then(
+        (w) => (this.loaded = w),
+        () => (this.pinned = null),
+      );
     }
     return this.pinned;
+  }
+
+  /** The pinned release once loaded, or null before the first successful load. */
+  get current(): PinnedWorld | null {
+    return this.loaded;
   }
 
   async resolve(address: WebAddress): Promise<Resolution> {

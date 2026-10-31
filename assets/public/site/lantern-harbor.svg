@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120">
+  <!-- The harbor below Lantern Point, drawn for the fictional web of this project. -->
+  <rect width="160" height="70" fill="#9cc3e0"/><rect y="70" width="160" height="50" fill="#2f5f86"/>
+  <path d="M0 70c20-12 40-14 60-6s40 4 60-4 30 2 40 6v4H0z" fill="#5d7a4a"/>
+  <path d="M30 96h40l-6 8H36z" fill="#8a3b2a"/><path d="M49 96V74l16 18z" fill="#f4f0e6"/>
+  <path d="M100 100h30l-5 6h-20z" fill="#e0c040"/><path d="M114 100V84l10 14z" fill="#fff"/>
+  <path d="M0 110c10-3 20 3 30 0s20 3 30 0 20 3 30 0 20 3 30 0 20 3 40 0" stroke="#bcd4e8" fill="none"/>
+</svg>

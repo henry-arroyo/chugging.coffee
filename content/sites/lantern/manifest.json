@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "siteId": "lantern",
+  "host": "lantern.test",
+  "title": "Lantern Point",
+  "homePath": "/",
+  "sinceReleaseId": "rel-0002",
+  "pages": [
+    {
+      "pageId": "lantern-home",
+      "path": "/",
+      "aliases": [
+        "/index.html"
+      ],
+      "document": "pages/home.json"
+    },
+    {
+      "pageId": "lantern-gallery",
+      "path": "/gallery.html",
+      "document": "pages/gallery.json"
+    },
+    {
+      "pageId": "lantern-logbook",
+      "path": "/logbook.html",
+      "document": "pages/logbook.json"
+    }
+  ]
+}

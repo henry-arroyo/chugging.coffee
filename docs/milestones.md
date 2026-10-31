@@ -6,7 +6,7 @@
 | M1 | Windows 95 desktop and window management | **Complete (pending owner review)** |
 | M2 | Local applications and persistence | **Complete (pending owner review)** |
 | M3 | AOL, connection scheduler, Netscape | **Complete (pending owner review)** |
-| M4 | Seven-site world and clue chain | Not started |
+| M4 | Seven-site world and clue chain | **Complete (pending owner review)** |
 | M5 | Accessibility, security, performance, browser QA, deployment-ready package | Not started |
 
 ## M0 report (2026-10-29)
@@ -440,3 +440,85 @@ update flow.
   background. The simulated computer now always renders in light mode, with black text on its
   white surfaces, and AOL's dates are dark gray. A new journey runs in dark mode and scans every
   visible text node and field for light text on white. Disabled items stay gray, as in Windows 95.
+
+## M4 report (2026-10-30)
+
+**Works**
+
+- **Release `rel-0002`** ("Second week of December", story date 1995-12-08) has **all seven
+  sites** and **23 meaningful pages**:
+
+  | Site | Pages |
+  |---|---|
+  | Switchboard | home, what's new, directory search, help |
+  | Chugging Coffee House | home, menu, notice board |
+  | The Daily Packet | home, the coffee story, library modem lines |
+  | Northstar Campus | home, physics and astronomy, astronomy club, Mira's student page |
+  | Byte Market | catalog, classifieds, download-time calculator |
+  | Night Owl Bulletin | BBS welcome, message archive, sysop notes |
+  | Lantern Point | home and guestbook, photo gallery, the keeper's logbook |
+
+  The layouts vary across sidebar, academic, catalog, terminal, homepage, newspaper and
+  centered. Five new original images were added. There are eight more AOL keywords (NORTHSTAR,
+  STARS, BYTE MARKET, COMPUTERS, BBS, NIGHT OWL, LANTERN, LIGHTHOUSE) and a new redirect
+  (`northstar.test/astronomy/` → `/astro/`).
+- **The world hangs together, and the build checks it:**
+  - Every site links to at least two other sites, and every site is reachable from Switchboard.
+  - There is a loop through three sites: Chugging notices → Lantern Point → Night Owl → Chugging
+    notices.
+  - Every link resolves, and every clue points at a real block on a real page.
+  - Rewards may only be `.txt` files directly in `C:\My Documents`, and retired clues are never
+    reused.
+- **Immutable releases (D38):**
+  - **Frozen:** `rel-0001` is frozen in `content/world/published/` and served byte for byte
+    beside `rel-0002`, so open tabs pinned to it keep working and rollback stays possible
+    (`rollbackSafeTo: [rel-0001]`).
+  - **Freezing:** `npm run content:freeze` freezes the newest release when it is published. The
+    build refuses an unfrozen release that has newer ones after it.
+- **New edition prompt:** once a tab has pinned a release, it checks `current.json` when it
+  becomes visible and every 10 minutes. When a newer edition appears, it offers a restart once
+  ("Your files, settings and discoveries are kept"). Saying no keeps the tab on its edition.
+- **The Lantern Keeper's Logbook (optional clue chain):**
+  - **The pieces:** four pieces on Northstar, Night Owl, Byte Market and Chugging. A piece
+    counts when its page has fully loaded, and Netscape's status bar says "You found a piece of
+    ...".
+  - **The logbook page** on Lantern Point shows progress and up to two hints per step, revealed
+    one at a time. Start over asks first and then forgets that chain's pieces.
+  - **The reward:** with every piece found, "Save to My Documents" writes
+    `C:\My Documents\Keepers Log.txt` through the drive's `addCollected` operation, which never
+    overwrites anything. "Open it" opens the file in Notepad.
+  - **Storage:** discoveries are personal. They live in this browser and its exports, and never
+    change canon. A saved clue retired from canon counts for its replacement.
+
+**Tests actually run**
+
+- `npm test`: 571 passed (7 new):
+  - **Clue logic:** progress, retired-clue mapping including chains and cycles, and clues on a
+    page.
+  - **Releases:** the seven-site release; the frozen release served byte for byte; the
+    three-site loop; loading a pinned older release.
+- `npm run test:e2e`: 43/43 journeys. The five new ones:
+  - **The full clue chain:** hints, four pieces, no double counting, the reward in Notepad,
+    Start over, and progress kept across a reload.
+  - **Switchboard and redirects:** Switchboard reaches all six sites, the directory search
+    works, and the old Northstar address redirects.
+  - **New edition:** the restart prompt appears once, and the tab stays on its edition.
+  - **Dark pages:** they keep their light text.
+- **Build:** the content check and asset gate pass, with 97 registered assets.
+- **Screenshots:** 23-31 in `tests/visual/pending/` show the new sites and the logbook.
+
+**Bugs found and fixed while testing**
+
+- The readability fix had forced preformatted text black, which made it invisible on dark pages
+  (the Northstar log and Night Owl). Pages now keep their own text colour, and a journey checks
+  it.
+
+**Not done / not verified**
+
+- **Not deployed:** freezing `rel-0002` happens when it is published (M5 `infra:publish`), not
+  now.
+- **One chain:** there is only one clue chain. The schema allows more.
+- **Coverage:** only Chromium.
+
+**Next step:** M5: accessibility, security, performance, browser QA and the deployment-ready
+package.

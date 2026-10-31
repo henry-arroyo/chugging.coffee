@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "pageId": "chugging-notices",
+  "siteId": "chugging",
+  "path": "/notices.html",
+  "title": "The Notice Board - Chugging Coffee House",
+  "layout": "catalog",
+  "theme": {
+    "background": "#fff8e7",
+    "text": "#3b2412",
+    "link": "#8b0000",
+    "visitedLink": "#5a3a22",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "Dot"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "The Notice Board",
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Pinned up by the register. Ask Dot before you take a card down.",
+          "marks": [
+            "italic"
+          ]
+        }
+      ],
+      "align": "center"
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "table",
+      "border": 1,
+      "header": [
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Card"
+            }
+          ]
+        },
+        {
+          "content": [
+            {
+              "type": "text",
+              "text": "Notice"
+            }
+          ]
+        }
+      ],
+      "rows": [
+        [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Poetry night"
+              }
+            ]
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Every other Thursday at 8. Bring a poem or just listen. Decaf after 9, by popular demand."
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Ride share"
+              }
+            ]
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Driving to the coast on the 16th, room for two. Ask for Paul. Or post on the "
+              },
+              {
+                "type": "link",
+                "href": "http://nightowl.test/",
+                "text": "Night Owl Bulletin"
+              },
+              {
+                "type": "text",
+                "text": "."
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Lost"
+              }
+            ]
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "One blue mitten, child size. It is behind the counter."
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "For sale"
+              }
+            ]
+          },
+          {
+            "content": [
+              {
+                "type": "text",
+                "text": "Old 2400 baud modem, works fine. See the "
+              },
+              {
+                "type": "link",
+                "href": "http://bytemarket.test/classifieds.html",
+                "text": "Byte Market classifieds"
+              },
+              {
+                "type": "text",
+                "text": " for better deals."
+              }
+            ]
+          }
+        ]
+      ],
+      "caption": "Notices this week"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "W.",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": " - your logbook page is safe in the jar behind the counter. Dot says the last word on it is "
+        },
+        {
+          "type": "text",
+          "text": "NIGHTLIGHT",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": ". Hope that makes sense to you, because it does not to us!"
+        }
+      ],
+      "id": "clue-notice"
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Regulars: "
+        },
+        {
+          "type": "link",
+          "href": "http://lantern.test/",
+          "text": "Wren's lighthouse page"
+        },
+        {
+          "type": "text",
+          "text": " | "
+        },
+        {
+          "type": "link",
+          "href": "/",
+          "text": "Back to Chugging Coffee House"
+        }
+      ]
+    }
+  ]
+}

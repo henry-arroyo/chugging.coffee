@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "pageId": "packet-library-modems",
+  "siteId": "packet",
+  "path": "/library-modems.html",
+  "title": "Council approves library modem lines - The Daily Packet",
+  "layout": "newspaper",
+  "theme": {
+    "background": "#ffffff",
+    "text": "#000000",
+    "link": "#000080",
+    "visitedLink": "#800080",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "The Packet newsroom"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Council approves modem lines for the library"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "By our city hall reporter | December 8, 1995",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The city council voted 5 to 2 on Tuesday to pay for four telephone lines at the public library, so that residents without a computer can try the Internet at a public terminal."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "\"Students at Northstar already have this,\" said councilwoman Ana Ruiz. \"Everyone else in town should too.\" The terminals are expected by spring."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Professor Elena Park of the "
+        },
+        {
+          "type": "link",
+          "href": "http://northstar.test/astro/",
+          "text": "Northstar physics and astronomy department"
+        },
+        {
+          "type": "text",
+          "text": " spoke in favor. Byte Market owner Sam Okafor offered to donate two modems; see the shop at "
+        },
+        {
+          "type": "link",
+          "href": "http://bytemarket.test/",
+          "text": "bytemarket.test"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "link",
+          "href": "/",
+          "text": "Back to today's headlines"
+        }
+      ]
+    }
+  ]
+}

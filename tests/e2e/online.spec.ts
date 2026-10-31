@@ -63,7 +63,7 @@ test('AOL signs on, a keyword opens Netscape, pages load progressively and links
   await expect(desk.locator('[data-connection]')).toHaveAttribute('data-connection', 'offline');
   const aol = await aolOnline(desk);
   await expect(aol.getByRole('button', { name: 'You have mail!' })).toBeVisible();
-  await expect(aol.getByText('Chugging Coffee House puts its menu on the World Wide Web')).toBeVisible();
+  await expect(aol.getByText('Council approves modem lines for the library')).toBeAttached();
 
   await flashbar(aol, 'Keyword').click();
   await aol.getByLabel('Type the keyword for the area you want to go to:').fill('Coffee');

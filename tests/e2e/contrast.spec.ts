@@ -8,6 +8,27 @@ async function textColor(l: Locator) {
   return l.evaluate((el) => getComputedStyle(el).color);
 }
 
+test('dark pages keep their light text', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('ctm.host.v1', JSON.stringify({ zoom: 1, size: { width: 800, height: 600 } })));
+  await page.goto('?skipboot');
+  const desk = page.locator('.w95[data-phase]');
+  await signOn(page, 'Night Owl');
+  await desk.locator('[data-desktop-icon="aol"]').dblclick();
+  const aol = desk.locator('.w95-window[data-app="aol"]');
+  await aol.getByRole('button', { name: 'Setup', exact: true }).click();
+  await aol.getByRole('region', { name: 'Setup' }).getByLabel('Connection sounds').uncheck();
+  await aol.getByRole('region', { name: 'Setup' }).getByLabel('Fast connection (shorter waits)').check();
+  await aol.getByRole('region', { name: 'Setup' }).getByRole('button', { name: 'OK' }).click();
+  await aol.getByRole('button', { name: 'Sign On', exact: true }).click();
+  await expect(aol.getByRole('region', { name: 'Main Menu' })).toBeVisible({ timeout: 10_000 });
+  await aol.locator('.aol-flashbar').getByRole('button', { name: 'Keyword', exact: true }).click();
+  await aol.getByLabel('Type the keyword for the area you want to go to:').fill('bbs');
+  await aol.getByRole('button', { name: 'Go', exact: true }).click();
+  const ns = desk.locator('.w95-window[data-app="netscape"]');
+  await expect(ns.locator('.ns-status-text')).toContainText('Document: Done.', { timeout: 15_000 });
+  expect(await textColor(ns.locator('.page pre').first())).toBe('rgb(51, 255, 51)');
+});
+
 test('text on white is black even when the visitor uses dark mode', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('ctm.host.v1', JSON.stringify({ zoom: 1, size: { width: 800, height: 600 } })));
   await page.goto('?skipboot');

@@ -1,8 +1,9 @@
 # Architecture
 
-Status: **M3 built** (shell, window manager, persistence, virtual drive, local programs and
-games, AOL, Netscape, the shared network and a three-site seed release). The full seven-site
-world and clue chain are M4.
+Status: **M4 built** (shell, window manager, persistence, virtual drive, local programs and
+games, AOL, Netscape, the shared network, the seven-site world with its clue chain, and frozen
+releases). M5 covers accessibility, security, performance, browser QA and the deployment
+package.
 
 ## Shape of the system
 

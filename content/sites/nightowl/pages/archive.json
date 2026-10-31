@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "pageId": "nightowl-archive",
+  "siteId": "nightowl",
+  "path": "/archive.html",
+  "title": "Night Owl - Message Archive",
+  "layout": "terminal",
+  "theme": {
+    "background": "#000000",
+    "text": "#33ff33",
+    "link": "#ffff00",
+    "visitedLink": "#ff9933",
+    "font": "mono"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "Sysop Gus"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "MESSAGE ARCHIVE: GENERAL"
+    },
+    {
+      "type": "preformatted",
+      "text": "#  FROM           SUBJECT\n-- -------------- ------------------------\n41 ModemMike     28.8 finally working!\n42 JavaJen       Best coffee in town?\n43 Keeper        The light at the point\n44 BookwormB     Library getting modems",
+      "label": "List of messages: number, sender and subject"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "MSG #41 FROM ModemMike:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": " It SCREAMS. Got it at "
+        },
+        {
+          "type": "link",
+          "href": "http://bytemarket.test/",
+          "text": "Byte Market"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "MSG #42 FROM JavaJen:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": " Chugging, obviously. "
+        },
+        {
+          "type": "link",
+          "href": "http://chugging.test/menu.html",
+          "text": "Get the mocha."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "MSG #43 FROM Keeper:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": " To whoever saw the light at the point: yes, it was me. Grandpa wrote the flashes into his log as a code: three, two, three. If you want the rest of the story, the last word is pinned up where the coffee is. -- Keeper"
+        }
+      ],
+      "id": "clue-keeper"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "MSG #44 FROM BookwormB:",
+          "marks": [
+            "bold"
+          ]
+        },
+        {
+          "type": "text",
+          "text": " "
+        },
+        {
+          "type": "link",
+          "href": "http://packet.test/library-modems.html",
+          "text": "It passed!"
+        },
+        {
+          "type": "text",
+          "text": " Four lines by spring."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "link",
+          "href": "/",
+          "text": "[Q] Back to main menu"
+        }
+      ]
+    }
+  ]
+}

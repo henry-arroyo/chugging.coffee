@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "pageId": "nightowl-home",
+  "siteId": "nightowl",
+  "path": "/",
+  "title": "Night Owl Bulletin",
+  "layout": "terminal",
+  "theme": {
+    "background": "#000000",
+    "text": "#33ff33",
+    "link": "#ffff00",
+    "visitedLink": "#ff9933",
+    "font": "mono"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "Sysop Gus"
+  },
+  "blocks": [
+    {
+      "type": "preformatted",
+      "text": "   ,___,\n   (O,O)     N I G H T   O W L\n   /)  )     B U L L E T I N\n ---\"-\"---   est. 1989  *  1 node  *  2400-28800",
+      "label": "Night Owl Bulletin logo: an owl drawn with letters"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "CONNECT 28800. Welcome, caller! You are visitor number 48,211."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The Night Owl has run on one phone line from Gus's spare room since 1989. Now you can read it on the Web, too."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "text": "MAIN MENU"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "link",
+            "href": "/archive.html",
+            "text": "[M] Message archive"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "/sysop.html",
+            "text": "[S] Sysop notes"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "http://bytemarket.test/",
+            "text": "[B] Byte Market (our sponsor)"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "http://chugging.test/notices.html",
+            "text": "[C] Chugging Coffee House notice board"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Dial in at 555-0142 after midnight for the best chance of getting through. (No real number. Do not call.)"
+        }
+      ]
+    }
+  ]
+}

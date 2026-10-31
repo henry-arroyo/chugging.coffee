@@ -41,17 +41,9 @@ function linksOf(block: Block): string[] {
   }
 }
 
-export function buildWorld(root: string): WorldBuild {
-  const errors: string[] = [];
-  const files = new Map<string, string>();
+/** Builds the newest (not yet frozen) release from content/sites. Returns its page count. */
+function buildRelease(root: string, source: ReleaseSource, errors: string[], files: Map<string, string>): number {
   const contentDir = join(root, 'content');
-  const releaseDir = join(contentDir, 'world/releases');
-  const sources = readdirSync(releaseDir)
-    .filter((f) => f.endsWith('.json'))
-    .map((f) => readJson(join(releaseDir, f)) as ReleaseSource)
-    .sort((a, b) => a.sequence - b.sequence);
-  const source = sources.at(-1);
-  if (!source) return { releaseId: '', files, errors: ['no release in content/world/releases'], pages: 0 };
   const rel = source.releaseId;
 
   const registry = readJson(join(root, 'assets/registry.json')) as AssetRegistry;
@@ -130,11 +122,111 @@ export function buildWorld(root: string): WorldBuild {
     ...source,
     sites: [...manifests.values()].map(({ manifest, text }) => ({ siteId: manifest.siteId, host: manifest.host, manifest: `sites/${manifest.siteId}/manifest.json`, sha256: sha256(text) })),
   };
+  // The world must hang together: every site links out to at least two other sites, and every
+  // site can be reached from Switchboard by following links.
+  const outLinks = new Map<string, Set<string>>();
+  for (const { siteId, host, doc, path } of pages) {
+    const base: WebAddress = { kind: 'web', host, path, fragment: null, href: `http://${host}${path}` };
+    for (const block of doc.blocks) {
+      for (const href of linksOf(block)) {
+        const parsed = parseAddress(href, base);
+        if (!parsed.ok || parsed.address.kind !== 'web') continue;
+        const r = resolve(parsed.address, index);
+        if (r.kind === 'page' && r.siteId !== siteId) (outLinks.get(siteId) ?? outLinks.set(siteId, new Set()).get(siteId)!).add(r.siteId);
+      }
+    }
+  }
+  if (manifests.size > 1) {
+    for (const siteId of manifests.keys()) {
+      const n = outLinks.get(siteId)?.size ?? 0;
+      if (n < 2) errors.push(`${siteId}: links to ${n} other site(s); every site needs at least two`);
+    }
+    if (manifests.has('switchboard')) {
+      const seen = new Set(['switchboard']);
+      const queue = ['switchboard'];
+      while (queue.length) for (const next of outLinks.get(queue.shift()!) ?? []) if (!seen.has(next)) seen.add(next), queue.push(next);
+      for (const siteId of manifests.keys()) if (!seen.has(siteId)) errors.push(`${siteId}: cannot be reached from Switchboard`);
+    }
+  }
+
+  // Clue chains must point at real blocks, and rewards may only land in My Documents.
+  const clueIds = new Set<string>();
+  for (const chain of source.clueChains) {
+    for (const step of chain.steps) {
+      if (clueIds.has(step.clueId)) errors.push(`clue ${step.clueId}: used twice`);
+      clueIds.add(step.clueId);
+      const page = pages.find((p) => p.doc.pageId === step.pageId);
+      if (!page) errors.push(`clue ${step.clueId}: page ${step.pageId} is not in the release`);
+      else if (!page.doc.blocks.some((b) => b.id === step.blockId)) errors.push(`clue ${step.clueId}: block ${step.blockId} is not on ${step.pageId}`);
+    }
+    if (!/^C:\\My Documents\\[^\\]+\.txt$/i.test(chain.reward.vfsPath)) errors.push(`chain ${chain.chainId}: reward must be a .txt file directly in C:\\My Documents`);
+  }
+  for (const r of source.retiredClues) if (clueIds.has(r.clueId)) errors.push(`retired clue ${r.clueId} is still used by a chain`);
+
   const releaseCheck = validateContract('world-release', release);
   if (!releaseCheck.ok) errors.push(`release ${rel}: ${releaseCheck.errors.join('; ')}`);
   files.set(`${rel}/release.json`, JSON.stringify(release));
-  files.set('current.json', JSON.stringify({ releaseId: rel }));
-  return { releaseId: rel, files, errors, pages: pages.length };
+  return pages.length;
+}
+
+function listFiles(dir: string, prefix = ''): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? listFiles(join(dir, e.name), `${prefix}${e.name}/`) : [`${prefix}${e.name}`]));
+}
+
+/** Copies a frozen release byte for byte, re-checking its contracts and checksums. */
+function loadFrozen(dir: string, id: string, errors: string[], files: Map<string, string>): WorldRelease | null {
+  for (const rel of listFiles(dir)) files.set(`${id}/${rel}`, readFileSync(join(dir, rel), 'utf8'));
+  const check = validateContract('world-release', JSON.parse(files.get(`${id}/release.json`) ?? 'null'));
+  if (!check.ok) {
+    errors.push(`frozen ${id}/release.json: ${check.errors.join('; ')}`);
+    return null;
+  }
+  for (const site of check.value.sites) {
+    const text = files.get(`${id}/${site.manifest}`);
+    if (text === undefined || sha256(text) !== site.sha256) errors.push(`frozen ${id}/${site.manifest}: does not match its checksum`);
+  }
+  for (const [path, body] of files) {
+    if (path.startsWith(`${id}/sites/`) && path.includes('/pages/')) {
+      const page = validateContract('page-document', JSON.parse(body));
+      if (!page.ok) errors.push(`frozen ${path}: ${page.errors.join('; ')}`);
+    }
+  }
+  return check.value;
+}
+
+/**
+ * Builds every release: frozen ones are copied unchanged (pinned tabs and rollbacks need them),
+ * and the newest is built from content/sites. current.json points at the newest.
+ */
+export function buildWorld(root: string): WorldBuild {
+  const errors: string[] = [];
+  const files = new Map<string, string>();
+  const releaseDir = join(root, 'content/world/releases');
+  const publishedDir = join(root, 'content/world/published');
+  const sources = readdirSync(releaseDir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => readJson(join(releaseDir, f)) as ReleaseSource)
+    .sort((a, b) => a.sequence - b.sequence);
+  const latest = sources.at(-1);
+  if (!latest) return { releaseId: '', files, errors: ['no release in content/world/releases'], pages: 0 };
+  let pages = 0;
+  sources.forEach((source, i) => {
+    const previous = sources[i - 1];
+    if (source.previousReleaseId !== (previous?.releaseId ?? null)) errors.push(`${source.releaseId}: previousReleaseId should be ${previous?.releaseId ?? 'null'}`);
+    const earlier = new Set(sources.slice(0, i).map((x) => x.releaseId));
+    for (const r of source.compatibility.rollbackSafeTo) if (!earlier.has(r)) errors.push(`${source.releaseId}: rollbackSafeTo ${r} is not an earlier release`);
+    const frozen = join(publishedDir, source.releaseId);
+    if (existsSync(frozen)) {
+      const release = loadFrozen(frozen, source.releaseId, errors, files);
+      if (release && source === latest) pages = [...files.keys()].filter((k) => k.startsWith(`${source.releaseId}/sites/`) && k.includes('/pages/')).length;
+    } else if (source !== latest) {
+      errors.push(`${source.releaseId} is not frozen but newer releases exist (run content:freeze when publishing)`);
+    } else {
+      pages = buildRelease(root, source, errors, files);
+    }
+  });
+  files.set('current.json', JSON.stringify({ releaseId: latest.releaseId }));
+  return { releaseId: latest.releaseId, files, errors, pages };
 }
 
 if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href) {
@@ -143,5 +235,5 @@ if (process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).
     console.error(`World content has ${result.errors.length} problem(s):\n  ${result.errors.join('\n  ')}`);
     process.exit(1);
   }
-  console.log(`World release ${result.releaseId}: ${result.pages} pages, ${result.files.size} files. All links resolve.`);
+  console.log(`World release ${result.releaseId}: ${result.pages} pages; ${result.files.size} files across all releases. All links resolve.`);
 }

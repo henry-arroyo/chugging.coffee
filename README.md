@@ -4,8 +4,9 @@ A Windows 95 desktop in the browser, connected to a shared, persistent, fictiona
 internet: an AOL-style online service, a Netscape-era browser, and seven interlinked `.test` sites.
 Served at `/time-machine/`. Static hosting on AWS (CDK v2), no backend in v1.
 
-**Status:** milestone M3: AOL 2.5, Netscape Navigator 2.0b3, the shared dial-up connection and a
-three-site seed release of the fictional Web (on top of M2's programs, games and storage). See
+**Status:** milestone M4: all seven sites of the fictional 1995 Web (23 pages), the Lantern Keeper
+clue chain, frozen releases and the new-edition prompt, on top of AOL 2.5, Netscape 2.0b3 and the
+Windows 95 desktop. See
 [docs/milestones.md](docs/milestones.md).
 
 ## Commands
@@ -21,7 +22,8 @@ npm run build               # contracts, public asset gate, content check, typec
 
 npm run contracts:build     # regenerate validators after editing schemas/
 npm run assets:check        # asset registry (add --public rules with assets:check:public)
-npm run content:check       # validate the world release: contracts, links, assets, checksums
+npm run content:check       # validate the world: contracts, links, cross-site rules, clues, checksums
+npm run content:freeze      # freeze the newest release when publishing (never edit a frozen one)
 
 npm run access:setup -- --plan|--apply --confirm-account <id>   # one-time, owner's aws login session
 npm run access:verify       # live allow/deny checks of the applied roles (owner session)

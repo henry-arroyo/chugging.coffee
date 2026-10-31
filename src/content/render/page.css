@@ -79,3 +79,7 @@
 .page-sidebar .page-body { padding-left: 84px; }
 .page-terminal .page-body { font-size: 14px; }
 .page-terminal a, .page-terminal a.page-visited { color: var(--page-link); }
+.page-logbook caption { text-align: left; padding-bottom: 4px; }
+.page-hints p, .page-reward p { margin: 0 0 8px; }
+/* Pages set their own text colour (the shell's black-on-white rule is for its own panels). */
+.w95 .page pre { color: inherit; }

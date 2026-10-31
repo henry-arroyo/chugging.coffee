@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "siteId": "northstar",
+  "host": "northstar.test",
+  "title": "Northstar Campus",
+  "homePath": "/",
+  "sinceReleaseId": "rel-0002",
+  "pages": [
+    {
+      "pageId": "northstar-home",
+      "path": "/",
+      "aliases": [
+        "/index.html"
+      ],
+      "document": "pages/home.json"
+    },
+    {
+      "pageId": "northstar-astro",
+      "path": "/astro/",
+      "document": "pages/astro.json"
+    },
+    {
+      "pageId": "northstar-club",
+      "path": "/club/",
+      "document": "pages/club.json"
+    },
+    {
+      "pageId": "northstar-mira",
+      "path": "/~mira/",
+      "document": "pages/mira.json"
+    }
+  ]
+}

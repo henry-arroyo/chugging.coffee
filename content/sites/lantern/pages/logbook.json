@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "pageId": "lantern-logbook",
+  "siteId": "lantern",
+  "path": "/logbook.html",
+  "title": "Grandpa's Logbook - Lantern Point",
+  "layout": "academic",
+  "theme": {
+    "background": "#e8eef4",
+    "text": "#1d2a3a",
+    "link": "#a33a1a",
+    "visitedLink": "#6a4a7a",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "Wren Holloway"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "The Keeper's Logbook"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Grandpa kept a logbook every night for thirty years. The last page went missing when we cleared out the keeper's cottage, and I have been trying to piece it together from what people around town remember."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "If you find a piece of the story, it will show up below. When you have them all, you can keep a copy of the last page."
+        }
+      ]
+    },
+    {
+      "type": "widget",
+      "widget": {
+        "name": "clue-logbook",
+        "props": {
+          "chainId": "lantern-keeper"
+        }
+      },
+      "id": "logbook"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Places I have not asked yet: the college, the BBS, the computer shop and the coffee house. Start at "
+        },
+        {
+          "type": "link",
+          "href": "http://switchboard.test/directory.html",
+          "text": "Switchboard"
+        },
+        {
+          "type": "text",
+          "text": " if you need addresses."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "link",
+          "href": "/",
+          "text": "Back to Lantern Point"
+        }
+      ]
+    }
+  ]
+}

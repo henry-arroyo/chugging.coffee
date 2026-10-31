@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" width="160" height="120">
+  <!-- Lantern Point lighthouse at dusk, drawn for the fictional web of this project. -->
+  <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b1f4a"/><stop offset="0.7" stop-color="#d9773a"/></linearGradient></defs>
+  <rect width="160" height="120" fill="url(#s)"/>
+  <path d="M0 96h160v24H0z" fill="#1d3a52"/>
+  <path d="M0 92l40-10 30 6 20-4 70 14v4H0z" fill="#3a3a3a"/>
+  <path d="M74 84l4-50h12l4 50z" fill="#f4f0e6"/><path d="M75 70h18M76 56h16M77 44h14" stroke="#b23a2a" stroke-width="5"/>
+  <path d="M76 34h16v-8H76z" fill="#ffe680"/><path d="M74 26h20l-10-8z" fill="#2a2a2a"/>
+  <path d="M84 30L10 18v20zM84 30l76-14v24z" fill="#ffe680" opacity="0.35"/>
+</svg>

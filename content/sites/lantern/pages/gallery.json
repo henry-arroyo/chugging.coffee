@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "pageId": "lantern-gallery",
+  "siteId": "lantern",
+  "path": "/gallery.html",
+  "title": "Lantern Point - Photo Gallery",
+  "layout": "centered",
+  "theme": {
+    "background": "#e8eef4",
+    "text": "#1d2a3a",
+    "link": "#a33a1a",
+    "visitedLink": "#6a4a7a",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-08",
+    "author": "Wren Holloway"
+  },
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Photo Gallery",
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Scanned from the family albums. Pictures take a moment to arrive."
+        }
+      ],
+      "align": "center"
+    },
+    {
+      "type": "image",
+      "assetId": "site.lantern.lighthouse",
+      "alt": "The lighthouse at dusk",
+      "width": 160,
+      "height": 120,
+      "declaredBytes": 9216,
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The light at dusk, 1968.",
+          "marks": [
+            "italic"
+          ]
+        }
+      ],
+      "align": "center"
+    },
+    {
+      "type": "image",
+      "assetId": "site.lantern.harbor",
+      "alt": "Boats in the harbor below the point",
+      "width": 160,
+      "height": 120,
+      "declaredBytes": 8704,
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "The harbor below the point.",
+          "marks": [
+            "italic"
+          ]
+        }
+      ],
+      "align": "center"
+    },
+    {
+      "type": "image",
+      "assetId": "site.lantern.nightsky",
+      "alt": "Stars over the point, with the lamp lit",
+      "width": 160,
+      "height": 120,
+      "declaredBytes": 7680,
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Stars over the point. The astronomy club at ",
+          "marks": [
+            "italic"
+          ]
+        },
+        {
+          "type": "link",
+          "href": "http://northstar.test/club/",
+          "text": "Northstar"
+        },
+        {
+          "type": "text",
+          "text": " would like this one.",
+          "marks": [
+            "italic"
+          ]
+        }
+      ],
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "link",
+          "href": "/",
+          "text": "Back to Lantern Point"
+        }
+      ],
+      "align": "center"
+    }
+  ]
+}

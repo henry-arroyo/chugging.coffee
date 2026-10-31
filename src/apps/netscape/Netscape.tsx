@@ -87,8 +87,8 @@ export default function Netscape({ host }: AppProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLInputElement>(null);
   const seq = useRef(0);
-  const current = useRef({ page, loading, history });
-  current.current = { page, loading, history };
+  const current = useRef({ page, loading, history, world: null as PinnedWorld | null });
+  current.current = { page, loading, history, world };
 
   useEffect(() => {
     host.setTitle?.(page ? `Netscape - [${page.doc.title}]` : 'Netscape');
@@ -174,7 +174,10 @@ export default function Netscape({ host }: AppProps) {
           if (first) showArrival(arrival?.chunks.length ?? 0);
           setLoading(null);
           setProgress(null);
-          setStatus('Document: Done.');
+          // A fully loaded page may hold a piece of a clue chain.
+          const found = arrival ? nav.noticePage(arrival.doc.pageId) : [];
+          const chain = found.length ? current.current.world?.release.clueChains.find((c) => c.steps.some((st) => st.clueId === found[0])) : undefined;
+          setStatus(chain ? `Document: Done. You found a piece of "${chain.title}"!` : 'Document: Done.');
           const fragment = arrival?.fragment ?? null;
           if (fragment) requestAnimationFrame(() => scrollTo(fragment));
         },
@@ -425,7 +428,17 @@ export default function Netscape({ host }: AppProps) {
       </div>
       <div ref={contentRef} className="ns-content" aria-label="Document" aria-busy={busy} tabIndex={-1}>
         {page ? (
-          <PageView doc={page.doc} chunks={page.chunks} revealed={page.revealed} base={page.base} world={world} isVisited={isVisited} onNavigate={(href) => navigate(href)} onHover={setHover} />
+          <PageView
+            doc={page.doc}
+            chunks={page.chunks}
+            revealed={page.revealed}
+            base={page.base}
+            world={world}
+            isVisited={isVisited}
+            onNavigate={(href) => navigate(href)}
+            onHover={setHover}
+            clues={{ found: nav.discoveries(), reset: nav.resetChain, collect: nav.collectReward, open: (path) => host.openFile?.(path) }}
+          />
         ) : null}
       </div>
       <div className="ns-status">

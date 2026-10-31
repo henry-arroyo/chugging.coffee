@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 110" width="96" height="110">
+  <!-- Northstar Campus crest, drawn for the fictional web of this project. -->
+  <path d="M8 6h80v52c0 26-20 40-40 48C28 98 8 84 8 58z" fill="#13265c" stroke="#c9a227" stroke-width="4"/>
+  <path d="M48 18l5 15h16l-13 9 5 16-13-10-13 10 5-16-13-9h16z" fill="#f2d26b"/>
+  <path d="M20 70h56M24 80h48" stroke="#c9a227" stroke-width="2"/>
+  <text x="48" y="96" font-family="Times New Roman, serif" font-size="9" text-anchor="middle" fill="#f2d26b">MCMXII</text>
+</svg>

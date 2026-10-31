@@ -6,7 +6,28 @@
   "homePath": "/",
   "sinceReleaseId": "rel-0001",
   "pages": [
-    { "pageId": "switchboard-home", "path": "/", "aliases": ["/index.html"], "document": "pages/home.json" },
-    { "pageId": "switchboard-whats-new", "path": "/whats-new.html", "document": "pages/whats-new.json" }
+    {
+      "pageId": "switchboard-home",
+      "path": "/",
+      "aliases": [
+        "/index.html"
+      ],
+      "document": "pages/home.json"
+    },
+    {
+      "pageId": "switchboard-whats-new",
+      "path": "/whats-new.html",
+      "document": "pages/whats-new.json"
+    },
+    {
+      "pageId": "switchboard-directory",
+      "path": "/directory.html",
+      "document": "pages/directory.json"
+    },
+    {
+      "pageId": "switchboard-help",
+      "path": "/help.html",
+      "document": "pages/help.json"
+    }
   ]
 }

@@ -1,0 +1,1 @@
+{"schemaVersion":1,"siteId":"switchboard","host":"switchboard.test","title":"Switchboard","homePath":"/","sinceReleaseId":"rel-0001","pages":[{"pageId":"switchboard-home","path":"/","aliases":["/index.html"],"document":"pages/home.json"},{"pageId":"switchboard-whats-new","path":"/whats-new.html","document":"pages/whats-new.json"}]}

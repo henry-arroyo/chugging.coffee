@@ -2,12 +2,22 @@
 import { useId, useMemo, useState, type ReactNode } from 'react';
 import type { Widget } from '../../core/contracts/types';
 import type { WebAddress } from '../../core/net/address';
+import { chainProgress } from '../clues';
 import type { PinnedWorld } from '../repository';
+
+/** What the clue logbook may do: read progress, start over, and save the reward. Supplied by the browser. */
+export interface CluesContext {
+  found: ReadonlySet<string>;
+  reset(chainId: string): void;
+  collect(chainId: string): Promise<{ ok: true; path: string; existed: boolean } | { ok: false; error: string }>;
+  open(path: string): void;
+}
 
 interface WidgetProps {
   widget: Widget;
   world: PinnedWorld | null;
   base: WebAddress;
+  clues?: CluesContext | undefined;
   renderLink: (href: string, children: ReactNode, key?: number | string) => ReactNode;
 }
 
@@ -124,18 +134,107 @@ function Guestbook({ entries }: { entries: { name: string; storyDate: string; me
   );
 }
 
-function ClueLogbook({ chainId, world }: { chainId: string; world: PinnedWorld | null }) {
+function ClueLogbook({ chainId, world, clues }: { chainId: string; world: PinnedWorld | null; clues: CluesContext | undefined }) {
+  const [hints, setHints] = useState<Record<number, number>>({});
+  const [confirming, setConfirming] = useState(false);
+  const [saved, setSaved] = useState<{ path: string; existed: boolean } | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const chain = world?.release.clueChains.find((c) => c.chainId === chainId);
-  if (!chain) return <p>This logbook is empty.</p>;
+  if (!chain || !clues) return <p>This logbook is empty.</p>;
+  const progress = chainProgress(chain, clues.found);
   return (
     <div className="page-logbook">
-      <b>{chain.title}</b>
-      <p>{chain.steps.length} entries in this logbook.</p>
+      <table className="page-table page-bordered">
+        <caption>
+          <b>{chain.title}</b>: {progress.count} of {progress.total} pieces found
+        </caption>
+        <tbody>
+          {chain.steps.map((step, i) => (
+            <tr key={step.clueId}>
+              <td>Piece {i + 1}</td>
+              <td>{progress.found[i] ? <b>Found!</b> : i === progress.next ? 'Not found yet' : '...'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {!progress.complete && progress.next >= 0 ? (
+        <div className="page-hints">
+          {chain.steps[progress.next]!.hints.slice(0, hints[progress.next] ?? 0).map((h, i) => (
+            <p key={i}>
+              <i>Hint {i + 1}:</i> {h}
+            </p>
+          ))}
+          {(hints[progress.next] ?? 0) < chain.steps[progress.next]!.hints.length ? (
+            <button type="button" className="w95-button page-submit" onClick={() => setHints((h) => ({ ...h, [progress.next]: (h[progress.next] ?? 0) + 1 }))}>
+              {(hints[progress.next] ?? 0) === 0 ? 'Need a hint?' : 'Another hint'}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
+      {progress.complete ? (
+        <div className="page-reward">
+          <p>
+            <b>You found every piece!</b> The last page of the logbook is yours to keep.
+          </p>
+          {saved ? (
+            <p>
+              {saved.existed ? 'It is already in' : 'Saved to'} <code className="page-tt">{saved.path}</code>.{' '}
+              <button type="button" className="w95-button page-submit" onClick={() => clues.open(saved.path)}>
+                Open it
+              </button>
+            </p>
+          ) : (
+            <button
+              type="button"
+              className="w95-button page-submit"
+              onClick={() =>
+                void clues.collect(chainId).then((r) => {
+                  if (r.ok) {
+                    setSaved({ path: r.path, existed: r.existed });
+                    setError(null);
+                  } else setError(r.error);
+                })
+              }
+            >
+              Save to My Documents
+            </button>
+          )}
+          {error ? <p role="alert">{error}</p> : null}
+        </div>
+      ) : null}
+      {progress.count > 0 ? (
+        confirming ? (
+          <p>
+            Forget the pieces you found and start over?{' '}
+            <button
+              type="button"
+              className="w95-button page-submit"
+              onClick={() => {
+                clues.reset(chainId);
+                setConfirming(false);
+                setHints({});
+                setSaved(null);
+              }}
+            >
+              Yes
+            </button>{' '}
+            <button type="button" className="w95-button page-submit" onClick={() => setConfirming(false)}>
+              No
+            </button>
+          </p>
+        ) : (
+          <p>
+            <button type="button" className="w95-button page-submit" onClick={() => setConfirming(true)}>
+              Start over
+            </button>
+          </p>
+        )
+      ) : null}
     </div>
   );
 }
 
-export function WidgetView({ widget, world, renderLink }: WidgetProps) {
+export function WidgetView({ widget, world, clues, renderLink }: WidgetProps) {
   switch (widget.name) {
     case 'hit-counter':
       return <HitCounter {...widget.props} />;
@@ -148,6 +247,6 @@ export function WidgetView({ widget, world, renderLink }: WidgetProps) {
     case 'guestbook-archive':
       return <Guestbook entries={widget.props.entries} />;
     case 'clue-logbook':
-      return <ClueLogbook chainId={widget.props.chainId} world={world} />;
+      return <ClueLogbook chainId={widget.props.chainId} world={world} clues={clues} />;
   }
 }

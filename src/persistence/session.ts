@@ -381,6 +381,26 @@ export class Session {
     void this.persist({ kv: { bookmarks } });
   }
 
+  // ------------------------------------------------------------ discoveries
+
+  /** Records a clue as found (once). Personal progress only; it never changes the world. */
+  recordDiscovery(clueId: string, releaseId: string): boolean {
+    if (this.state.discoveries.some((d) => d.clueId === clueId) || this.state.discoveries.length >= 1000) return false;
+    const discoveries = [...this.state.discoveries, { clueId, releaseId, at: this.now() }];
+    this.set({ discoveries });
+    void this.persist({ kv: { discoveries } });
+    return true;
+  }
+
+  /** Forgets the given clues (a chain's "start over"). */
+  clearDiscoveries(clueIds: readonly string[]) {
+    const drop = new Set(clueIds);
+    const discoveries = this.state.discoveries.filter((d) => !drop.has(d.clueId));
+    if (discoveries.length === this.state.discoveries.length) return;
+    this.set({ discoveries });
+    void this.persist({ kv: { discoveries } });
+  }
+
   // ------------------------------------------------------------ windows, games, scores
 
   private windowRecord(): WindowGeometry {

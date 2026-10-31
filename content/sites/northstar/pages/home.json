@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "pageId": "northstar-home",
+  "siteId": "northstar",
+  "path": "/",
+  "title": "Northstar Campus",
+  "layout": "sidebar",
+  "theme": {
+    "background": "#ffffff",
+    "text": "#000000",
+    "link": "#13265c",
+    "visitedLink": "#6b4c9a",
+    "font": "serif"
+  },
+  "meta": {
+    "lastModified": "1995-12-06",
+    "author": "Office of Communications"
+  },
+  "blocks": [
+    {
+      "type": "image",
+      "assetId": "site.northstar.crest",
+      "alt": "The Northstar College crest",
+      "width": 96,
+      "height": 110,
+      "declaredBytes": 5120,
+      "align": "center"
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Northstar College",
+      "align": "center"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Lux et scientia since 1912",
+          "marks": [
+            "italic"
+          ]
+        }
+      ],
+      "align": "center"
+    },
+    {
+      "type": "rule"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Departments"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "link",
+            "href": "/astro/",
+            "text": "Physics & Astronomy"
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "English (pages coming soon)"
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "History (pages coming soon)"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Student life"
+    },
+    {
+      "type": "list",
+      "ordered": false,
+      "items": [
+        [
+          {
+            "type": "link",
+            "href": "/club/",
+            "text": "Astronomy Club"
+          },
+          {
+            "type": "text",
+            "text": " - observing nights on the roof of Hale Hall"
+          }
+        ],
+        [
+          {
+            "type": "link",
+            "href": "/~mira/",
+            "text": "Mira Chen's home page"
+          },
+          {
+            "type": "text",
+            "text": " - a student page"
+          }
+        ]
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "In town"
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Students get a free refill at "
+        },
+        {
+          "type": "link",
+          "href": "http://chugging.test/",
+          "text": "Chugging Coffee House"
+        },
+        {
+          "type": "text",
+          "text": ". Read about us in "
+        },
+        {
+          "type": "link",
+          "href": "http://packet.test/",
+          "text": "The Daily Packet"
+        },
+        {
+          "type": "text",
+          "text": "."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": [
+        {
+          "type": "text",
+          "text": "Questions about this server? Ask the computing center.",
+          "marks": [
+            "italic"
+          ]
+        }
+      ]
+    }
+  ]
+}
