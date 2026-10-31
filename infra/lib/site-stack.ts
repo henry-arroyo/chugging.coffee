@@ -49,7 +49,7 @@ export class SiteStack extends cdk.Stack {
 
     const router = new cloudfront.Function(this, 'Router', {
       functionName: `ctm-${env}-router`,
-      comment: 'Serve /time-machine/ with a narrow shell fallback',
+      comment: 'Serve the Time Machine at the root with a narrow shell fallback',
       runtime: cloudfront.FunctionRuntime.JS_2_0,
       code: cloudfront.FunctionCode.fromInline(readFileSync(join(import.meta.dirname, 'router-function.js'), 'utf8')),
     });
@@ -93,8 +93,8 @@ export class SiteStack extends cdk.Stack {
       },
       errorResponses: [
         // S3 answers 403 for missing keys because the origin may not list the bucket.
-        { httpStatus: 403, responseHttpStatus: 404, responsePagePath: '/time-machine/404.html', ttl: cdk.Duration.minutes(1) },
-        { httpStatus: 404, responseHttpStatus: 404, responsePagePath: '/time-machine/404.html', ttl: cdk.Duration.minutes(1) },
+        { httpStatus: 403, responseHttpStatus: 404, responsePagePath: '/404.html', ttl: cdk.Duration.minutes(1) },
+        { httpStatus: 404, responseHttpStatus: 404, responsePagePath: '/404.html', ttl: cdk.Duration.minutes(1) },
       ],
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
       httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,

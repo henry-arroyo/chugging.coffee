@@ -51,7 +51,7 @@ export default defineConfig({
   fullyParallel: true,
   reporter: [['list']],
   use: {
-    baseURL: `http://localhost:${PORT}/time-machine/`,
+    baseURL: `http://localhost:${PORT}/`,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     launchOptions,
@@ -63,7 +63,7 @@ export default defineConfig({
   ],
   webServer: {
     command: `npx vite --port ${PORT} --strictPort`,
-    url: `http://localhost:${PORT}/time-machine/`,
+    url: `http://localhost:${PORT}/`,
     reuseExistingServer: true,
     timeout: 60_000,
   },

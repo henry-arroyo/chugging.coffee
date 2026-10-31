@@ -26,7 +26,7 @@ than `ctm-<env>-operator`, the wrong region, missing credentials. Stacks are cho
 3. `npm run infra:deploy -- --env test` and type the stack name when prompted.
 4. Publish the site build (see **Publish a release** below):
    `npm run infra:publish -- --env test --dry-run`, then without `--dry-run`.
-5. Open `https://<DistributionDomainName>/time-machine/`.
+5. Open `https://<DistributionDomainName>/`.
 
 ## Deploy production (later)
 
@@ -35,7 +35,7 @@ than `ctm-<env>-operator`, the wrong region, missing credentials. Stacks are cho
    CNAME (DNS only, grey cloud) and wait for `ISSUED`.
 2. **Record the ARN.** Put the certificate ARN in `infra/config/prod.json` (`certificateArn`).
 3. **Site.** `npm run infra:deploy -- --env prod`, typing `deploy CtmProd-Site`. Publish the
-   build, and check `https://<DistributionDomainName>/time-machine/`.
+   build, and check `https://<DistributionDomainName>/`.
 4. **DNS cut-over** (owner, in Cloudflare, chugging.coffee zone). Today the apex has two A
    records (172.67.194.105, 104.21.20.208) and two AAAA records, all proxied, serving an old iPage
    placeholder.
@@ -44,8 +44,8 @@ than `ctm-<env>-operator`, the wrong region, missing credentials. Stacks are cho
      CNAMEs. It must be grey: CloudFront serves the ACM certificate itself.
    - **Do not touch** the MX records (Zoho: mx, mx2, mx3) or the TXT records (SPF, Zoho
      verification), or `luna.is` and its validation record.
-   - `www` is left as is (open question 11).
-5. **Verify** `https://chugging.coffee/time-machine/`, and that mail still flows (send a test message
+   - `www` redirects to the apex (D47; see the cutover steps).
+5. **Verify** `https://chugging.coffee/` (and that `https://www.chugging.coffee/` redirects to it), and that mail still flows (send a test message
    to a chugging.coffee address).
 
 ## Publish a release
@@ -65,8 +65,7 @@ than `ctm-<env>-operator`, the wrong region, missing credentials. Stacks are cho
    - verifies every upload (size and SHA-256);
    - promotes `world/current.json` and then `index.html` (`no-cache`), after a typed
      confirmation in production (`publish CtmProd-Site`);
-   - invalidates only `/time-machine/`, `/time-machine/index.html` and
-     `/time-machine/world/current.json`, then writes `infra/deploy-records/<env>-publish-*.json`.
+   - invalidates only `/`, `/index.html` and `/world/current.json`, then writes `infra/deploy-records/<env>-publish-*.json`.
 4. **Check** the site in a fresh browser tab. Tabs already open stay on their pinned release and
    are offered a restart.
 
@@ -80,7 +79,7 @@ No new permissions are needed: the operator roles' `PublishAndClean<Env>Site` an
   `promote rel-NNNN`, repoints `world/current.json`, invalidates it and writes a record. Rolling
   forward again works the same way. Releases are never edited.
 - **Application:** re-upload the previous `index.html` (hashed assets from earlier builds stay in
-  the bucket until lifecycle expiry) and invalidate `/time-machine/index.html`.
+  the bucket until lifecycle expiry) and invalidate `/index.html`.
 - **Infrastructure:** check out the previous commit (see `infra/deploy-records/`), then
   `infra:diff` and `infra:deploy`.
 

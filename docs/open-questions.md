@@ -23,7 +23,7 @@
 | 7 | **Certificate management** for `chugging.coffee` in the prod bootstrap (ACM, that one domain only, DNS validation) | Production custom domain | Included in the proposed `access:setup --apply` run only if the owner approves it |
 | 8 | Which 2.0 beta exactly? | Owner sign-off only | **2.0b3**: current on the 1 Dec 1995 story date (b4 came 22 Dec); D31 |
 | 9 | AOL 2.5 is a Windows 3.1 program: show its 3.1-style controls inside Windows 95? | Nothing | **No.** The owner's screenshot shows Windows 95 drew its frames and buttons in the 95 style (D37) |
-| 10 | `/` on chugging.coffee: 404 (current design) or redirect to `/time-machine/`? | Nothing urgent | 404 |
-| 11 | `www.chugging.coffee` also points at the iPage placeholder: leave it, or redirect later? | Nothing urgent | Leave unchanged |
+| 10 | `/` on chugging.coffee | **Decided 2026-10-31:** the Time Machine is served at the root; old `/time-machine/` addresses redirect there (D47) |
+| 11 | `www.chugging.coffee` | **Decided 2026-10-31:** redirect to `https://chugging.coffee/` (method: D47) |
 | 12 | Public repository? (account ID is committed in `infra/config`) | Nothing urgent | Committed; account IDs are identifiers, not secrets |
 

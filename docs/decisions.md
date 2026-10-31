@@ -398,3 +398,18 @@ functions, so the second test deploy failed without it.
   and Access Analyzer clean), `--apply`, then `access:verify` with 51/51 checks (two new: reading
   function tags is allowed, tagging functions is denied).
 - **Rollback:** re-apply the previous template with `access:setup --apply`.
+
+## D47. The Time Machine is served at the root of chugging.coffee (2026-10-31)
+
+Owner decision (answers open questions 10 and 11):
+- **The root:** `https://chugging.coffee/` is the Time Machine (Vite base `/`, objects at the bucket
+  root).
+- **Routing:** the CloudFront function serves `index.html` for `/` and `/open/...` only, and
+  passes everything else through to the static `404.html`. Old `/time-machine/...` addresses get
+  a 301 to the same path at the root.
+- **www:** `www.chugging.coffee` redirects to `https://chugging.coffee/` with a Cloudflare redirect
+  rule on a proxied `www` record. Cloudflare provides the `www` certificate, so the AWS
+  certificate and permissions are unchanged (owner's choice over a second ACM name, which would
+  have needed a permission expansion).
+- **Leftovers:** the test bucket still holds the earlier `time-machine/` objects. The redirect
+  means they are never served; remove them with a cleanup when convenient.

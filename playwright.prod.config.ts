@@ -6,7 +6,7 @@ import base from './playwright.config';
  * with the same response headers CloudFront sends: CSP compliance, startup time, bytes, dragging.
  */
 const PORT = 4318;
-/** Set PROD_URL (e.g. https://<distribution>/time-machine/) to run these checks against a deployed site. */
+/** Set PROD_URL (e.g. https://<distribution>/) to run these checks against a deployed site. */
 const deployed = process.env.PROD_URL;
 const chromium = base.projects?.find((p) => p.name === 'chromium');
 
@@ -15,14 +15,14 @@ export default defineConfig({
   timeout: 60_000,
   workers: 1,
   reporter: [['list']],
-  use: { baseURL: deployed ?? `http://localhost:${PORT}/time-machine/`, trace: 'retain-on-failure', launchOptions: chromium?.use?.launchOptions ?? {} },
+  use: { baseURL: deployed ?? `http://localhost:${PORT}/`, trace: 'retain-on-failure', launchOptions: chromium?.use?.launchOptions ?? {} },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 }, launchOptions: (base.use?.launchOptions as object) ?? {} } }],
   ...(deployed
     ? {}
     : {
         webServer: {
           command: `npx vite preview --port ${PORT} --strictPort`,
-          url: `http://localhost:${PORT}/time-machine/`,
+          url: `http://localhost:${PORT}/`,
           reuseExistingServer: false,
           timeout: 60_000,
         },

@@ -1,0 +1,18 @@
+{
+  "environment": "prod",
+  "stack": "CtmProd-Site",
+  "account": "196691452297",
+  "region": "us-east-1",
+  "caller": "arn:aws:sts::196691452297:assumed-role/ctm-prod-operator/ctm-prod",
+  "changeSet": "ctm-deploy-20261031065428",
+  "result": "succeeded",
+  "gitCommit": "5c34d91f8075d1c93c55f210db5fafffeaa2121d",
+  "gitDirty": true,
+  "templateSha256": "d337ac29e6d1d05701945c2e095692e140b9fec65d7911af7cd4cacc15614af6",
+  "outputs": {
+    "BucketName": "ctm-prod-site-196691452297",
+    "DistributionId": "E24JWV6L1BEUV0",
+    "DistributionDomainName": "d2ko8sichzhhlr.cloudfront.net"
+  },
+  "at": "2026-10-31T06:57:09.450Z"
+}

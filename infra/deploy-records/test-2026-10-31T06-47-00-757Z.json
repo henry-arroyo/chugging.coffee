@@ -1,0 +1,18 @@
+{
+  "environment": "test",
+  "stack": "CtmTest-Site",
+  "account": "196691452297",
+  "region": "us-east-1",
+  "caller": "arn:aws:sts::196691452297:assumed-role/ctm-test-operator/ctm-test",
+  "changeSet": "ctm-deploy-20261031063027",
+  "result": "succeeded",
+  "gitCommit": "5c34d91f8075d1c93c55f210db5fafffeaa2121d",
+  "gitDirty": true,
+  "templateSha256": "1adfc4c535b85025efcafccdc34bda37389f30e998cc7fad0069a410ea7465b5",
+  "outputs": {
+    "BucketName": "ctm-test-site-196691452297",
+    "DistributionId": "E17BK76EPZCCK0",
+    "DistributionDomainName": "d1usgipkxbh9qe.cloudfront.net"
+  },
+  "at": "2026-10-31T06:47:00.767Z"
+}

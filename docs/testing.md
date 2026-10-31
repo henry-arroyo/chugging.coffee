@@ -3,7 +3,7 @@
 | Command | What it runs |
 |---|---|
 | `npm test` | Vitest: contracts, window manager, drag math, menus, Run parsing, manifests, virtual drive, Klondike, Minesweeper, persistence (with fake-indexeddb), addresses, connection, transfer scheduler, world build and repository, network service, asset gate, CDK stacks, IAM policy invariants, infra guards |
-| `npm run test:e2e` | Playwright journeys against the dev server (`/time-machine/`) in Chromium, Firefox and WebKit, including axe-core accessibility scans, keyboard-only and touch-only journeys |
+| `npm run test:e2e` | Playwright journeys against the dev server (`/`) in Chromium, Firefox and WebKit, including axe-core accessibility scans, keyboard-only and touch-only journeys |
 | `npm run test:prod` | Builds, then runs `tests/prod/` against the production build served with the CloudFront headers: CSP compliance, startup time, bundle size, drag smoothness |
 | `SOAK_MINUTES=45 npx playwright test -c playwright.prod.config.ts soak` | The 45-minute leak session (after `npm run build`) |
 | `npm run visual:capture` | Screenshots into `tests/visual/pending/` for **human** review (never auto-approved) |

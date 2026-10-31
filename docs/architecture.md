@@ -8,7 +8,7 @@ package.
 ## Shape of the system
 
 ```text
-Browser tab  https://<host>/time-machine/
+Browser tab  https://chugging.coffee/
 ├── Host page (src/host)          fit/zoom/pan, accessibility controls, app list, error boundary
 │   └── Virtual desktop 800×600 (src/shell)
 │       ├── Window manager        pure state machine: focus, z-order, geometry, modals, taskbar
@@ -98,11 +98,11 @@ so tests are deterministic; hidden documents freeze the simulation.
 
 ## Routing
 
-Everything lives under `/time-machine/`. A CloudFront Function redirects `/time-machine` to
-`/time-machine/`, serves `index.html` for `/time-machine/` and `/time-machine/open/...` deep links
-only, and passes all other paths straight through. A missing asset is a 404, never a copy of the
-shell. Requests outside `/time-machine/` are answered 404 by this distribution, which never claims
-other routes.
+The Time Machine is served at the root of the domain (D47). A CloudFront Function serves
+`index.html` for `/` and `/open/...` deep links only, and passes every other path straight through,
+so a missing asset gets the static 404 page, never a copy of the shell. The old `/time-machine/`
+addresses redirect permanently to the same path at the root. `www.chugging.coffee` redirects to
+`https://chugging.coffee/`.
 
 ## Infrastructure
 

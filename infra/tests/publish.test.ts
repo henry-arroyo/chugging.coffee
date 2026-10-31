@@ -38,8 +38,9 @@ describe('publish plan', () => {
     expect(plan.order.slice(-2).map((f) => f.path)).toEqual(['world/current.json', 'index.html']);
     expect(plan.order.find((f) => f.path === 'assets/index-abc.js')!.cacheControl).toContain('immutable');
     expect(plan.order.find((f) => f.path === 'index.html')!.cacheControl).toBe('no-cache');
-    expect(plan.order.every((f) => f.key.startsWith('time-machine/'))).toBe(true);
-    expect(invalidationPaths()).not.toContain('/time-machine/*');
+    expect(plan.order.map((f) => f.key)).toContain('assets/index-abc.js');
+    expect(plan.order.find((f) => f.path === 'index.html')!.key).toBe('index.html');
+    expect(invalidationPaths()).toEqual(['/', '/index.html', '/world/current.json']);
   });
 
   it('refuses unknown file types and a pointer to a missing release', () => {

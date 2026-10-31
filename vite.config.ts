@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 import { worldPlugin } from './scripts/world/vite-plugin.ts';
 import { PRODUCTION_HEADERS } from './infra/lib/headers.ts';
 
-// The simulation is served under /time-machine/ so it can share a domain with other routes.
+// The simulation is served at the root of the domain (https://chugging.coffee/).
 export default defineConfig({
-  base: '/time-machine/',
+  base: '/',
   plugins: [react(), worldPlugin(import.meta.dirname)],
   // `vite preview` serves the build with the production response headers (see test:prod).
   preview: { headers: PRODUCTION_HEADERS },

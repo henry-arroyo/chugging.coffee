@@ -2,12 +2,12 @@
 
 A Windows 95 desktop in the browser, connected to a shared, persistent, fictional December 1995
 internet: an AOL-style online service, a Netscape-era browser, and seven interlinked `.test` sites.
-Served at `/time-machine/`. Static hosting on AWS (CDK v2), no backend in v1.
+Served at the root of https://chugging.coffee/. Static hosting on AWS (CDK v2), no backend in v1.
 
 **Status:** milestone M5: accessibility (axe scans, keyboard-only and touch journeys, host
 accessibility controls), three browser engines, performance budgets, a security review and the
 guarded publish command. Feature-complete for v1. **Test environment live** at
-https://d1usgipkxbh9qe.cloudfront.net/time-machine/ ; production not deployed (needs separate
+https://d1usgipkxbh9qe.cloudfront.net/ ; production not deployed (needs separate
 owner authorization). See
 [docs/milestones.md](docs/milestones.md).
 
@@ -15,7 +15,7 @@ owner authorization). See
 
 ```bash
 npm ci
-npm run dev                 # local dev server: http://localhost:5173/time-machine/
+npm run dev                 # local dev server: http://localhost:5173/
 npm test                    # unit, contract, policy and stack tests
 npm run test:e2e            # Playwright journeys in Chromium, Firefox and WebKit (see docs/testing.md)
 npm run test:prod           # production build under the CloudFront headers: CSP, startup, size, dragging

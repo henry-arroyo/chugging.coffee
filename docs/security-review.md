@@ -25,7 +25,7 @@ environment yet; that happens after the owner authorizes a test deployment.
   leaves the browser.
 - **Storage scope**: only IndexedDB/localStorage on the site's own origin; no cookies, no
   third-party requests, no analytics.
-- **External links**: none. The only URLs the app fetches are its own `/time-machine/` files.
+- **External links**: none. The only URLs the app fetches are its own files on the same origin.
 
 ## Dependencies (`npm audit`, 2026-10-30)
 
@@ -49,7 +49,7 @@ for M5**: the publish command uses the existing `PublishAndClean<Env>Site` and
 ## Open items
 
 1. **Deployed checks** (after authorization): response headers on the real CloudFront
-   distribution, HTTPS redirect, 404 for paths outside `/time-machine/`, MIME types, and the
+   distribution, HTTPS redirect, the 404 page for missing paths, MIME types, and the
    CSP journey against the test URL.
 2. **Written brand permission** for Microsoft, AOL and Netscape (asset-rights.md).
 3. `'unsafe-inline'` for styles stays (React style attributes). Scripts are strict.

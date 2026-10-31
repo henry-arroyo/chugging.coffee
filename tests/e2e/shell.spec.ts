@@ -303,7 +303,7 @@ test('shut down and start again affect only the simulation', async ({ page }) =>
   await expect(desk.locator('.w95-boot')).toBeHidden({ timeout: 5000 });
   await signOn(page);
   await expect(desk.locator('.w95-window[data-app]')).toHaveCount(0);
-  expect(page.url()).toContain('/time-machine/');
+  expect(new URL(page.url()).pathname).toBe('/');
 });
 
 test('Shut Down can log on as a different user, keeping progress under the new name', async ({ page }) => {

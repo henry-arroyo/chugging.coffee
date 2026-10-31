@@ -1,7 +1,7 @@
 /**
  * Builds the world release from content/: validates every release, manifest and page against its
  * contract, checks that links resolve inside the release and images are registered assets, hashes
- * the site manifests, and returns the files to serve under /time-machine/world/.
+ * the site manifests, and returns the files to serve under /world/.
  */
 import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';

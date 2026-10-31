@@ -1,0 +1,245 @@
+{
+  "environment": "test",
+  "account": "196691452297",
+  "region": "us-east-1",
+  "gitCommit": "5c34d91f8075d1c93c55f210db5fafffeaa2121d",
+  "at": "2026-10-31T06:51:17.276Z",
+  "action": "publish",
+  "caller": "arn:aws:sts::196691452297:assumed-role/ctm-test-operator/ctm-test",
+  "releaseId": "rel-0002",
+  "bucket": "ctm-test-site-196691452297",
+  "distributionId": "E17BK76EPZCCK0",
+  "uploaded": 55,
+  "unchanged": 0,
+  "invalidation": "IOE8B392LFZ87P1KNJ1YBS6O0",
+  "files": [
+    {
+      "key": "404.html",
+      "sha256": "5012f68442050abe0472bc6f0e00aa2c2b53f24fe1ac98348440717a432aa1b3"
+    },
+    {
+      "key": "assets/aol-CcUcLFkR.svg",
+      "sha256": "cfd2c8fa0c2cf402569ac4ad47790b337bed296cf62c1f64c700cc89ce682ff4"
+    },
+    {
+      "key": "assets/index-DeUKVPss.js",
+      "sha256": "746656cb549256437e1eb7e444f6d1dd7686b1b13c02f251f720899184064f58"
+    },
+    {
+      "key": "assets/index-DeUKVPss.js.map",
+      "sha256": "aab770c5057b62d176e06be025699d6e63e1ad565a7b706cdf5cf7d10aa86b2d"
+    },
+    {
+      "key": "assets/index-Vxb8w4cp.css",
+      "sha256": "39733e24ec885fec84c5b414955c17e5ff67a372ef5ef6c718e5a77a55a3cfb3"
+    },
+    {
+      "key": "assets/menu-discover-BhiONfGq.svg",
+      "sha256": "f0f4c6605dc84dad495e57aa8df07038faf391c40b79a3ae6721cf8339531582"
+    },
+    {
+      "key": "assets/open-tpdOJ7bR.js",
+      "sha256": "66ed37ffd117db330cf7c3b4d8fca1f0859e5f13ea3e90ac773ffd5b813a3f0d"
+    },
+    {
+      "key": "assets/open-tpdOJ7bR.js.map",
+      "sha256": "5f590ff02c25c444e3ce563af5799673f4a6c38fd0422e4894545452f8fd4ca1"
+    },
+    {
+      "key": "assets/title-icon-DitlsgcB.svg",
+      "sha256": "4c5480bcddcdf1e77328edab78a18d9864378b31736b27ff915d47f877d18b2c"
+    },
+    {
+      "key": "assets/validate-Cmyk8JeB.js",
+      "sha256": "56d2c7a35a77c3f5a91613052f5d69e7f0a0357b9c8ee4be571e80b17ecce5ef"
+    },
+    {
+      "key": "assets/validate-Cmyk8JeB.js.map",
+      "sha256": "ae61c943de88b28fd1151640260b437a5dde5dc1f3d9afe1515cd86808c052e0"
+    },
+    {
+      "key": "assets/wordmark-CnL0y9nL.svg",
+      "sha256": "b3e5fee440e3f55373f288fb093150e27967dd2d793a34b7613f2f5361217c18"
+    },
+    {
+      "key": "assets/wordmark-navy-Dnd9Ppo7.svg",
+      "sha256": "e6b6f9ee305006d98f6f7d836f651a534fa88a7171e41f38190e02cd48c8f167"
+    },
+    {
+      "key": "assets/wordmark-red-BISlDcEB.svg",
+      "sha256": "029d6f7366eca103fdf601c1993e5ec972e91d35abaeeff2f22a4ce50bf2f287"
+    },
+    {
+      "key": "index.html",
+      "sha256": "ca884617b0f96349cee8a13290fb0ac76c8c378439c2e16068d37fd31639a5b0"
+    },
+    {
+      "key": "world/current.json",
+      "sha256": "97cbe7511972709f5bf12024748a5402c676dc412d96f2f53583ded23c58480d"
+    },
+    {
+      "key": "world/rel-0001/release.json",
+      "sha256": "7aad9202aa0534fff1aa508c8e310a5d4687de964a666e4eee2ffa52fb9738a4"
+    },
+    {
+      "key": "world/rel-0001/sites/chugging/manifest.json",
+      "sha256": "2e7b33b12ee19551054e921d3b9a653f3023e941821629ec63ef0e41eb1db443"
+    },
+    {
+      "key": "world/rel-0001/sites/chugging/pages/home.json",
+      "sha256": "183d9b60bb6baf6ba565e7b1e7d4410016ac0100067045515fd558824a6f6fc2"
+    },
+    {
+      "key": "world/rel-0001/sites/chugging/pages/menu.json",
+      "sha256": "2a89ff42f94cb30cbad3bfb662f47403cfbcaf191ca4d3fcb1a7eb2f792cb26e"
+    },
+    {
+      "key": "world/rel-0001/sites/packet/manifest.json",
+      "sha256": "664da4f0fc88e6aa019e2b8d844695b9d9d3442bc973f2a830ecf914b2475f5c"
+    },
+    {
+      "key": "world/rel-0001/sites/packet/pages/coffee-online.json",
+      "sha256": "258df31e957a2be911a2b474fc861aa0f4a525c8f5ac55fa03c8e5d8b1572296"
+    },
+    {
+      "key": "world/rel-0001/sites/packet/pages/home.json",
+      "sha256": "b65ecb4d541e831e45d1a80a955f158c25b261ce79d3f21932485d6679d8481b"
+    },
+    {
+      "key": "world/rel-0001/sites/switchboard/manifest.json",
+      "sha256": "0a818c05a3e49a3d31bf060a02fed8e5b698ad424baa66de9820fcbd724e7276"
+    },
+    {
+      "key": "world/rel-0001/sites/switchboard/pages/home.json",
+      "sha256": "1f11a14a8571fd6c88145894e693d05b60635cc1f8ea5f62ed1ef8bfc6e3903a"
+    },
+    {
+      "key": "world/rel-0001/sites/switchboard/pages/whats-new.json",
+      "sha256": "48bd5cd8e9133874ebfffccc13c81a76ffff1c4a3032eb4b79034ef57ed37c50"
+    },
+    {
+      "key": "world/rel-0002/release.json",
+      "sha256": "cb097a446d5166ed90c6bf148422cc41be2b58aa42138c6402be47b3d31b13c7"
+    },
+    {
+      "key": "world/rel-0002/sites/bytemarket/manifest.json",
+      "sha256": "bbd955b78d7e675d3af4dd3d20ec74952e151507b1d46853e61d48946452d94c"
+    },
+    {
+      "key": "world/rel-0002/sites/bytemarket/pages/classifieds.json",
+      "sha256": "1b433a7fb614e850da851faba0d9c15e88612552a54961f25d2ea4612843c7e7"
+    },
+    {
+      "key": "world/rel-0002/sites/bytemarket/pages/home.json",
+      "sha256": "badb6f14258c2d62c16c3c8134819556133cd13a29884c2e3804e9d28d377607"
+    },
+    {
+      "key": "world/rel-0002/sites/bytemarket/pages/modem-calc.json",
+      "sha256": "d99f6cc7c74f1384b4d0ffad7088d584f5b18b903f352e4e27c5b44a47b3f431"
+    },
+    {
+      "key": "world/rel-0002/sites/chugging/manifest.json",
+      "sha256": "b81b91748618e784675151eab24379ff5d641feeeecf8247098e0d02961e763b"
+    },
+    {
+      "key": "world/rel-0002/sites/chugging/pages/home.json",
+      "sha256": "5bc8b26794fe3e41b72a05d6958c52dc0da63372c140f1fd1eab7416b7b768e0"
+    },
+    {
+      "key": "world/rel-0002/sites/chugging/pages/menu.json",
+      "sha256": "2a89ff42f94cb30cbad3bfb662f47403cfbcaf191ca4d3fcb1a7eb2f792cb26e"
+    },
+    {
+      "key": "world/rel-0002/sites/chugging/pages/notices.json",
+      "sha256": "ff2d2a1639eb8dfeb8fe8fa1f4b348adff9fcbb34ef14389035ea79ecad4e818"
+    },
+    {
+      "key": "world/rel-0002/sites/lantern/manifest.json",
+      "sha256": "a3c97f3718a71ab44347b2e670e03d9e571b4c544da464af603f48b42ee25a51"
+    },
+    {
+      "key": "world/rel-0002/sites/lantern/pages/gallery.json",
+      "sha256": "4f3f50062882b767e96f833626591326cfaf50cfae84c2ba1497663435c1e29f"
+    },
+    {
+      "key": "world/rel-0002/sites/lantern/pages/home.json",
+      "sha256": "a2c967e13f409d373c865cece155afb2af53f493964a058513ba6aa5152819f4"
+    },
+    {
+      "key": "world/rel-0002/sites/lantern/pages/logbook.json",
+      "sha256": "8ee0fdd26f6806728165088bfb6c9d5f070d7209157d47779d723f8ed4ee6871"
+    },
+    {
+      "key": "world/rel-0002/sites/nightowl/manifest.json",
+      "sha256": "c3eaa0d34364b2fddffb74fc1be13eefccd787630645c1f53e6f90d0e0ac4f71"
+    },
+    {
+      "key": "world/rel-0002/sites/nightowl/pages/archive.json",
+      "sha256": "c38b94acd64de68ef70653ece6b1c2d1809e9066e3f7b34b5f95ea85c4db3194"
+    },
+    {
+      "key": "world/rel-0002/sites/nightowl/pages/home.json",
+      "sha256": "9981eb14d5cdafd15d3447c9a4f9493055a8e2d71f12f3dfa087d4d16def4bf6"
+    },
+    {
+      "key": "world/rel-0002/sites/nightowl/pages/sysop.json",
+      "sha256": "a1cc78f3cf990297f533ab29f53dc58d3a1fd3297ebb73cff37cd5246e141fff"
+    },
+    {
+      "key": "world/rel-0002/sites/northstar/manifest.json",
+      "sha256": "dc588bc2f88948eb36a86b03fbe17df3fd27448bc3f5b7d3d8b42526ea5c3459"
+    },
+    {
+      "key": "world/rel-0002/sites/northstar/pages/astro.json",
+      "sha256": "cefda9f4996a9c8c27c5eac6ebc782f36bf9b1272b9d03df9f142ac04de32fd0"
+    },
+    {
+      "key": "world/rel-0002/sites/northstar/pages/club.json",
+      "sha256": "dbbd200ff0005bc6a29fcfe0fd696c9d4318a2f286bce9ac8248afa3d172a97f"
+    },
+    {
+      "key": "world/rel-0002/sites/northstar/pages/home.json",
+      "sha256": "284d18ea6c7bc93307643ac9ee6727f37ae6b70f2c81472c7aca55fcb34feda2"
+    },
+    {
+      "key": "world/rel-0002/sites/northstar/pages/mira.json",
+      "sha256": "6a4999ea5a9e03d96db8e3aca95003aa2313106e2cac3b1b432c835bfce553c6"
+    },
+    {
+      "key": "world/rel-0002/sites/packet/manifest.json",
+      "sha256": "0fdc7b301ffe72164f8c80e77037787b09c2982c160cb1ef76104845f0fa0561"
+    },
+    {
+      "key": "world/rel-0002/sites/packet/pages/coffee-online.json",
+      "sha256": "258df31e957a2be911a2b474fc861aa0f4a525c8f5ac55fa03c8e5d8b1572296"
+    },
+    {
+      "key": "world/rel-0002/sites/packet/pages/home.json",
+      "sha256": "d946cd28bf277a0f0b2c2c8b9f673da7ef41294d9439983aae9ba1e8dee87606"
+    },
+    {
+      "key": "world/rel-0002/sites/packet/pages/library-modems.json",
+      "sha256": "a1c8093037603598c2c04c719f67aa3162e0ac05e294b866eed908b5ca9ce0b8"
+    },
+    {
+      "key": "world/rel-0002/sites/switchboard/manifest.json",
+      "sha256": "fe723db25b72211f97936c8320fe2b27f5f17382c38cf24b819b6bddcc6856be"
+    },
+    {
+      "key": "world/rel-0002/sites/switchboard/pages/directory.json",
+      "sha256": "c7a22e4eac9ca92022bfaacd83e3b60d0d783f89085ee7a9fc1460ec426b8705"
+    },
+    {
+      "key": "world/rel-0002/sites/switchboard/pages/help.json",
+      "sha256": "a8fde61a8bbd263a455d32766fbe56dffbb6d33b1776360acffbffefd791fa15"
+    },
+    {
+      "key": "world/rel-0002/sites/switchboard/pages/home.json",
+      "sha256": "49a244ced2be07c050a0501d31e7884017191abf6653c9107417bf79dcfadb4d"
+    },
+    {
+      "key": "world/rel-0002/sites/switchboard/pages/whats-new.json",
+      "sha256": "86252cdad5e099297d8e67d84ddecea6d5d8c8c5df8027a3d2fa48a17c88ddde"
+    }
+  ]
+}

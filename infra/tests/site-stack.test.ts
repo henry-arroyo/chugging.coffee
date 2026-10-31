@@ -151,21 +151,28 @@ describe('router function', () => {
   const run = (uri: string) => handler({ request: { uri, headers: {} } });
 
   it.each([
-    ['/time-machine/', '/time-machine/index.html'],
-    ['/time-machine/open/http/chugging.test/', '/time-machine/index.html'],
-    ['/time-machine/assets/index-abc123.js', '/time-machine/assets/index-abc123.js'],
-    ['/time-machine/missing.png', '/time-machine/missing.png'],
-    ['/time-machine/world/rel-0001/release.json', '/time-machine/world/rel-0001/release.json'],
+    ['/', '/index.html'],
+    ['/open/http/chugging.test/', '/index.html'],
+    ['/index.html', '/index.html'],
+    ['/assets/index-abc123.js', '/assets/index-abc123.js'],
+    ['/missing.png', '/missing.png'],
+    ['/world/rel-0001/release.json', '/world/rel-0001/release.json'],
+    ['/irc', '/irc'],
   ])('%s → origin %s', (uri, expected) => {
     expect(run(uri).uri).toBe(expected);
   });
 
-  it('redirects the bare folder', () => {
-    expect(run('/time-machine')).toMatchObject({ statusCode: 301, headers: { location: { value: '/time-machine/' } } });
+  it.each([
+    ['/time-machine', '/'],
+    ['/time-machine/', '/'],
+    ['/time-machine/open/http/chugging.test/', '/open/http/chugging.test/'],
+    ['/time-machine/assets/index-abc123.js', '/assets/index-abc123.js'],
+  ])('redirects the old address %s to %s', (uri, location) => {
+    expect(run(uri)).toMatchObject({ statusCode: 301, headers: { location: { value: location } } });
   });
 
-  it.each(['/', '/index.html', '/irc', '/time-machinex/', '/TIME-MACHINE/'])('does not serve %s', (uri) => {
-    expect(run(uri)).toMatchObject({ statusCode: 404 });
+  it('only "/" and /open/ deep links get the shell; other unknown paths are passed through to a 404', () => {
+    for (const uri of ['/time-machinex/', '/openx', '/TIME-MACHINE/', '/irc/x']) expect(run(uri).uri).toBe(uri);
   });
 });
 

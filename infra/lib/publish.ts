@@ -7,7 +7,8 @@ import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 
-export const KEY_PREFIX = 'time-machine/';
+/** Objects live at the bucket root; the site is served at the root of the domain. */
+export const KEY_PREFIX = '';
 const IMMUTABLE = 'public, max-age=31536000, immutable';
 const POINTER = 'no-cache';
 const SHORT = 'public, max-age=300';
@@ -90,5 +91,5 @@ export function planPublish(distDir: string): PublishPlan {
 
 /** Paths to invalidate after promotion: only the pointers (everything else is content-addressed). */
 export function invalidationPaths(): string[] {
-  return ['/time-machine/', '/time-machine/index.html', '/time-machine/world/current.json'];
+  return ['/', '/index.html', '/world/current.json'];
 }
