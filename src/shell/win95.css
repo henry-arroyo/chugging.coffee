@@ -27,6 +27,9 @@
   --w95-thin-sunken: inset -1px -1px var(--w95-highlight), inset 1px 1px var(--w95-shadow);
   --w95-thin-raised: inset -1px -1px var(--w95-shadow), inset 1px 1px var(--w95-highlight);
 
+  /* The simulated computer is always a light-mode 1995 PC, whatever the visitor's system uses;
+     otherwise the browser draws text boxes with dark-mode (light gray) text. */
+  color-scheme: light;
   position: relative;
   overflow: hidden;
   font-family: var(--w95-font);
@@ -181,7 +184,14 @@
   background: var(--w95-face);
 }
 
+.w95 textarea,
+.w95 select,
+.w95 option,
+.w95 pre {
+  color: var(--w95-text);
+}
 .w95-sunken-panel {
+  color: var(--w95-text);
   background: var(--w95-window);
   box-shadow: var(--w95-sunken);
   overflow: auto;

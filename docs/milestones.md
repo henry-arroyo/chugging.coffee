@@ -435,3 +435,8 @@ update flow.
   - **Safety:** styles come from a fixed palette, so they are never free-form. The room is still
     labeled as scripted.
   - **Tests:** the chat journey now covers formatting and profiles.
+- **Readability fix (owner report):** on a dark-mode system, text boxes inside the simulation
+  (Notepad, AOL and Netscape fields) took the browser's dark-mode light-gray text on a white
+  background. The simulated computer now always renders in light mode, with black text on its
+  white surfaces, and AOL's dates are dark gray. A new journey runs in dark mode and scans every
+  visible text node and field for light text on white. Disabled items stay gray, as in Windows 95.
