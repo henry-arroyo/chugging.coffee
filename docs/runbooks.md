@@ -1,4 +1,4 @@
-# Runbooks (draft)
+# Runbooks
 
 Status: **design only.** No environment exists. Every AWS step below needs the owner's go-ahead
 at the time, and production steps need it separately.
@@ -24,8 +24,8 @@ than `ctm-<env>-operator`, the wrong region, missing credentials. Stacks are cho
 1. `npm run infra:check` and `npm test`.
 2. `npm run infra:diff -- --env test` and review.
 3. `npm run infra:deploy -- --env test` and type the stack name when prompted.
-4. Publish the site build (M5: `infra:publish`, which uploads immutable hashed files, verifies
-   them, and promotes `world/current.json` and `index.html` last).
+4. Publish the site build (see **Publish a release** below):
+   `npm run infra:publish -- --env test --dry-run`, then without `--dry-run`.
 5. Open `https://<DistributionDomainName>/time-machine/`.
 
 ## Deploy production (later)
@@ -48,10 +48,37 @@ than `ctm-<env>-operator`, the wrong region, missing credentials. Stacks are cho
 5. **Verify** `https://chugging.coffee/time-machine/`, and that mail still flows (send a test message
    to a chugging.coffee address).
 
+## Publish a release
+
+`infra:publish` builds the current tree, then uploads it to the environment's own site bucket.
+
+1. **Freeze the release** the first time it is published anywhere: `npm run content:freeze`, then
+   commit `content/world/published/<release>/`. Production refuses an unfrozen release and an
+   uncommitted tree. Test accepts `--allow-unfrozen` for previews.
+2. **Dry run** (no AWS call): `npm run infra:publish -- --env test|prod --dry-run` prints the plan:
+   release, commit, file counts, total size and the paths it will invalidate.
+3. **Publish**: `npm run infra:publish -- --env test|prod`. After the usual identity preflight, it:
+   - checks that the stack is deployed and that its bucket output and `Environment` tag match;
+   - uploads hashed assets and release files with a one-year immutable cache. Files already
+     there with the same SHA-256 are skipped. If an immutable file already exists with
+     different content, the publish stops before anything is promoted;
+   - verifies every upload (size and SHA-256);
+   - promotes `world/current.json` and then `index.html` (`no-cache`), after a typed
+     confirmation in production (`publish CtmProd-Site`);
+   - invalidates only `/time-machine/`, `/time-machine/index.html` and
+     `/time-machine/world/current.json`, then writes `infra/deploy-records/<env>-publish-*.json`.
+4. **Check** the site in a fresh browser tab. Tabs already open stay on their pinned release and
+   are offered a restart.
+
+No new permissions are needed: the operator roles' `PublishAndClean<Env>Site` and
+`Invalidate<Env>Distribution` statements cover these calls.
+
 ## Roll back
 
-- **Content:** repoint `world/current.json` at a release listed in `rollbackSafeTo`, then
-  invalidate `/time-machine/world/current.json`. Releases are never edited.
+- **Content:** `npm run infra:publish -- --env <env> --promote-release rel-NNNN`. It checks that the
+  target is published and that the live release lists it in `rollbackSafeTo`, asks for
+  `promote rel-NNNN`, repoints `world/current.json`, invalidates it and writes a record. Rolling
+  forward again works the same way. Releases are never edited.
 - **Application:** re-upload the previous `index.html` (hashed assets from earlier builds stay in
   the bucket until lifecycle expiry) and invalidate `/time-machine/index.html`.
 - **Infrastructure:** check out the previous commit (see `infra/deploy-records/`), then
@@ -85,3 +112,6 @@ production. Recreate with `infra:deploy`.
 | Stack stuck in `UPDATE_ROLLBACK_FAILED` | The deploy role may `ContinueUpdateRollback` with the execution role. Otherwise escalate to the maintainer. |
 | Bucket deletion blocked | Re-run `infra:destroy`; it re-empties the bucket before calling CloudFormation again. |
 | Lost local progress (visitor) | Not recoverable by design. Visitors can export and import a save file. |
+| Publish stopped with "already published with different content" | The build is not the one that was published (or a frozen release was edited). Find the cause; never overwrite immutable files. Nothing was promoted, so the site is unchanged. |
+| Publish uploaded files but was not confirmed | Nothing was promoted; the site is unchanged. Re-run when ready (uploads are skipped as unchanged). |
+| A bad release is live | `infra:publish --promote-release <previous>` (content rollback), then fix forward with a new release. |

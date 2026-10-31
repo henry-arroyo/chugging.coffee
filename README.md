@@ -4,9 +4,10 @@ A Windows 95 desktop in the browser, connected to a shared, persistent, fictiona
 internet: an AOL-style online service, a Netscape-era browser, and seven interlinked `.test` sites.
 Served at `/time-machine/`. Static hosting on AWS (CDK v2), no backend in v1.
 
-**Status:** milestone M4: all seven sites of the fictional 1995 Web (23 pages), the Lantern Keeper
-clue chain, frozen releases and the new-edition prompt, on top of AOL 2.5, Netscape 2.0b3 and the
-Windows 95 desktop. See
+**Status:** milestone M5: accessibility (axe scans, keyboard-only and touch journeys, host
+accessibility controls), three browser engines, performance budgets, a security review and the
+guarded publish command. Feature-complete for v1; **not deployed** (deployment needs the owner's
+separate authorization). See
 [docs/milestones.md](docs/milestones.md).
 
 ## Commands
@@ -15,7 +16,8 @@ Windows 95 desktop. See
 npm ci
 npm run dev                 # local dev server: http://localhost:5173/time-machine/
 npm test                    # unit, contract, policy and stack tests
-npm run test:e2e            # Playwright journeys (see docs/testing.md for browser setup)
+npm run test:e2e            # Playwright journeys in Chromium, Firefox and WebKit (see docs/testing.md)
+npm run test:prod           # production build under the CloudFront headers: CSP, startup, size, dragging
 npm run visual:capture      # screenshots for human review in tests/visual/pending/
 npm run typecheck
 npm run build               # contracts, public asset gate, content check, typecheck, Vite build
@@ -33,6 +35,8 @@ npm run infra:diff    -- --env test|prod      # needs confirmed config and profi
 npm run infra:deploy  -- --env test|prod
 npm run infra:status  -- --env test|prod
 npm run infra:destroy -- --env test|prod
+npm run infra:publish -- --env test|prod [--dry-run]       # upload a build; pointers promoted last
+npm run infra:publish -- --env test|prod --promote-release rel-NNNN   # content rollback
 ```
 
 AWS commands refuse to run until `infra/config/<env>.json` is confirmed by the owner, and they
@@ -59,3 +63,4 @@ docs/               architecture, decisions, security, rights, runbooks, costs
 - [Architecture](docs/architecture.md) · [Decisions](docs/decisions.md) · [Open questions](docs/open-questions.md)
 - [Security design](docs/security-design.md) · [AWS profiles](docs/aws-profiles.md) · [Runbooks](docs/runbooks.md) · [Cost worksheet](docs/cost-worksheet.md)
 - [Historical references](docs/historical-references.md) · [Asset rights](docs/asset-rights.md) · [Testing](docs/testing.md)
+- [Performance](docs/performance.md) · [Security review](docs/security-review.md)

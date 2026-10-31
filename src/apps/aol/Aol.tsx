@@ -374,6 +374,21 @@ export default function Aol({ host }: AppProps) {
     return d ? <DepartmentView department={d} onLink={followLink} /> : null;
   };
 
+  // Like any multiple-document program, the front child window gets the keyboard focus.
+  useEffect(() => {
+    if (!top) return;
+    const frame = requestAnimationFrame(() => {
+      // Only while AOL itself is the active window: never steal focus from another program.
+      const frameEl = clientRef.current?.closest<HTMLElement>('.w95-window:not(.aol-mdi)');
+      if (frameEl?.dataset.active !== 'true') return;
+      const child = clientRef.current?.querySelector<HTMLElement>(`[data-kind="${CSS.escape(top)}"]`);
+      if (!child || child.contains(document.activeElement)) return;
+      const body = child.querySelector('.aol-mdi-body');
+      body?.querySelector<HTMLElement>('[autofocus], [data-autofocus], button:not(:disabled), input:not([disabled]), select, a[href], [tabindex="0"]')?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [top, conn.phase]);
+
   // Online-only windows close when the line drops.
   const visible = children.filter((c) => online || c.kind === 'welcome' || c.kind === 'setup');
 
@@ -412,6 +427,7 @@ export default function Aol({ host }: AppProps) {
               bounds={bounds}
               maximizable={s.maximizable !== false}
               closable={!(c.kind === 'welcome' && conn.phase !== 'offline')}
+              kind={c.kind}
               bodyClass={`aol-body-${c.kind.split(':')[0]}${c.kind === 'welcome' && conn.phase !== 'offline' ? ' aol-body-connecting' : ''}`}
               onFocus={() => c.kind !== top && open(c.kind)}
               onMove={(x, y) => update(c.kind, { x, y })}

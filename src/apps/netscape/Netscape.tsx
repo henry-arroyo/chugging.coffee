@@ -159,7 +159,13 @@ export default function Netscape({ host }: AppProps) {
           setPage({ href: a.href, base: baseOf(a.href), doc: a.doc, chunks: a.chunks, revealed });
           setLocation(a.href);
           record({ href: a.href, title: a.doc.title }, mode);
-          requestAnimationFrame(() => scrollTo(null));
+          requestAnimationFrame(() => {
+            scrollTo(null);
+            // The link that was clicked is gone; keep the keyboard in this window, on the document.
+            const active = document.activeElement;
+            const root = contentRef.current?.closest('.ns');
+            if (!active || active === document.body || (root?.contains(active) && active !== locationRef.current)) contentRef.current?.focus({ preventScroll: true });
+          });
         } else setPage((p) => (p ? { ...p, revealed } : p));
       };
       const result = nav.load(raw, base, {

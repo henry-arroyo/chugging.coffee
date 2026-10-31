@@ -1,11 +1,14 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { worldPlugin } from './scripts/world/vite-plugin.ts';
+import { PRODUCTION_HEADERS } from './infra/lib/headers.ts';
 
 // The simulation is served under /time-machine/ so it can share a domain with other routes.
 export default defineConfig({
   base: '/time-machine/',
   plugins: [react(), worldPlugin(import.meta.dirname)],
+  // `vite preview` serves the build with the production response headers (see test:prod).
+  preview: { headers: PRODUCTION_HEADERS },
   build: {
     outDir: 'dist/time-machine',
     assetsDir: 'assets',

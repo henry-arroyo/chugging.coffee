@@ -24,6 +24,7 @@ interface MdiChildProps {
   maximizable?: boolean;
   closable?: boolean;
   bodyClass?: string;
+  kind?: string;
   onFocus: () => void;
   onMove: (x: number, y: number) => void;
   onToggleMaximize: () => void;
@@ -31,7 +32,7 @@ interface MdiChildProps {
   children: ReactNode;
 }
 
-export function MdiChild({ title, frame, z, active, bounds, maximizable = true, closable = true, bodyClass, onFocus, onMove, onToggleMaximize, onClose, children }: MdiChildProps) {
+export function MdiChild({ title, frame, z, active, bounds, maximizable = true, closable = true, bodyClass, kind, onFocus, onMove, onToggleMaximize, onClose, children }: MdiChildProps) {
   const drag = useRef<{ startX: number; startY: number; x: number; y: number; scale: number } | null>(null);
   const rect = frame.maximized ? { left: 0, top: 0, width: bounds.width, height: bounds.height } : { left: frame.x, top: frame.y, width: frame.w, height: frame.h };
 
@@ -56,7 +57,7 @@ export function MdiChild({ title, frame, z, active, bounds, maximizable = true, 
   };
 
   return (
-    <section className="aol-mdi w95-window" data-active={active} style={{ ...rect, zIndex: z }} aria-label={title} onPointerDownCapture={onFocus}>
+    <section className="aol-mdi w95-window" data-active={active} data-kind={kind} style={{ ...rect, zIndex: z }} aria-label={title} onPointerDownCapture={onFocus}>
       <div
         className="w95-titlebar"
         style={{ touchAction: 'none' }}

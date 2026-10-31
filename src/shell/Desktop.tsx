@@ -1,6 +1,7 @@
 import { useRef, type KeyboardEvent } from 'react';
 import { MANIFESTS } from '../apps/manifests';
 import { useShell } from './context';
+import { useDoubleTap } from './doubleTap';
 import { iconUrl } from './icons';
 
 const ICON_SPACING = 70;
@@ -17,6 +18,7 @@ export function Desktop({ selected, onSelect }: DesktopProps) {
   const binFull = Object.values(sessionState.vfs.entries).some((f) => f.deleted);
   const refs = useRef<Record<string, HTMLButtonElement | null>>({});
   const tabStop = selected ?? ICONS[0]?.appId;
+  const opener = useDoubleTap();
 
   const move = (from: number, delta: number) => {
     const next = ICONS[Math.min(ICONS.length - 1, Math.max(0, from + delta))];
@@ -57,7 +59,9 @@ export function Desktop({ selected, onSelect }: DesktopProps) {
           dispatch({ type: 'focusDesktop' });
         }
       }}>
-        {ICONS.map((m, index) => (
+        {ICONS.map((m, index) => {
+          const open = opener(m.appId, () => launch(m.appId));
+          return (
           <button
             key={m.appId}
             ref={(el) => {
@@ -71,18 +75,21 @@ export function Desktop({ selected, onSelect }: DesktopProps) {
             tabIndex={tabStop === m.appId ? 0 : -1}
             data-desktop-icon={m.appId}
             data-state={m.appId === 'recycle-bin' ? (binFull ? 'full' : 'empty') : undefined}
-            onPointerDown={() => {
+            onPointerDown={(e) => {
+              open.onPointerDown(e);
               onSelect(m.appId);
               dispatch({ type: 'focusDesktop' });
             }}
             onFocus={() => onSelect(m.appId)}
-            onDoubleClick={() => launch(m.appId)}
+            onClick={open.onClick}
+            onDoubleClick={open.onDoubleClick}
             onKeyDown={(e) => onKeyDown(e, index, m.appId)}
           >
             <img src={iconUrl(m.appId === 'recycle-bin' && binFull ? 'icon.recycle-full' : m.icon)} alt="" draggable={false} />
             <span>{m.title}</span>
           </button>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

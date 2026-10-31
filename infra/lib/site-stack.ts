@@ -7,6 +7,7 @@ import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import type { Construct } from 'constructs';
 import { siteBucketName, type EnvironmentName } from './config';
+import { CONTENT_SECURITY_POLICY, CUSTOM_HEADERS } from './headers';
 
 export interface SiteStackProps extends cdk.StackProps {
   environment: EnvironmentName;
@@ -14,25 +15,7 @@ export interface SiteStackProps extends cdk.StackProps {
   certificateArn: string | null;
 }
 
-/**
- * Content-Security-Policy for the simulation. Everything is same-origin; no eval, no frames,
- * no plugins, no form posts. 'unsafe-inline' styles cover React style attributes (window positions).
- */
-export const CONTENT_SECURITY_POLICY = [
-  "default-src 'self'",
-  "script-src 'self'",
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob:",
-  "media-src 'self' blob:",
-  "font-src 'self'",
-  "connect-src 'self'",
-  "worker-src 'self'",
-  "manifest-src 'self'",
-  "object-src 'none'",
-  "base-uri 'none'",
-  "form-action 'none'",
-  "frame-ancestors 'none'",
-].join('; ');
+export { CONTENT_SECURITY_POLICY } from './headers';
 
 /**
  * Private S3 bucket behind CloudFront with origin access control. Contains no IAM roles,
@@ -83,11 +66,7 @@ export class SiteStack extends cdk.Stack {
         strictTransportSecurity: { accessControlMaxAge: cdk.Duration.days(365), includeSubdomains: false, preload: false, override: true },
       },
       customHeadersBehavior: {
-        customHeaders: [
-          { header: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()', override: true },
-          { header: 'Cross-Origin-Opener-Policy', value: 'same-origin', override: true },
-          { header: 'Cross-Origin-Resource-Policy', value: 'same-origin', override: true },
-        ],
+        customHeaders: Object.entries(CUSTOM_HEADERS).map(([header, value]) => ({ header, value, override: true })),
       },
     });
 

@@ -7,6 +7,8 @@
  *   npm run infra:deploy  -- --env test|prod [--stack certificate]
  *   npm run infra:status  -- --env test|prod
  *   npm run infra:destroy -- --env test|prod
+ *   npm run infra:publish -- --env test|prod [--dry-run] [--allow-unfrozen (test only)]
+ *   npm run infra:publish -- --env test|prod --promote-release rel-NNNN   (content rollback)
  *
  * Every AWS command verifies the confirmed config, profile, account, assumed role and region
  * before anything else, deploys only the exact template that was synthesized and validated,
@@ -16,7 +18,8 @@
  */
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createInterface } from 'node:readline/promises';
 import * as cdk from 'aws-cdk-lib';
@@ -33,6 +36,7 @@ import {
 } from '../lib/changeset';
 import { ENVIRONMENTS, loadConfig, siteBucketName, stackNames, type EnvironmentConfig, type EnvironmentName } from '../lib/config';
 import { AWS_COMMANDS, parseArgs, preflightProblems, targetStack, type CallerIdentity } from '../lib/preflight';
+import { invalidationPaths, KEY_PREFIX, planPublish, type PublishFile, type PublishPlan } from '../lib/publish';
 import { validateTemplate, type StackKind } from '../lib/validate-template';
 
 const INFRA = join(import.meta.dirname, '..');
@@ -264,6 +268,123 @@ const RETAINED = [
   'Cloudflare DNS records for chugging.coffee (manual; remove the CloudFront CNAME before rebuilding prod)',
 ];
 
+// ------------------------------------------------------------------ publish
+
+/** Builds from the current tree and plans the upload. Makes no AWS call. */
+function planOrFail(config: EnvironmentConfig, allowUnfrozen: boolean): { plan: PublishPlan; dist: string } {
+  const dirty = git(['status', '--porcelain']) !== '';
+  if (config.environment === 'prod' && dirty) fail('Production publishes only from a clean, committed tree. Commit or stash first.');
+  console.log('Building from the current tree (npm run build)...');
+  const built = spawnSync('npm', ['run', 'build'], { cwd: ROOT, stdio: ['ignore', 'ignore', 'inherit'] });
+  if (built.status !== 0) fail('The build failed; nothing was published.');
+  const dist = join(ROOT, 'dist/time-machine');
+  const plan = planPublish(dist);
+  const frozen = existsSync(join(ROOT, 'content/world/published', plan.releaseId));
+  if (!frozen && !allowUnfrozen) fail(`${plan.releaseId} is not frozen. Published releases never change, so freeze it first: npm run content:freeze, then commit.`);
+  const by = (k: PublishFile['kind']) => plan.files.filter((f) => f.kind === k);
+  console.log(`Plan for ${config.environment}: release ${plan.releaseId}${frozen ? '' : ' (NOT frozen: test only)'}, commit ${git(['rev-parse', '--short', 'HEAD'])}${dirty ? ' + uncommitted changes' : ''}`);
+  console.log(`  ${by('immutable').length} immutable files, ${by('static').length} static, then world/current.json and index.html last`);
+  console.log(`  ${(plan.files.reduce((n, f) => n + f.bytes, 0) / 1024).toFixed(0)} KiB in total; invalidates ${invalidationPaths().join(', ')}`);
+  return { plan, dist };
+}
+
+function siteTargets(config: EnvironmentConfig, stackName: string): { bucket: string; distributionId: string } {
+  const stack = describeStack(config, stackName);
+  if (!stack || !/_COMPLETE$/.test(stack.StackStatus) || /DELETE|ROLLBACK/.test(stack.StackStatus)) fail(`${stackName} is not deployed (status ${stack?.StackStatus ?? 'none'}). Deploy it first.`);
+  const outputs = outputsOf(stack);
+  const expected = siteBucketName(config.environment, config.account);
+  if (outputs.BucketName !== expected) fail(`${stackName} reports bucket ${outputs.BucketName}, expected ${expected}. Refusing.`);
+  const tags = aws(config, ['s3api', 'get-bucket-tagging', '--bucket', expected]);
+  const tagSet: { Key: string; Value: string }[] = tags.ok ? JSON.parse(tags.stdout).TagSet : [];
+  if (!tagSet.some((t) => t.Key === 'Environment' && t.Value === config.environment)) fail(`Bucket ${expected} is not tagged Environment=${config.environment}. Refusing.`);
+  if (!outputs.DistributionId) fail(`${stackName} has no DistributionId output.`);
+  return { bucket: expected, distributionId: outputs.DistributionId };
+}
+
+function remoteSha(config: EnvironmentConfig, bucket: string, key: string): { exists: boolean; sha: string | null; bytes: number } {
+  const head = aws(config, ['s3api', 'head-object', '--bucket', bucket, '--key', key]);
+  if (!head.ok) return { exists: false, sha: null, bytes: 0 };
+  const parsed = JSON.parse(head.stdout) as { Metadata?: Record<string, string>; ContentLength?: number };
+  return { exists: true, sha: parsed.Metadata?.sha256 ?? null, bytes: parsed.ContentLength ?? 0 };
+}
+
+function upload(config: EnvironmentConfig, bucket: string, file: PublishFile, body: string) {
+  const r = aws(config, ['s3api', 'put-object', '--bucket', bucket, '--key', file.key, '--body', body, '--content-type', file.contentType, '--cache-control', file.cacheControl, '--metadata', `sha256=${file.sha256}`, '--checksum-algorithm', 'SHA256']);
+  if (!r.ok) fail(`Upload of ${file.key} failed: ${r.stderr.trim()}\n  AccessDenied is not a reason to widen permissions: see docs/security-design.md.`);
+  const after = remoteSha(config, bucket, file.key);
+  if (after.sha !== file.sha256 || after.bytes !== file.bytes) fail(`Verification of ${file.key} failed after upload.`);
+}
+
+function invalidate(config: EnvironmentConfig, distributionId: string): string {
+  const paths = invalidationPaths();
+  const r = aws(config, ['cloudfront', 'create-invalidation', '--distribution-id', distributionId, '--paths', ...paths]);
+  if (!r.ok) fail(`Invalidation failed: ${r.stderr.trim()}`);
+  const id = (JSON.parse(r.stdout) as { Invalidation: { Id: string } }).Invalidation.Id;
+  aws(config, ['cloudfront', 'wait', 'invalidation-completed', '--distribution-id', distributionId, '--id', id]);
+  return id;
+}
+
+function writeRecord(config: EnvironmentConfig, record: Record<string, unknown>): string {
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const recordDir = join(INFRA, 'deploy-records');
+  mkdirSync(recordDir, { recursive: true });
+  const file = join(recordDir, `${config.environment}-publish-${stamp}.json`);
+  writeFileSync(file, `${JSON.stringify({ environment: config.environment, account: config.account, region: config.region, gitCommit: git(['rev-parse', 'HEAD']), at: new Date().toISOString(), ...record }, null, 2)}\n`);
+  return file;
+}
+
+async function publish(config: EnvironmentConfig, stackName: string, identity: CallerIdentity, plan: PublishPlan, dist: string) {
+  const { bucket, distributionId } = siteTargets(config, stackName);
+  let uploaded = 0;
+  let unchanged = 0;
+  for (const file of plan.order.filter((f) => f.kind !== 'pointer')) {
+    const remote = remoteSha(config, bucket, file.key);
+    if (remote.exists && remote.sha === file.sha256) {
+      unchanged++;
+      continue;
+    }
+    if (remote.exists && file.kind === 'immutable') fail(`${file.key} is already published with different content. Immutable files never change; this build is not reproducible or a release was edited. Nothing was promoted.`);
+    upload(config, bucket, file, join(dist, file.path));
+    uploaded++;
+  }
+  console.log(`✔ ${uploaded} files uploaded and verified, ${unchanged} already in place`);
+  if (config.environment === 'prod' && !(await confirmed(`Promote ${plan.releaseId} and the new index.html to production (${bucket})?`, `publish ${stackName}`))) {
+    fail('Not confirmed. Immutable files are uploaded but nothing was promoted; the site is unchanged.');
+  }
+  for (const file of plan.order.filter((f) => f.kind === 'pointer')) upload(config, bucket, file, join(dist, file.path));
+  const invalidation = invalidate(config, distributionId);
+  const record = writeRecord(config, { action: 'publish', caller: identity.Arn, releaseId: plan.releaseId, bucket, distributionId, uploaded, unchanged, invalidation, files: plan.files.map((f) => ({ key: f.key, sha256: f.sha256 })) });
+  console.log(`✔ Published ${plan.releaseId} to ${config.environment}. Record: ${relativeToRoot(record)}`);
+}
+
+async function promoteRelease(config: EnvironmentConfig, stackName: string, identity: CallerIdentity, target: string) {
+  const { bucket, distributionId } = siteTargets(config, stackName);
+  const tmp = mkdtempSync(join(tmpdir(), 'ctm-promote-'));
+  const get = (key: string, out: string) => aws(config, ['s3api', 'get-object', '--bucket', bucket, '--key', `${KEY_PREFIX}${key}`, join(tmp, out)]).ok;
+  if (!get(`world/${target}/release.json`, 'target.json')) fail(`${target} is not published in ${bucket}.`);
+  if (!get('world/current.json', 'current.json')) fail('No world/current.json is published yet; publish a release first.');
+  const current = (JSON.parse(readFileSync(join(tmp, 'current.json'), 'utf8')) as { releaseId: string }).releaseId;
+  if (current === target) fail(`${target} is already current.`);
+  if (!get(`world/${current}/release.json`, 'live.json')) fail(`The live release ${current} is missing its release.json.`);
+  const live = JSON.parse(readFileSync(join(tmp, 'live.json'), 'utf8')) as { sequence: number; compatibility: { rollbackSafeTo: string[] } };
+  const next = JSON.parse(readFileSync(join(tmp, 'target.json'), 'utf8')) as { sequence: number };
+  const rollingBack = next.sequence < live.sequence;
+  if (rollingBack && !live.compatibility.rollbackSafeTo.includes(target)) fail(`${current} does not list ${target} in rollbackSafeTo; rolling back to it is not safe.`);
+  if (!(await confirmed(`Repoint world/current.json in ${config.environment} from ${current} to ${target}?`, `promote ${target}`))) fail('Not confirmed; nothing changed.');
+  const body = join(tmp, 'new-current.json');
+  writeFileSync(body, JSON.stringify({ releaseId: target }));
+  const bytes = statSync(body).size;
+  const sha = createHash('sha256').update(readFileSync(body)).digest('hex');
+  upload(config, bucket, { path: 'world/current.json', key: `${KEY_PREFIX}world/current.json`, bytes, sha256: sha, contentType: 'application/json; charset=utf-8', cacheControl: 'no-cache', kind: 'pointer' }, body);
+  const invalidation = invalidate(config, distributionId);
+  const record = writeRecord(config, { action: rollingBack ? 'rollback' : 'promote', caller: identity.Arn, from: current, to: target, bucket, distributionId, invalidation });
+  console.log(`✔ ${config.environment} now serves ${target} (was ${current}). Open tabs keep their pinned release. Record: ${relativeToRoot(record)}`);
+}
+
+function relativeToRoot(path: string): string {
+  return path.startsWith(`${ROOT}/`) ? path.slice(ROOT.length + 1) : path;
+}
+
 async function main() {
   let args;
   try {
@@ -286,9 +407,22 @@ async function main() {
     return;
   }
 
+  // Publishing plans locally first; --dry-run stops before any AWS call.
+  const publishing = args.command === 'publish' && !args.promoteRelease ? planOrFail(config, args.allowUnfrozen) : null;
+  if (args.command === 'publish' && args.dryRun) {
+    console.log('\n✔ Dry run: nothing was uploaded and no AWS call was made.');
+    return;
+  }
+
   if (!AWS_COMMANDS.includes(args.command)) fail(`Unhandled command ${args.command}`);
   // Identity first: nothing else runs until the account, role and region are verified.
   const identity = verifyIdentity(config);
+
+  if (args.command === 'publish') {
+    if (args.promoteRelease) await promoteRelease(config, stackName, identity, args.promoteRelease);
+    else await publish(config, stackName, identity, publishing!.plan, publishing!.dist);
+    return;
+  }
 
   if (args.command === 'status') {
     for (const name of [stackNames(config.environment).site, stackNames(config.environment).certificate].filter(Boolean) as string[]) {

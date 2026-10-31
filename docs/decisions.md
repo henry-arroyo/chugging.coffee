@@ -331,3 +331,42 @@ keeps any saved document.
 Once a tab has pinned a release, it re-reads `current.json` when it becomes visible and every 10
 minutes, and offers a restart once. Declining keeps the pinned edition for the rest of the
 visit.
+
+## D41. Accessibility: authentic look by default, High contrast for strict contrast (2026-10-30)
+
+axe-core scans the core screens for WCAG 2.1 A and AA. Two period details are excluded in the
+default look:
+- the Start menu's "Windows 95" banner, a logotype that WCAG 1.4.3 exempts;
+- inactive windows' gray title text.
+
+With High contrast on (from the host bar or Control Panel), the same screens pass with no
+exclusions. The host bar also offers Larger text, Reduced motion and Sound. They are saved with
+the profile, so they work once a profile exists, including at the logon on every later visit.
+
+## D42. Keyboard and touch are first-class paths (2026-10-30)
+
+Keyboard focus follows Windows 95 behaviour:
+- after logon, focus lands on the desktop icons;
+- the front AOL child window gets focus, but only while AOL is the active window;
+- Netscape moves focus to the new document when the followed link disappears.
+
+Alt+access keys and F10 open menus for the window they belong to, not via the browser's global
+`accesskey`. On touch screens, a double tap opens desktop icons and folder items, firing on the
+tap's own click so no ghost click lands on the newly opened window.
+
+## D43. Publishing is a guarded upload, not a CDK helper (2026-10-30)
+
+`infra:publish` builds the current tree and uploads it with the operator role's existing S3
+permissions:
+- immutable files first, never overwritten;
+- every upload verified;
+- `current.json` and then `index.html` promoted last, with only those paths invalidated.
+
+There is no `BucketDeployment` and no new IAM. `--promote-release` handles content rollbacks
+within `rollbackSafeTo`. Production requires a frozen release, a clean tree and typed
+confirmations.
+
+## D44. Runtime dependencies are only React (2026-10-30)
+
+`ajv` moved to development dependencies: it compiles the validators at build time, and none of
+its code ships. Build-time advisories are recorded and dated in security-review.md.

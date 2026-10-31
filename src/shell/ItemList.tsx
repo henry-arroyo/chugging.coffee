@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useDoubleTap } from './doubleTap';
 import { iconUrl } from './icons';
 
 export interface ListItem {
@@ -102,6 +103,7 @@ export function ItemList({ items, view, columns = [], label, selected, onSelect,
     />
   );
 
+  const opener = useDoubleTap();
   const common = (item: ListItem) => ({
     ref: (el: HTMLElement | null) => {
       if (el) refs.current.set(item.id, el);
@@ -111,9 +113,8 @@ export function ItemList({ items, view, columns = [], label, selected, onSelect,
     'aria-selected': selected === item.id,
     tabIndex: tabStop === item.id ? 0 : -1,
     'data-item': item.name,
-    onClick: () => onSelect(item.id),
     onFocus: () => selected !== item.id && onSelect(item.id),
-    onDoubleClick: () => onOpen(item.id),
+    ...opener(item.id, () => onOpen(item.id), () => onSelect(item.id)),
     onKeyDown: (e: KeyboardEvent<HTMLElement>) => keyDown(e, item.id),
   });
 

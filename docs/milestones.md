@@ -7,7 +7,7 @@
 | M2 | Local applications and persistence | **Complete (pending owner review)** |
 | M3 | AOL, connection scheduler, Netscape | **Complete (pending owner review)** |
 | M4 | Seven-site world and clue chain | **Complete (pending owner review)** |
-| M5 | Accessibility, security, performance, browser QA, deployment-ready package | Not started |
+| M5 | Accessibility, security, performance, browser QA, deployment-ready package | **Complete (pending owner review); not deployed** |
 
 ## M0 report (2026-10-29)
 
@@ -522,3 +522,79 @@ update flow.
 
 **Next step:** M5: accessibility, security, performance, browser QA and the deployment-ready
 package.
+
+## M5 report (2026-10-30)
+
+**Works**
+
+- **Accessibility (D41, D42):**
+  - **Host bar:** Larger text, High contrast, Reduced motion and Sound join zoom and the program
+    list.
+  - **Automated scans:** axe-core checks the logon, desktop, Start menu, Notepad, AOL (sign-on,
+    Setup, Main Menu, chat) and a Netscape page against WCAG 2.1 A and AA in all three engines.
+    The authentic look excludes only the Windows 95 logotype and inactive title bars; with High
+    contrast on, even those pass.
+  - **Keyboard only:** logon → Start > Run → AOL Setup → Sign On → Ctrl+K keyword → Netscape
+    (Ctrl+L, Tab, Enter, Alt+Left) → Ctrl+F6 → Alt+O Sign Off. Making this work exposed and
+    fixed four real gaps:
+    - focus after logon;
+    - focus in the front AOL window;
+    - focus after following a link;
+    - Alt+key and F10 menus that previously relied on the browser's global `accesskey`.
+  - **Touch only:** a phone-sized screen in Chromium and WebKit, including double tap on desktop
+    icons and folder items. Safari-style browsers never send double-click for taps, and opening
+    on pointer-up caused a "ghost click" on the new window; both are fixed.
+- **Browsers:** the whole suite runs in **Chromium 156, Firefox 157 and WebKit 27.2**. Without root,
+  the extra system libraries are unpacked under `~/.cache/ctm-test-libs/extra`, and a small
+  launcher (`scripts/test/webkit-local.sh`) starts WebKit.
+- **Performance** (`npm run test:prod`, [performance.md](performance.md)), on 10 Mbit/s with a 4x
+  slower CPU:
+  - **Startup:** the logon is usable in **2.4 s**, including the 1.5 s startup screen.
+  - **Size:** the initial download is **about 195 KiB gzipped**, against a 1 MiB budget.
+  - **Dragging:** **16.7 ms** p95 frame time.
+- **Security** ([security-review.md](security-review.md)):
+  - **CSP:** the production build is served with the exact CloudFront headers (now shared in
+    `infra/lib/headers.ts`) and runs a full journey with no CSP violations and no page errors.
+  - **Dependencies:** runtime is React only, with 0 known vulnerabilities (`ajv` moved to
+    development dependencies, D44). Three build-time advisories are accepted with dates.
+- **Deployment package (D43):**
+  - **Publish:** `infra:publish` builds, plans (`--dry-run` makes no AWS call), uploads immutable
+    files first (never overwriting), verifies each, promotes `current.json` then `index.html`,
+    invalidates only those, and records the publish. Production requires a frozen release, a
+    clean tree and typed confirmation.
+  - **Rollback:** `--promote-release` rolls content back within `rollbackSafeTo`.
+  - **No new IAM permissions.**
+  - **404 page:** a static `404.html` now exists for CloudFront's error responses.
+  - **Runbooks:** publish, rollback and recovery are updated.
+
+**Tests actually run**
+
+- `npm test`: 574 passed.
+- `npm run test:e2e`: **140 passed across Chromium, Firefox and WebKit** (10 skipped: the on-demand
+  screenshot captures, and touch in Firefox, which Playwright cannot emulate). Firefox and WebKit
+  also passed 186/186 over two repeats.
+- `npm run test:prod`: 4/4 (CSP, startup, size, dragging).
+- `npm run infra:check`: both environments synthesize and validate. Test would create the same
+  six resource types as before (bucket, bucket policy, CloudFront function, response-headers
+  policy, origin access control, distribution). The production certificate stack is unchanged.
+- **45-minute leak session: not yet completed cleanly.**
+  - **First attempt:** it was disrupted when a parallel test run cleared the shared results
+    folder. Its samples (68 cycles, 612 actions, 0 page errors) showed the heap flat at about
+    6.7 MB, with constant DOM node (1,083) and listener (202) counts from minute 5 on.
+  - **Clean rerun:** stopped at the owner's request (the computer needed to shut down).
+  - **To do:** rerun with nothing else running:
+    `npm run build && SOAK_MINUTES=45 npx playwright test -c playwright.prod.config.ts soak`.
+
+**Not done / not verified**
+
+- **Not deployed.** Deploying test (`infra:deploy` then `infra:publish`) needs the owner's
+  authorization. So do production, its certificate and the Cloudflare DNS change.
+- **Real products:** Edge, Safari on macOS/iOS and real phones were not tested (engines only).
+  A screen-reader pass by a person is recommended.
+- **Written permission:** written brand permission for Microsoft, AOL and Netscape is still
+  recommended before a public launch.
+- **Dependencies:** adopt `fast-uri` 3.1.9 after 2026-11-02.
+- **Leak session:** the 45-minute session still needs one clean, uninterrupted run (see above).
+
+**Next step:** the owner reviews this report and the screenshots, then decides whether to
+authorize a test deployment (`CtmTest-Site`, six resources, about $0-5 a month).

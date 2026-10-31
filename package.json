@@ -29,19 +29,22 @@
     "test:e2e": "playwright test",
     "visual:capture": "CAPTURE=1 playwright test tests/e2e/visual-capture.spec.ts",
     "content:check": "tsx scripts/world/build.ts",
-    "content:freeze": "tsx scripts/world/freeze.ts"
+    "content:freeze": "tsx scripts/world/freeze.ts",
+    "test:prod": "npm run build && playwright test -c playwright.prod.config.ts",
+    "infra:publish": "tsx infra/scripts/infra.ts publish"
   },
   "dependencies": {
-    "ajv": "8.20.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
     "@playwright/test": "1.64.0",
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
+    "ajv": "8.20.0",
     "aws-cdk": "2.1145.0",
     "aws-cdk-lib": "2.273.0",
     "constructs": "10.8.1",

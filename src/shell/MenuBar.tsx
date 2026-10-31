@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Label, Menu, useDismiss, type MenuItem } from './Menu';
 
 export interface MenuBarMenu {
@@ -14,6 +14,31 @@ export function MenuBar({ menus }: { menus: MenuBarMenu[] }) {
   const barRef = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setOpen(null), []);
   useDismiss(open !== null, close, barRef);
+  const menusRef = useRef(menus);
+  menusRef.current = menus;
+
+  // Alt+access key and F10 open a menu, but only for the window this menu bar belongs to (several
+  // open windows all have a File menu, so the browser's own accesskey handling cannot be used).
+  useEffect(() => {
+    const frame = barRef.current?.closest<HTMLElement>('.w95-window');
+    if (!frame) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.defaultPrevented || e.ctrlKey || e.metaKey) return;
+      if (e.key === 'F10' && !e.altKey && !e.shiftKey) {
+        e.preventDefault();
+        setOpen({ index: 0, keyboard: true });
+        return;
+      }
+      if (!e.altKey || e.key.length !== 1) return;
+      const index = menusRef.current.findIndex((m) => m.label.charAt(m.accessKey).toLowerCase() === e.key.toLowerCase());
+      if (index < 0) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setOpen({ index, keyboard: true });
+    };
+    frame.addEventListener('keydown', onKeyDown);
+    return () => frame.removeEventListener('keydown', onKeyDown);
+  }, []);
   const openMenu = open ? menus[open.index] : undefined;
   const button = open ? (barRef.current?.children[open.index] as HTMLElement | undefined) : undefined;
 
@@ -37,7 +62,7 @@ export function MenuBar({ menus }: { menus: MenuBarMenu[] }) {
           className="w95-menubar-item"
           aria-haspopup="menu"
           aria-expanded={open?.index === index}
-          accessKey={m.label.charAt(m.accessKey).toLowerCase()}
+          aria-keyshortcuts={`Alt+${m.label.charAt(m.accessKey).toUpperCase()}`}
           onClick={() => setOpen(open?.index === index ? null : { index, keyboard: false })}
           onKeyDown={(e) => {
             if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {

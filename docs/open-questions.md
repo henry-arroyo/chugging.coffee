@@ -14,6 +14,8 @@
 | 14 | Passwords | **When added, stored only in this browser like everything else** (2026-10-30). Not implemented yet; see D28 |
 | 15 | Logos | Owner wants **realistic Windows, AOL and Netscape logos** (2026-10-30). They ship once written permission is recorded (asset-rights.md); until then the slots hold original stand-ins |
 
+| 16 | Tested browsers | Chromium, Firefox and WebKit engines via Playwright (M5). Real Edge, Safari and phones still need a manual pass before a public launch |
+
 ## Still open
 
 | # | Question | Blocks | Default until answered |

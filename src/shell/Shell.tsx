@@ -122,6 +122,17 @@ export function Shell({ desktop, session, controller, skipBoot = false }: ShellP
     if (phase === 'boot' && bootTimerDone && session) setPhase('logon');
   }, [phase, bootTimerDone, session]);
 
+  // After logon (or log off and back), keyboard focus lands on the desktop icons, as in Windows 95.
+  useEffect(() => {
+    if (phase !== 'desktop') return;
+    const frame = requestAnimationFrame(() => {
+      const active = document.activeElement;
+      if (active && active !== document.body && rootRef.current?.contains(active)) return;
+      rootRef.current?.querySelector<HTMLElement>('.w95-desktop-icon[tabindex="0"]')?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [phase]);
+
   // Every start goes through the logon. A reset (Control Panel > Time Machine) returns to it too.
   useEffect(() => {
     if (phase === 'desktop' && sessionState && !sessionState.profile) {

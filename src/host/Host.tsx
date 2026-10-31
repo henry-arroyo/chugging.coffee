@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { MANIFESTS } from '../apps/manifests';
+import type { Preferences } from '../core/contracts/types';
 import type { Size } from '../core/windows/geometry';
 import type { Session } from '../persistence/session';
 import { Shell, type ShellController } from '../shell/Shell';
@@ -51,6 +52,7 @@ export function Host() {
   const [session, setSession] = useState<Session | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const sessionState = useSyncExternalStore(session?.subscribe ?? noopSubscribe, () => session?.getState() ?? null);
+  const prefs = sessionState?.profile?.preferences ?? null;
 
   // Personal state loads (with its validators) as a separate chunk while the startup screen runs.
   useEffect(() => {
@@ -130,6 +132,20 @@ export function Host() {
           <button type="button" aria-expanded={appsOpen} aria-controls="host-apps" onClick={() => setAppsOpen((v) => !v)}>
             Programs
           </button>
+        </div>
+        <div className="host-controls" role="group" aria-label="Accessibility" title={prefs ? undefined : 'Available once you have logged on for the first time'}>
+          {(
+            [
+              ['Larger text', prefs?.accessibility.largerText, (p: Preferences) => ({ ...p, accessibility: { ...p.accessibility, largerText: !p.accessibility.largerText } })],
+              ['High contrast', prefs?.accessibility.highContrast, (p: Preferences) => ({ ...p, accessibility: { ...p.accessibility, highContrast: !p.accessibility.highContrast } })],
+              ['Reduced motion', prefs?.accessibility.reducedMotion, (p: Preferences) => ({ ...p, accessibility: { ...p.accessibility, reducedMotion: !p.accessibility.reducedMotion } })],
+              ['Sound', prefs?.sound.enabled, (p: Preferences) => ({ ...p, sound: { ...p.sound, enabled: !p.sound.enabled } })],
+            ] as [string, boolean | undefined, (p: Preferences) => Preferences][]
+          ).map(([label, on, toggle]) => (
+            <button key={label} type="button" aria-pressed={on === true} disabled={!prefs} onClick={() => prefs && session?.setPreferences(toggle(prefs))}>
+              {label}
+            </button>
+          ))}
         </div>
       </header>
       {loadError ? (

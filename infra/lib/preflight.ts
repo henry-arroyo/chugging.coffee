@@ -1,15 +1,21 @@
 import { stackNames, type EnvironmentConfig, type EnvironmentName } from './config';
 
-export const COMMANDS = ['check', 'synth', 'diff', 'deploy', 'status', 'destroy'] as const;
+export const COMMANDS = ['check', 'synth', 'diff', 'deploy', 'status', 'destroy', 'publish'] as const;
 export type Command = (typeof COMMANDS)[number];
 
 /** Commands that talk to AWS and therefore need confirmed config and a verified identity. */
-export const AWS_COMMANDS: readonly Command[] = ['diff', 'deploy', 'status', 'destroy'];
+export const AWS_COMMANDS: readonly Command[] = ['diff', 'deploy', 'status', 'destroy', 'publish'];
 
 export interface ParsedArgs {
   command: Command;
   env: EnvironmentName | null;
   stack: 'site' | 'certificate';
+  /** publish only: plan locally and stop before any AWS call. */
+  dryRun: boolean;
+  /** publish to test only: allow a release that is not frozen yet. */
+  allowUnfrozen: boolean;
+  /** publish only: repoint current.json at an already published release (rollback). */
+  promoteRelease: string | null;
 }
 
 /**
@@ -23,6 +29,9 @@ export function parseArgs(argv: string[]): ParsedArgs {
   }
   let env: EnvironmentName | null = null;
   let stack: 'site' | 'certificate' = 'site';
+  let dryRun = false;
+  let allowUnfrozen = false;
+  let promoteRelease: string | null = null;
   for (let i = 0; i < rest.length; i++) {
     const arg = rest[i];
     const value = rest[i + 1];
@@ -34,6 +43,14 @@ export function parseArgs(argv: string[]): ParsedArgs {
       if (value !== 'site' && value !== 'certificate') throw new Error('--stack must be "site" or "certificate"');
       stack = value;
       i++;
+    } else if (command === 'publish' && arg === '--dry-run') {
+      dryRun = true;
+    } else if (command === 'publish' && arg === '--allow-unfrozen') {
+      allowUnfrozen = true;
+    } else if (command === 'publish' && arg === '--promote-release') {
+      if (!/^rel-\d{4}$/.test(value ?? '')) throw new Error('--promote-release needs a release id such as rel-0001');
+      promoteRelease = value!;
+      i++;
     } else {
       throw new Error(`Unexpected argument "${arg}". Stacks are chosen with --stack site|certificate, never by name.`);
     }
@@ -44,7 +61,10 @@ export function parseArgs(argv: string[]): ParsedArgs {
   if (stack === 'certificate' && command === 'destroy') {
     throw new Error('The certificate stack has its own lifecycle and is never destroyed by infra:destroy (see docs/runbooks.md)');
   }
-  return { command: command as Command, env, stack };
+  if (command === 'publish' && stack !== 'site') throw new Error('publish always targets the site stack');
+  if (allowUnfrozen && env !== 'test') throw new Error('--allow-unfrozen is for the test environment only; production publishes frozen releases');
+  if (promoteRelease && (dryRun || allowUnfrozen)) throw new Error('--promote-release cannot be combined with other publish options');
+  return { command: command as Command, env, stack, dryRun, allowUnfrozen, promoteRelease };
 }
 
 export function targetStack(env: EnvironmentName, stack: 'site' | 'certificate'): string {
