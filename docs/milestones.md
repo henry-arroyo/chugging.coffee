@@ -641,3 +641,44 @@ automatically before the next try. No resource was left behind.
 **Not done:** production, its certificate and the Cloudflare DNS change each still need separate
 owner authorization. Freeze `rel-0002` (`npm run content:freeze`) before it is published to
 production.
+
+## Production launch (2026-10-31)
+
+**Live:** https://chugging.coffee/ (`CtmProd-Site`, distribution `E24JWV6L1BEUV0`, bucket
+`ctm-prod-site-196691452297`), serving the frozen release `rel-0002`. `www.chugging.coffee`
+redirects there. Records are in `infra/deploy-records/`.
+
+**Steps, each authorized by the owner**
+
+1. **Certificate:** `CtmProd-Certificate` (ACM, `chugging.coffee`, DNS-validated). The owner
+   added the validation CNAME in Cloudflare, and it stays there for automatic renewal. The
+   certificate is valid until May 2027.
+2. **Freeze:** `rel-0002` frozen (`content/world/published/rel-0002/`) and committed.
+3. **Root:** owner decision to serve the Time Machine at the root (D47). Test was updated and
+   verified first, then production.
+4. **Site:** `CtmProd-Site` deployed, then updated for root routing. rel-0002 published: 55
+   files verified, pointers promoted last.
+5. **Cutover (owner, in Cloudflare):**
+   - **Apex:** the A record to the old iPage host (`66.96.149.20`) was replaced with
+     `CNAME @ → d2ko8sichzhhlr.cloudfront.net`, DNS only.
+   - **www:** proxied, with a Redirect Rule `www.chugging.coffee` → `https://chugging.coffee` plus
+     the path, 301, keeping the query string.
+   - **Untouched:** the Zoho MX/TXT records and the ACM validation record.
+
+**Verified on chugging.coffee**
+
+- **HTTPS:** valid with the AWS certificate, and HTTP redirects to HTTPS.
+- **Headers and routing:** all 8 security headers present. `/time-machine/` redirects to `/`, and
+  missing paths get the 404 page.
+- **www:** `www` → apex works for HTTPS and HTTP, keeping path and query.
+- **Browser checks:** `PROD_URL=https://chugging.coffee/` passed 4/4 (CSP-clean journey,
+  startup 3.0 s on the throttled profile, about 195 KiB compressed, 16.7 ms drag frames).
+  Startup is right at the 3 s target over the real internet (2.4 s locally).
+- **Mail:** MX and TXT records were confirmed unchanged in public DNS. The owner's test email is
+  pending.
+
+**Not done**
+
+- Clean up the test bucket's old `time-machine/` objects (never served).
+- Get written brand permission (asset-rights.md).
+- Run a real-device check on Safari and phones.

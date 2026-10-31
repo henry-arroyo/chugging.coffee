@@ -6,9 +6,8 @@ Served at the root of https://chugging.coffee/. Static hosting on AWS (CDK v2), 
 
 **Status:** milestone M5: accessibility (axe scans, keyboard-only and touch journeys, host
 accessibility controls), three browser engines, performance budgets, a security review and the
-guarded publish command. Feature-complete for v1. **Test environment live** at
-https://d1usgipkxbh9qe.cloudfront.net/ ; production not deployed (needs separate
-owner authorization). See
+guarded publish command. **Live at https://chugging.coffee/** (www redirects there); test
+environment at https://d1usgipkxbh9qe.cloudfront.net/. See
 [docs/milestones.md](docs/milestones.md).
 
 ## Commands
