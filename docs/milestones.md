@@ -600,3 +600,44 @@ package.
 
 **Next step:** the owner reviews this report and the screenshots, then decides whether to
 authorize a test deployment (`CtmTest-Site`, six resources, about $0-5 a month).
+
+## Test deployment (2026-10-31)
+
+**Live:** `https://d1usgipkxbh9qe.cloudfront.net/time-machine/` (`CtmTest-Site`, distribution
+`E17BK76EPZCCK0`, bucket `ctm-test-site-196691452297`), serving release `rel-0002`, published unfrozen
+for test. Records are in `infra/deploy-records/`.
+
+**What it took**
+
+1. **First attempt:** rolled back. CloudFormation now tags CloudFront functions, and the execution
+   role may not tag them. The owner chose to leave the function untagged (D45), with no
+   permission change.
+2. **Second attempt:** rolled back. CloudFormation's function handler also *reads* the function's
+   tags. The owner approved a permission expansion, which was applied smaller than proposed:
+   one read-only action (D46). It went through `access:setup --plan`/`--apply` and
+   `access:verify`, with 51/51 checks.
+3. **Third attempt:** deployed. `infra:publish` uploaded and verified 55 files, promoted the
+   pointers last and invalidated them.
+
+Each failed attempt rolled back completely, and the empty stack it left was removed
+automatically before the next try. No resource was left behind.
+
+**Verified on the live site**
+
+- **Headers:** every security header is present, exactly as tested locally. HTTP redirects to
+  HTTPS.
+- **Routing:** `/time-machine` redirects to `/time-machine/`, and deep links serve the app.
+- **Errors:** missing files get the 404 page, and `/` returns 404 because this distribution
+  serves only the Time Machine.
+- **Caching and compression:** content types and caching are correct (the app's JavaScript is
+  cached for a year and immutable; `index.html` is `no-cache`), and CloudFront serves Brotli.
+- **Browser checks:** `PROD_URL=<live url> npx playwright test -c playwright.prod.config.ts production`
+  passed 4/4 against the live site:
+  - **CSP:** no violations during a full journey.
+  - **Startup:** the logon is usable in 2.9 s on 10 Mbit/s with the CPU slowed 4x.
+  - **Size:** about 195 KiB compressed.
+  - **Dragging:** 16.7 ms p95 frame time.
+
+**Not done:** production, its certificate and the Cloudflare DNS change each still need separate
+owner authorization. Freeze `rel-0002` (`npm run content:freeze`) before it is published to
+production.

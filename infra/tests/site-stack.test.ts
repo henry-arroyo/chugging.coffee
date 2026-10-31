@@ -168,3 +168,15 @@ describe('router function', () => {
     expect(run(uri)).toMatchObject({ statusCode: 404 });
   });
 });
+
+describe('tags on CloudFront functions', () => {
+  it('leaves the CloudFront function untagged (D45) while the bucket and distribution keep their tags', () => {
+    for (const env of ['test', 'prod'] as const) {
+      const t = Template.fromJSON(siteTemplate(env));
+      for (const fn of Object.values(t.findResources('AWS::CloudFront::Function'))) expect((fn as { Properties: { Tags?: unknown } }).Properties.Tags).toBeUndefined();
+      t.hasResourceProperties('AWS::S3::Bucket', { Tags: Match.arrayWith([{ Key: 'Project', Value: 'chugging-time-machine' }]) });
+      t.hasResourceProperties('AWS::CloudFront::Distribution', { Tags: Match.arrayWith([{ Key: 'Environment', Value: env }]) });
+    }
+  });
+});
+

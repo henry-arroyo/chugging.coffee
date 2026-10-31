@@ -1,0 +1,14 @@
+{
+  "environment": "test",
+  "stack": "CtmTest-Site",
+  "account": "196691452297",
+  "region": "us-east-1",
+  "caller": "arn:aws:sts::196691452297:assumed-role/ctm-test-operator/ctm-test",
+  "changeSet": "ctm-deploy-20261031050755",
+  "result": "failed (ROLLBACK_COMPLETE)",
+  "gitCommit": "26146d662d0f2b2db5b9be71f54375ec7d65f9a3",
+  "gitDirty": true,
+  "templateSha256": "aef13cef90bc4e8c73c11d605611af42c2c97fbaf5f376eec631d2b0325813b3",
+  "outputs": null,
+  "at": "2026-10-31T05:09:05.315Z"
+}

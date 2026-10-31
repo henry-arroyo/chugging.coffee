@@ -45,9 +45,17 @@ export function buildApp(app: cdk.App, config: EnvironmentConfig): cdk.App {
   return app;
 }
 
+/**
+ * CloudFront functions are left untagged: the execution role controls them by name
+ * (`function/ctm-<env>-*`) and may not tag them, so tagging would need a permission expansion
+ * for no security gain (D45). Origin access controls and headers policies cannot be tagged at all.
+ */
+export const UNTAGGED_RESOURCE_TYPES = ['AWS::CloudFront::Function'];
+
 function applyTags(stack: cdk.Stack, config: EnvironmentConfig) {
-  cdk.Tags.of(stack).add('Project', PROJECT_TAG);
-  cdk.Tags.of(stack).add('Environment', config.environment);
-  cdk.Tags.of(stack).add('ManagedBy', 'aws-cdk');
-  if (config.expiresOn) cdk.Tags.of(stack).add('ExpiresOn', config.expiresOn);
+  const options = { excludeResourceTypes: UNTAGGED_RESOURCE_TYPES };
+  cdk.Tags.of(stack).add('Project', PROJECT_TAG, options);
+  cdk.Tags.of(stack).add('Environment', config.environment, options);
+  cdk.Tags.of(stack).add('ManagedBy', 'aws-cdk', options);
+  if (config.expiresOn) cdk.Tags.of(stack).add('ExpiresOn', config.expiresOn, options);
 }

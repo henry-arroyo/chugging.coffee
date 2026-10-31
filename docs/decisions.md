@@ -370,3 +370,31 @@ confirmations.
 
 `ajv` moved to development dependencies: it compiles the validators at build time, and none of
 its code ships. Build-time advisories are recorded and dated in security-review.md.
+
+## D45. CloudFront functions are not tagged (2026-10-31)
+
+The first test deploy failed: CloudFormation now tags CloudFront functions, and the execution
+role may not call `cloudfront:TagResource` on functions. The owner chose not to widen the
+permissions. The stack-wide tags exclude `AWS::CloudFront::Function`; the function stays
+controlled by its name (`function/ctm-<env>-*`), exactly as before. It joins origin access
+controls and response-headers policies, which cannot be tagged at all. A failed first creation
+(`ROLLBACK_COMPLETE` with no resources) is now removed automatically by `infra:diff` and
+`infra:deploy`.
+
+## D46. CloudFormation may read CloudFront function tags (2026-10-31)
+
+Owner-approved permission expansion, applied 2026-10-31 to `CDKToolkit-ctmtest` and
+`CDKToolkit-ctmprod`. CloudFormation's CloudFront Function handler calls
+`cloudfront:ListTagsForResource` whenever the function's ARN is resolved, even for untagged
+functions, so the second test deploy failed without it.
+- **Change:** `cloudfront:ListTagsForResource` added to the execution policy's
+  `EnvironmentFunctions` statement, still limited to `function/ctm-<env>-*`. It is read-only, and
+  function tags still cannot be written (D45).
+- **Dropped from the proposal:** `cloudfront:CreateDistributionWithTags`. Access Analyzer showed
+  it is not an IAM action: that API is authorized as `CreateDistribution` plus `TagResource`,
+  which the policy already conditions on this environment's tags. The applied expansion is
+  therefore smaller than the one approved.
+- **Process:** proposal, owner approval, policy tests, `access:setup --plan` (CloudFormation
+  and Access Analyzer clean), `--apply`, then `access:verify` with 51/51 checks (two new: reading
+  function tags is allowed, tagging functions is denied).
+- **Rollback:** re-apply the previous template with `access:setup --apply`.

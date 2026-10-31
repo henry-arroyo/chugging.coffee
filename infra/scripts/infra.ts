@@ -171,6 +171,26 @@ function printFailures(config: EnvironmentConfig, deploy: Credentials, stackName
 }
 
 /** Human-readable template diff (IAM and resource changes). Makes no changes in AWS. */
+/**
+ * A first creation that failed leaves an empty stack in ROLLBACK_COMPLETE, which blocks any new
+ * change set. It is removed only if CloudFormation reports that none of its resources exist.
+ */
+function clearFailedCreate(config: EnvironmentConfig, deploy: Credentials, stackName: string) {
+  const stack = describeStack(config, stackName, deploy);
+  if (stack?.StackStatus !== 'ROLLBACK_COMPLETE') return;
+  const listed = aws(config, ['cloudformation', 'describe-stack-resources', '--stack-name', stackName], deploy);
+  if (!listed.ok) fail(`Could not list the resources of the failed ${stackName}: ${listed.stderr.trim()}`);
+  const resources = (JSON.parse(listed.stdout) as { StackResources: { LogicalResourceId: string; ResourceStatus: string; PhysicalResourceId?: string }[] }).StackResources;
+  const alive = resources.filter((r) => r.ResourceStatus !== 'DELETE_COMPLETE' && !(r.ResourceStatus === 'CREATE_FAILED' && !r.PhysicalResourceId));
+  if (alive.length > 0) fail(`${stackName} is in ROLLBACK_COMPLETE but still lists resources (${alive.map((r) => `${r.LogicalResourceId}: ${r.ResourceStatus}`).join(', ')}). Refusing to remove it automatically.`);
+  console.log(`${stackName} is an empty shell from a failed first creation (ROLLBACK_COMPLETE, no resources). Removing it...`);
+  const deleted = aws(config, ['cloudformation', 'delete-stack', '--stack-name', stackName, '--role-arn', cdkRoleArn(config.account, config.region, config.qualifier, 'cfn-exec')], deploy);
+  if (!deleted.ok) fail(`delete-stack failed: ${deleted.stderr.trim()}`);
+  const waited = aws(config, ['cloudformation', 'wait', 'stack-delete-complete', '--stack-name', stackName], deploy);
+  if (!waited.ok) fail(`Removing the failed ${stackName} did not complete: ${waited.stderr.trim()}`);
+  console.log(`✔ Removed the empty ${stackName}`);
+}
+
 function templateDiff(config: EnvironmentConfig, dir: string, stackName: string): void {
   spawnSync('npx', ['cdk', 'diff', '--app', dir, stackName, '--exclusively', '--method', 'template'], {
     cwd: INFRA,
@@ -437,6 +457,8 @@ async function main() {
   const templatePath = templates[stackName];
   if (!templatePath) fail(`${stackName} is not part of the ${config.environment} assembly (is domainName configured?)`);
   const deploy = assumeDeployRole(config);
+
+  if (args.command === 'diff' || args.command === 'deploy') clearFailedCreate(config, deploy, stackName);
 
   if (args.command === 'diff') {
     templateDiff(config, dir, stackName);

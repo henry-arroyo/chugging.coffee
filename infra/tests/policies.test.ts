@@ -160,6 +160,10 @@ describe('restricted bootstrap', () => {
       }
       if (actions(s).some((a) => a.endsWith('Function'))) expect(json(s.Resource)).toContain('function/ctm-${Environment}-*');
     }
+    // Function tags may be read, never written (D45, D46).
+    const fns = exec.find((s) => s.Sid === 'EnvironmentFunctions')!;
+    expect(actions(fns)).toContain('cloudfront:ListTagsForResource');
+    expect(actions(fns).filter((a) => /^cloudfront:(Tag|Untag)Resource$/.test(a))).toEqual([]);
   });
 
   it('grants ACM only in prod with an owner-approved exact domain', () => {

@@ -42,7 +42,7 @@ environment yet; that happens after the owner authorizes a test deployment.
 ## Infrastructure
 
 Unchanged from M0 and already applied: restricted bootstrap, permission boundary, per-environment
-operator roles, `access:verify` 49/49 policy-simulator checks. **No permission changes are needed
+operator roles, `access:verify` 51/51 policy-simulator checks (49 in M0; two added with D46). **No permission changes are needed
 for M5**: the publish command uses the existing `PublishAndClean<Env>Site` and
 `Invalidate<Env>Distribution` statements of each operator role.
 

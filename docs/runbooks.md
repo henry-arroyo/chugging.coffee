@@ -13,7 +13,7 @@ at the time, and production steps need it separately.
 | `npm run infra:deploy -- --env <env>` | Yes | As diff, then typed confirmation, execute the change set, wait, set prod termination protection, record in `infra/deploy-records/`. Declining deletes the change set |
 | `npm run infra:status -- --env <env>` | Read | Stack status, outputs, tags |
 | `npm run infra:destroy -- --env <env>` | Yes | Preflight; checks bucket name and tags; lists removed and retained resources; typed confirmation; empties every version and delete marker; deletes the exact stack with the execution role |
-| `npm run access:verify` | Read | 49 IAM policy-simulator checks against the live roles (owner session) |
+| `npm run access:verify` | Read | 51 IAM policy-simulator checks against the live roles (owner session) |
 
 Preflight refuses: an unconfirmed config (before any AWS call), the wrong account, a role other
 than `ctm-<env>-operator`, the wrong region, missing credentials. Stacks are chosen with

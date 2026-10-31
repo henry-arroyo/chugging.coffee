@@ -6,8 +6,9 @@ Served at `/time-machine/`. Static hosting on AWS (CDK v2), no backend in v1.
 
 **Status:** milestone M5: accessibility (axe scans, keyboard-only and touch journeys, host
 accessibility controls), three browser engines, performance budgets, a security review and the
-guarded publish command. Feature-complete for v1; **not deployed** (deployment needs the owner's
-separate authorization). See
+guarded publish command. Feature-complete for v1. **Test environment live** at
+https://d1usgipkxbh9qe.cloudfront.net/time-machine/ ; production not deployed (needs separate
+owner authorization). See
 [docs/milestones.md](docs/milestones.md).
 
 ## Commands

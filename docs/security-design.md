@@ -140,7 +140,7 @@ Harmless denial tests only: no expensive resource is created just to prove a den
 | Operator profiles | `time-machine-test` → `assumed-role/ctm-test-operator`, `time-machine-prod` → `assumed-role/ctm-prod-operator` |
 | `infra:status` both environments | Works as the operator roles (nothing deployed) |
 | Real change set as the test deploy role (`infra:diff --env test`) | Created with the execution role and the six declared resource types, previewed, then deleted along with its placeholder stack |
-| `npm run access:verify`: 49 simulated allow/deny cases against the live roles (identity policies plus boundary) | 49/49 as designed, including: test cannot touch prod (buckets, roles, stacks, distributions, functions); no IAM changes, including to the role's own policy and boundary; no Lambda/EC2/DynamoDB/RDS; no resource import; no change set without declared types or containing Lambda/IAM; PassRole only for the matching execution role to CloudFormation; protected tags can't be set to the other environment or removed; ACM only for exactly `chugging.coffee` from prod |
+| `npm run access:verify`: 51 simulated allow/deny cases against the live roles (identity policies plus boundary) | 51/51 as designed (2026-10-31, after D46), including: CloudFormation may read but never write CloudFront function tags; test cannot touch prod (buckets, roles, stacks, distributions, functions); no IAM changes, including to the role's own policy and boundary; no Lambda/EC2/DynamoDB/RDS; no resource import; no change set without declared types or containing Lambda/IAM; PassRole only for the matching execution role to CloudFormation; protected tags can't be set to the other environment or removed; ACM only for exactly `chugging.coffee` from prod |
 
 The simulator doesn't evaluate bucket policies, and doesn't add `s3:ResourceAccount` by itself, so
 `access:verify` supplies that key for S3 actions. The file-publishing role's real upload during the
@@ -164,3 +164,9 @@ couldn't assume a `cdk-ctm*-lookup-role` (deliberately not created).
   remaining AccessDenied gets a proposal.
 - ~~Whether CloudFormation evaluates the foundation's `RegionMatches` rule as cfn-lint expects.~~
   It did: the foundation applied cleanly in us-east-1.
+
+### Untagged resources (2026-10-31)
+
+CloudFront functions (name-scoped, D45), origin access controls and response-headers policies
+carry no tags. All three are controlled by account plus exact name or by their owning stack, never
+by tags.

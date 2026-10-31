@@ -321,6 +321,8 @@ Resources:
             Effect: Allow
             Action: cloudfront:CreateDistribution
             Resource: '*'
+          # (The CreateDistributionWithTags API is authorized as CreateDistribution plus TagResource,
+          # both below; it has no IAM action of its own. Confirmed by Access Analyzer, D46.)
           # Claim a fresh, untagged distribution for this environment. The values are fixed, so
           # a test deploy can never label anything prod (or the reverse).
           - Sid: TagNewDistribution
@@ -375,6 +377,8 @@ Resources:
             Condition:
               'Null':
                 aws:ResourceTag/Project: 'true'
+          # ListTagsForResource (read-only) is called by CloudFormation's function read handler
+          # whenever the function's ARN is resolved, even for untagged functions (2026-10-31, D46).
           - Sid: EnvironmentFunctions
             Effect: Allow
             Action:
@@ -384,6 +388,7 @@ Resources:
               - cloudfront:UpdateFunction
               - cloudfront:PublishFunction
               - cloudfront:DeleteFunction
+              - cloudfront:ListTagsForResource
             Resource: { 'Fn::Sub': 'arn:aws:cloudfront::${AWS::AccountId}:function/ctm-${Environment}-*' }
           # IAM offers no tag or name conditions for origin access controls and response-headers
           # policies. Limited to this account; CloudFormation only changes ones its stack owns,

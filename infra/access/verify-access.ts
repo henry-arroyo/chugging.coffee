@@ -138,6 +138,8 @@ export function cases(account: string, region: string): Case[] {
       expect: 'denied',
     },
     { title: 'test execution role manages ctm-test-* functions', role: testExec, action: 'cloudfront:UpdateFunction', resource: `arn:aws:cloudfront::${account}:function/ctm-test-router`, expect: 'allowed' },
+    { title: 'test execution role reads tags of ctm-test-* functions', role: testExec, action: 'cloudfront:ListTagsForResource', resource: `arn:aws:cloudfront::${account}:function/ctm-test-router`, expect: 'allowed' },
+    { title: 'test execution role cannot tag functions', role: testExec, action: 'cloudfront:TagResource', resource: `arn:aws:cloudfront::${account}:function/ctm-test-router`, context: [{ key: 'aws:RequestTag/Environment', values: ['test'] }], expect: 'denied' },
     { title: 'test execution role cannot touch ctm-prod-* functions', role: testExec, action: 'cloudfront:UpdateFunction', resource: `arn:aws:cloudfront::${account}:function/ctm-prod-router`, expect: 'denied' },
     { title: 'test execution role cannot request certificates', role: testExec, action: 'acm:RequestCertificate', resource: '*', context: [{ key: 'acm:DomainNames', values: ['chugging.coffee'], type: 'stringList' }], expect: 'denied' },
     {
