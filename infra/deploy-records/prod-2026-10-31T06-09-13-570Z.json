@@ -1,0 +1,16 @@
+{
+  "environment": "prod",
+  "stack": "CtmProd-Certificate",
+  "account": "196691452297",
+  "region": "us-east-1",
+  "caller": "arn:aws:sts::196691452297:assumed-role/ctm-prod-operator/ctm-prod",
+  "changeSet": "ctm-deploy-20261031060356",
+  "result": "succeeded",
+  "gitCommit": "666029f1fcad60d644210743e797b6f74a66a3be",
+  "gitDirty": true,
+  "templateSha256": "bcc9698e0b529d3e8c76be1af8054e1e63b2c241cdfd14560aeb68f3dda40574",
+  "outputs": {
+    "CertificateArn": "arn:aws:acm:us-east-1:196691452297:certificate/8985440c-50a9-423c-8b6d-b1ba49ff80e2"
+  },
+  "at": "2026-10-31T06:09:13.578Z"
+}

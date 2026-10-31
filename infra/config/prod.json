@@ -7,6 +7,6 @@
   "operatorRoleName": "ctm-prod-operator",
   "qualifier": "ctmprod",
   "domainName": "chugging.coffee",
-  "certificateArn": null,
+  "certificateArn": "arn:aws:acm:us-east-1:196691452297:certificate/8985440c-50a9-423c-8b6d-b1ba49ff80e2",
   "expiresOn": null
 }
