@@ -679,6 +679,5 @@ redirects there. Records are in `infra/deploy-records/`.
 
 **Not done**
 
-- Clean up the test bucket's old `time-machine/` objects (never served).
 - Get written brand permission (asset-rights.md).
 - Run a real-device check on Safari and phones.

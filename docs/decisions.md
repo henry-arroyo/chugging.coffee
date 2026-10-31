@@ -411,5 +411,5 @@ Owner decision (answers open questions 10 and 11):
   rule on a proxied `www` record. Cloudflare provides the `www` certificate, so the AWS
   certificate and permissions are unchanged (owner's choice over a second ACM name, which would
   have needed a permission expansion).
-- **Leftovers:** the test bucket still holds the earlier `time-machine/` objects. The redirect
-  means they are never served; remove them with a cleanup when convenient.
+- **Leftovers:** the test bucket's earlier `time-machine/` objects (57 versions, never served after
+  the redirect) were deleted on 2026-10-31, every version, by exact key and version ID.
